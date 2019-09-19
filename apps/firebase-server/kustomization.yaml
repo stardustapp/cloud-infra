@@ -1,0 +1,6 @@
+commonLabels:
+  app: firebase-server
+
+resources:
+- deployment.yaml
+- service.yaml

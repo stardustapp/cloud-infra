@@ -1,10 +1,14 @@
-namespace: default
-commonLabels:
-  app: firebase-server
+namespace: dust-domain
 
+bases:
+- ../../apps/firebase-server
 resources:
+- namespace.yaml
+- ingress.yaml
+- letsencrypt.yaml
+
+patchesStrategicMerge:
 - deployment.yaml
-- frontend.yaml
 
 configMapGenerator:
 - name: firebase-server-configs

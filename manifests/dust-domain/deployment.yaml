@@ -3,18 +3,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: firebase-server
-  labels:
-    app: firebase-server
 spec:
   replicas: 2
-  selector:
-    matchLabels:
-      app: firebase-server
   template:
-    metadata:
-      labels:
-        app: firebase-server
-        revision: "3"
     spec:
       containers:
       - name: app
@@ -24,45 +15,3 @@ spec:
         - src
         - --require-domains
         - gke.devmode.cloud
-        env:
-        - name: DUST_CONFIG_DIR
-          value: /firebase-server
-        ports:
-        - containerPort: 9239
-        resources:
-          requests:
-            cpu: 25m
-            memory: 25Mi
-          limits:
-            cpu: 1500m
-            memory: 75Mi
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 9239
-            httpHeaders:
-            - name: Host
-              value: healthcheck
-          initialDelaySeconds: 5
-          periodSeconds: 30
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 9239
-            httpHeaders:
-            - name: Host
-              value: healthcheck
-          initialDelaySeconds: 5
-          periodSeconds: 60
-        volumeMounts:
-        - name: configs
-          mountPath: /firebase-server/configs
-        - name: credentials
-          mountPath: /firebase-server/credentials
-      volumes:
-      - name: configs
-        configMap:
-          name: firebase-server-configs
-      - name: credentials
-        secret:
-          secretName: firebase-server-credentials
