@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: build-shell
+  labels:
+    app: build-shell
+spec:
+  serviceName: build-shell
+  selector:
+    matchLabels:
+      app: build-shell
+  template:
+    metadata:
+      labels:
+        app: build-shell
+    spec:
+      containers:
+      - name: build-shell
+        image: gcr.io/stardust-156404/build-shell:latest
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: connections
+          readOnly: true
+          mountPath: /app/config/connections
+        - name: daemons
+          readOnly: true
+          mountPath: /app/config/daemons
+        - name: services
+          readOnly: true
+          mountPath: /app/config/services
+      volumes:
+      - name: connections
+        secret:
+          secretName: dust-connections
+      - name: daemons
+        configMap:
+          name: dust-daemons
+      - name: services
+        configMap:
+          name: dust-services
+      nodeSelector:
+        purpose: build
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
