@@ -1,0 +1,13 @@
+- op: replace
+  path: "/kind"
+  value: DaemonSet
+
+- op: remove
+  path: "/spec/replicas"
+- op: add
+  path: "/spec/updateStrategy"
+  value:
+    type: RollingUpdate
+- op: add
+  path: "/spec/minReadySeconds"
+  value: 60

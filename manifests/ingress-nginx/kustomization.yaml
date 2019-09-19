@@ -1,0 +1,30 @@
+namespace: ingress-nginx
+commonLabels:
+  app.kubernetes.io/name: ingress-nginx
+  app.kubernetes.io/part-of: ingress-nginx
+
+bases:
+- https://github.com/kubernetes/ingress-nginx/deploy/cloud-generic?ref=nginx-0.25.1
+- https://github.com/kubernetes/ingress-nginx/deploy/cluster-wide?ref=nginx-0.25.1
+resources:
+- namespace.yaml
+
+patches:
+
+# Configure daemon to publish correct IPs
+- path: patch-container-args.yaml
+  target:
+    kind: Deployment
+    name: nginx-ingress-controller
+
+# Listen on the host 80/443
+- path: patch-host-ports.yaml
+  target:
+    kind: Deployment
+    name: nginx-ingress-controller
+
+# Convert into a DaemonSet to run exactly 1 per node
+- path: patch-to-daemonset.yaml
+  target:
+    kind: Deployment
+    name: nginx-ingress-controller
