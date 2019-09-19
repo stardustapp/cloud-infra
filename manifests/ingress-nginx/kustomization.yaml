@@ -11,6 +11,11 @@ resources:
 
 patches:
 
+- path: patch-service.yaml
+  target:
+    kind: Service
+    name: ingress-nginx
+
 # Configure daemon to publish correct IPs
 - path: patch-container-args.yaml
   target:

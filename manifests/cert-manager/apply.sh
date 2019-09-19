@@ -1,5 +1,3 @@
 #!/bin/sh -ex
 
-kubectl apply -f namespace.yaml
-kubectl apply -f bundle.yaml
-kubectl apply -f letsencrypt.yaml
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.10.0/cert-manager.yaml
