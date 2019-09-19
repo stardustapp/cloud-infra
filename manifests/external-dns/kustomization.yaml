@@ -1,0 +1,12 @@
+namespace: ingress-nginx
+
+bases:
+- ../../apps/external-dns
+
+patchesStrategicMerge:
+- deployment.yaml
+
+secretGenerator:
+- name: external-dns-gcloud-key
+  files:
+  - key.json=gcloud-key.json

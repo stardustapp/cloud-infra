@@ -1,0 +1,7 @@
+commonLabels:
+  app: external-dns
+
+resources:
+- serviceaccount.yaml
+- deployment.yaml
+- rbac.yaml

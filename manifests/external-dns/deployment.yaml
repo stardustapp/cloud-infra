@@ -1,0 +1,27 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: external-dns
+spec:
+  template:
+    spec:
+      containers:
+      - name: external-dns
+        args:
+        - --source=ingress
+        - --domain-filter=devmode.cloud
+        - --provider=google
+        - --google-project=stardust-156404
+        - --registry=txt
+        - --txt-owner-id=dust-usc1f
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: external-dns-gcloud-key

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "stardust-156404",
+  "private_key_id": "6c20df641a6e606d4bae5f9221e5fbd29c1958df",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDsyNibm9y03JLm\nPTy0wwspf2PsEfaIXsQBypZtF90PBDdFhoaHf2XIxJHIhusMkLscF4YRQSB6ehg+\nN4wVZtlchogRwUhJthEgcHBYUr5kL2IsRx/CK8quQ8zfFatxK65qAdRVRBNa1VRZ\n7QROhzWVxyB/qZkqq9ScEOho+x7RRacVyifrVApF1V2YtlTHSRYLhNKB4HXArgDm\nVpjvg8RTJSLwPylvRYlKVifSU+nGUvUdkCMAl+7vwI3WlwQBjNMdT27XD5kR5lxW\nJ8QpMmI1Yg9Jf/7xaujRegDB5WtmklyftABHR+fPwZYu2aUHvIVd4uq+habdZmZm\nMumQHVqNAgMBAAECggEAGw92D8yPe9z0bdskP61FrouoPf+site3s1O1fsi6Iv/y\nmB/AaqZQ2dG7Lm1a2fAFbjezAvBMN6sR77RV7lE3eJdIYC0UZ5Ym3Wv0Luff6d+v\nasuDEeQC0QkfFgSqN/ALygIlA8yYoKoeLnvDoPzbTx93c5eMkV+bV+2nve2rDzPc\nDHvWICbTyBnjMaroRsuFlRqNI89KPa6Ygz97hNWdQTp//Cj5sjbi1JRQI3rS/f/A\npEr1p3vsUzlW2d54wphalkCsirBPlOSVlHxtoi0KE8WDpxgga48d1HEFtwfobpgq\nlfO+Rcc9ShCAO7RFZUzRensxoeFU/Qh9CFqd0SPkCQKBgQD/waz7RJWbqwvK+M5B\nNfl1GoctA1B7FdJst92rXamfnjRRMdk94c2LZfeZ6j7v41rL8wm2rASEbXnXsD+D\n0QGTWldBjR3HCffM74RmG3TZzUzyyuhhYSs96XlgVYDtwKTGQlx973xL2WwRD7N4\nIAj3OGzbG2XOs6P7nT+9i4532QKBgQDtAowVvhlYPqqYdYCzZ1hHyXcusHWKByzR\ncjEW6rCngIrjGgtzUVw8bPcKiLq7s7lkk/nBynxePeS2+uV/UNTmncxbSGT7GZJX\n49+hm2KWknZsqyuqdciWjwCuXfbgbaxDXOUREc2BADpR0ad+ANvwIVqK0c6YKDR9\npAE0n1Xb1QKBgQC/1oBwAOPPXh98YeAj3d59ziYyx1eo25d44PmuvpSrG7nWZXO0\nDRlmRFfS5XfL7FeAv447rQ++XXeVJ6icsTtjUdI9YyJA1+M9nzNKe7HMZUggnb5s\nvLv4tpXKgpgwvd1asRA7jlVHd5Ctw380zaKr/XD5cLWOtAR+iVb0UCfPEQKBgBFp\nwX8Lc3M/T2taHrWPnzXPAHmmr0wP0OQmfqLPZWE5GXsr+7FiReOOoevdNdL6lmFk\nWdI6HT8TTw1+i4P6HVpAN7ZxMDIeo9jfPhvyfaDQa/D59oBUnQMqyIMHFk9Q33on\nhhDl/PJAYQiH3cVtLLuMx8kxNvuI4KpmdUw3dKhtAoGAKcJ1O7yLriT/anFuGG+1\nQi8Nw52/2oxJozSAvGMt9I5zHR/OqfOSO+nAyNJtuP3fmD+MQCys42TvzyZ1tSR0\njGNuvM8L/tXoDKyeBAz7qAlvwr+HjULtrwE0vcOth84C1cPtAjm2DnLFG+087gNF\nEivU2JS2mf3DeEUVJ2zVL0Q=\n-----END PRIVATE KEY-----\n",
+  "client_email": "kubernetes-external-dns@stardust-156404.iam.gserviceaccount.com",
+  "client_id": "113238202174870400507",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/kubernetes-external-dns%40stardust-156404.iam.gserviceaccount.com"
+}
