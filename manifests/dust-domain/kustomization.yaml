@@ -1,0 +1,17 @@
+namespace: default
+commonLabels:
+  app: firebase-server
+
+resources:
+- deployment.yaml
+- frontend.yaml
+
+configMapGenerator:
+- name: firebase-server-configs
+  files:
+  - devmodecloud.json=config.json
+
+secretGenerator:
+- name: firebase-server-credentials
+  files:
+  - devmodecloud.json=credential.json
