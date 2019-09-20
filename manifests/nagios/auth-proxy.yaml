@@ -1,0 +1,103 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nagios-proxy
+  labels:
+    app: nagios-proxy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nagios-proxy
+    spec:
+      containers:
+
+      - name: auth
+        image: quay.io/pusher/oauth2_proxy:v4.0.0
+        ports:
+        - containerPort: 4180
+          name: http
+        command:
+        - oauth2_proxy
+        - -upstream
+        - http://nagios-http
+        - -config
+        - /conf/oauth2_proxy.cfg
+        - -skip-provider-button
+        env:
+        - name: OAUTH2_PROXY_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: nagios-oauth
+              key: OAUTH2_PROXY_CLIENT_ID
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: nagios-oauth
+              key: OAUTH2_PROXY_CLIENT_SECRET
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: nagios-oauth
+              key: OAUTH2_PROXY_COOKIE_SECRET
+        volumeMounts:
+        - name: auth-config
+          mountPath: /conf
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 4180
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 4180
+          initialDelaySeconds: 5
+          periodSeconds: 60
+
+      volumes:
+      - name: auth-config
+        configMap:
+          name: nagios-auth-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nagios-proxy
+  labels:
+    app: nagios-proxy
+spec:
+  type: ClusterIP
+  selector:
+    app: nagios-proxy
+  ports:
+  - name: http
+    port: 80
+    targetPort: 4180
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nagios-fe
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/issuer: letsencrypt-prod
+    certmanager.k8s.io/acme-challenge-type: http01
+spec:
+  tls:
+  - hosts:
+    - nagios.devmode.cloud
+    secretName: tls-nagios.devmode.cloud
+  rules:
+  - host: nagios.devmode.cloud
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nagios-proxy
+          servicePort: 80

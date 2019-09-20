@@ -1,0 +1,19 @@
+namespace: nagios
+
+bases:
+- ../../apps/nagios
+
+resources:
+- auth-proxy.yaml
+- letsencrypt.yaml
+
+configMapGenerator:
+- name: nagios-auth-config
+  files:
+  - email_list.txt
+  - oauth2_proxy.cfg
+
+secretGenerator:
+- name: nagios-oauth
+  envs:
+  - auth-proxy.env

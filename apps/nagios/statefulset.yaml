@@ -1,0 +1,134 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nagios
+spec:
+  serviceName: nagios
+  replicas: 1
+  template:
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+
+      - name: nagios
+        image: danopia/nagios:v3
+        imagePullPolicy: Always
+        args:
+        - sh
+        - -exc
+        - |
+          chown nagios:nagios /var/spool/nagios
+          chown nagios:nagios /var/log/nagios
+          exec /usr/sbin/nagios /etc/nagios/nagios.cfg
+        resources:
+          requests:
+            cpu: 25m
+            memory: 25Mi
+          limits:
+            cpu: 1500m
+            memory: 75Mi
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: etc
+          mountPath: /etc/nagios
+        - name: spool
+          mountPath: /var/spool/nagios
+        - name: log
+          mountPath: /var/log/nagios
+
+      - name: httpd
+        image: danopia/nagios:v2
+        args:
+        - /usr/sbin/apachectl
+        - -DFOREGROUND
+        resources:
+          requests:
+            cpu: 25m
+            memory: 25Mi
+          limits:
+            cpu: 1500m
+            memory: 75Mi
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 60
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: httpd-conf
+          mountPath: /etc/httpd/conf.d
+        - name: etc
+          mountPath: /etc/nagios
+        - name: spool
+          mountPath: /var/spool/nagios
+        - name: log
+          mountPath: /var/log/nagios
+
+      initContainers:
+      - name: setup
+        image: danopia/nagios:v2
+        command:
+        - sh
+        - -exc
+        - |
+          rm -rf /mnt/nagios-etc/*
+
+          if [ ! -f /mnt/nagios-etc/nagios.cfg ]
+          then cp -a /etc/nagios/* /mnt/nagios-etc
+          echo default_user_name=guest >> /mnt/nagios-etc/cgi.cfg
+          echo authorized_for_read_only=guest >> /mnt/nagios-etc/cgi.cfg
+          sed -Ei.bak '/^url_html_path=/s#=/.+$#=/#' /mnt/nagios-etc/cgi.cfg
+          sed -Ei.bak '/^authorized_for_/s#=.+$#=dan@danopia.net,rick@elrod.me#' /mnt/nagios-etc/cgi.cfg
+          fi
+
+          # sed -Ei '' '/default_user_name/s/=.+$/=root/' /mnt/nagios-etc/nagios.cfg
+          if [ ! -d /mnt/nagios-spool/checkresults ]
+          then cp -a /var/spool/nagios/* /mnt/nagios-spool
+          fi
+
+        volumeMounts:
+        - name: etc
+          mountPath: /mnt/nagios-etc
+        - name: spool
+          mountPath: /mnt/nagios-spool
+        # - name: checkresults
+        #   mountPath: /var/spool/nagios/checkresults
+        # - name: cmd
+        #   mountPath: /var/spool/nagios/cmd
+
+      volumes:
+      - name: log
+        emptyDir: {}
+      - name: httpd-conf
+        configMap:
+          name: httpd-conf
+
+  volumeClaimTemplates:
+
+  - metadata:
+      name: etc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
+  - metadata:
+      name: spool
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi

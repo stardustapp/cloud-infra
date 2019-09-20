@@ -1,0 +1,13 @@
+namespace: nagios
+commonLabels:
+  app: nagios
+
+resources:
+- statefulset.yaml
+- service.yaml
+
+configMapGenerator:
+- name: httpd-conf
+  files:
+  - nagios.conf=httpd-conf/nagios.conf
+  - php.conf=httpd-conf/php.conf
