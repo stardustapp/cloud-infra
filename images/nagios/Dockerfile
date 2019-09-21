@@ -1,6 +1,5 @@
 FROM centos:7
 RUN yum clean expire-cache && \
-    yum update -y && \
     yum install -y epel-release && \
     yum install -y nagios nagios-selinux nagios-plugins-all \
       perl-LWP-Protocol-https perl-Crypt-SSLeay perl-libwww-perl && \

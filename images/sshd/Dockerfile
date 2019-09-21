@@ -1,8 +1,10 @@
 # based on https://docs.docker.com/engine/examples/running_ssh_service/
 FROM ubuntu:18.04
 
+# don't leave host keys on the instance
 RUN apt-get update \
- && apt-get install -y openssh-server git vim rsync \
+ && apt-get install -y openssh-server git vim \
+ && rm /etc/ssh/ssh_host_* \
  && rm -rf /var/lib/apt/lists/*
 
 # echo 'root:whatever' | chpasswd
