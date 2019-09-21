@@ -32,15 +32,19 @@ spec:
         - containerPort: 80
           name: web
         volumeMounts:
-        - name: etc
+        # split the persisted volume into three places
+        - name: data
           mountPath: /etc/nagios
-        - name: spool
+          subPath: etc
+        - name: data
           mountPath: /var/spool/nagios
-        - name: log
+          subPath: spool
+        - name: data
           mountPath: /var/log/nagios
+          subPath: log
 
       - name: httpd
-        image: danopia/nagios:v2
+        image: danopia/nagios:v3
         args:
         - /usr/sbin/apachectl
         - -DFOREGROUND
@@ -69,48 +73,47 @@ spec:
         volumeMounts:
         - name: httpd-conf
           mountPath: /etc/httpd/conf.d
-        - name: etc
+        # split the persisted volume into three places
+        - name: data
           mountPath: /etc/nagios
-        - name: spool
+          subPath: etc
+        - name: data
           mountPath: /var/spool/nagios
-        - name: log
+          subPath: spool
+        - name: data
           mountPath: /var/log/nagios
+          subPath: log
 
       initContainers:
       - name: setup
-        image: danopia/nagios:v2
+        image: danopia/nagios:v3
         command:
         - sh
         - -exc
         - |
-          rm -rf /mnt/nagios-etc/*
+          #rm -rf /mnt/etc/*
 
-          if [ ! -f /mnt/nagios-etc/nagios.cfg ]
-          then cp -a /etc/nagios/* /mnt/nagios-etc
-          echo default_user_name=guest >> /mnt/nagios-etc/cgi.cfg
-          echo authorized_for_read_only=guest >> /mnt/nagios-etc/cgi.cfg
-          sed -Ei.bak '/^url_html_path=/s#=/.+$#=/#' /mnt/nagios-etc/cgi.cfg
-          sed -Ei.bak '/^authorized_for_/s#=.+$#=dan@danopia.net,rick@elrod.me#' /mnt/nagios-etc/cgi.cfg
+          if [ ! -d /mnt/etc ]
+          then cp -a /etc/nagios /mnt/etc
+          echo default_user_name=vpnuser >> /mnt/etc/cgi.cfg
+          echo authorized_for_read_only=vpnuser >> /mnt/etc/cgi.cfg
+          sed -Ei.bak '/^url_html_path=/s#=/.+$#=/#' /mnt/etc/cgi.cfg
+          sed -Ei.bak '/^authorized_for_/s#=.+$#=dan@danopia.net,rick@elrod.me#' /mnt/etc/cgi.cfg
           fi
 
-          # sed -Ei '' '/default_user_name/s/=.+$/=root/' /mnt/nagios-etc/nagios.cfg
-          if [ ! -d /mnt/nagios-spool/checkresults ]
-          then cp -a /var/spool/nagios/* /mnt/nagios-spool
+          if [ ! -d /mnt/spool ]
+          then cp -a /var/spool/nagios /mnt/spool
+          fi
+
+          if [ ! -d /mnt/log ]
+          then cp -a /var/log/nagios /mnt/log
           fi
 
         volumeMounts:
-        - name: etc
-          mountPath: /mnt/nagios-etc
-        - name: spool
-          mountPath: /mnt/nagios-spool
-        # - name: checkresults
-        #   mountPath: /var/spool/nagios/checkresults
-        # - name: cmd
-        #   mountPath: /var/spool/nagios/cmd
+        - name: data
+          mountPath: /mnt
 
       volumes:
-      - name: log
-        emptyDir: {}
       - name: httpd-conf
         configMap:
           name: httpd-conf
@@ -118,15 +121,7 @@ spec:
   volumeClaimTemplates:
 
   - metadata:
-      name: etc
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi
-
-  - metadata:
-      name: spool
+      name: data
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
