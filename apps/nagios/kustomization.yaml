@@ -7,7 +7,12 @@ resources:
 - service.yaml
 
 configMapGenerator:
+
 - name: httpd-conf
   files:
   - nagios.conf=httpd-conf/nagios.conf
   - php.conf=httpd-conf/php.conf
+
+- name: root-ssh
+  files:
+  - authorized_keys

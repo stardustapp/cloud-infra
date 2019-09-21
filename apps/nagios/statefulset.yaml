@@ -12,7 +12,7 @@ spec:
       containers:
 
       - name: nagios
-        image: danopia/nagios:v3
+        image: danopia/nagios:v4
         imagePullPolicy: Always
         args:
         - sh
@@ -44,7 +44,7 @@ spec:
           subPath: log
 
       - name: httpd
-        image: danopia/nagios:v3
+        image: danopia/nagios:v4
         args:
         - /usr/sbin/apachectl
         - -DFOREGROUND
@@ -84,9 +84,44 @@ spec:
           mountPath: /var/log/nagios
           subPath: log
 
+      - name: sshd
+        image: danopia/sshd:v2
+        args:
+        - sh
+        - -exc
+        - |
+          umask 077
+          mkdir /root/.ssh
+          cat /root/.ssh-orig/authorized_keys > /root/.ssh/authorized_keys
+
+          if [ -d /mnt/ssh ]
+          then cp -a /mnt/ssh/* /etc/ssh/
+          else
+            mkdir /mnt/ssh
+            dpkg-reconfigure openssh-server
+            cp -a /etc/ssh/ssh_host_* /mnt/ssh/
+          fi
+
+          exec /usr/sbin/sshd -De
+        resources:
+          requests:
+            cpu: 25m
+            memory: 25Mi
+          limits:
+            cpu: 1500m
+            memory: 75Mi
+        ports:
+        - containerPort: 22
+          name: ssh
+        volumeMounts:
+        - name: data
+          mountPath: /mnt
+        - name: root-ssh
+          mountPath: /root/.ssh-orig
+
       initContainers:
       - name: setup
-        image: danopia/nagios:v3
+        image: danopia/nagios:v4
         command:
         - sh
         - -exc
@@ -117,6 +152,9 @@ spec:
       - name: httpd-conf
         configMap:
           name: httpd-conf
+      - name: root-ssh
+        configMap:
+          name: root-ssh
 
   volumeClaimTemplates:
 
