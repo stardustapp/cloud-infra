@@ -1,0 +1,23 @@
+{
+  "name": "multi-starnotify",
+  "version": "1.0.0",
+  "description": "Invokes starnotify when various services want to send notifications",
+  "main": "service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "www.github.com/danopia/home-lab",
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.108.0",
+    "filesize": "^3.5.11",
+    "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
+    "multimatch": "^2.1.0",
+    "node-fetch": "^1.7.3",
+    "restify-clients": "^2.6.7",
+    "sync": "^0.2.5",
+    "ws": "^3.3.3"
+  }
+}
