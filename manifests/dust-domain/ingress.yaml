@@ -4,6 +4,7 @@ kind: Ingress
 metadata:
   name: firebase-server-fe
   annotations:
+    external-dns.alpha.kubernetes.io/ttl: "60"
     kubernetes.io/ingress.class: nginx
     certmanager.k8s.io/issuer: letsencrypt-prod
     certmanager.k8s.io/acme-challenge-type: http01
@@ -17,6 +18,7 @@ spec:
     - gke.danopia.net
     secretName: tls-danopia.net
   rules:
+
   - host: gke.devmode.cloud
     http: &http_rules
       paths:
@@ -24,6 +26,7 @@ spec:
         backend:
           serviceName: firebase-server
           servicePort: 80
+
   - host: danopia.net
     http: *http_rules
   - host: gke.danopia.net

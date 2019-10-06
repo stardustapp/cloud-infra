@@ -1,0 +1,17 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: firebase-vpn-fe
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+
+  - host: dust.vpn.svc.cluster.local
+    http: &http_rules
+      paths:
+      - path: /
+        backend:
+          serviceName: firebase-server
+          servicePort: 80
