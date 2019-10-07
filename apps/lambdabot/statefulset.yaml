@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: lambdabot
+spec:
+  serviceName: lambdabot
+
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  template:
+    spec:
+      containers:
+
+      - name: lambdabot
+        image: gcr.io/stardust-156404/lambdabot
+
+        args:
+        - --trust=lambdabot-trusted
+        - --trust=base
+        - --trust=random
+        - --trust=lens
+        - --trust=containers
+        - --trust=bytestring
+        - --trust=array
+        - --trust=semigroups
+        - --trust=comonad
+        - -e
+        - rc /config/lambdabot.rc
+
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: data
+          mountPath: /root/.lambdabot/State
+        workingDir: /root/.lambdabot/State
+
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 50m
+          limits:
+            memory: 150Mi
+            cpu: 1000m
+
+      volumes:
+      - name: config
+        configMap:
+          name: lambdabot-config
+          items:
+          - key: lambdabot
+            path: lambdabot.rc
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

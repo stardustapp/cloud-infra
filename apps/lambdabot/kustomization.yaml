@@ -1,0 +1,5 @@
+commonLabels:
+  app: lambdabot
+
+resources:
+- statefulset.yaml
