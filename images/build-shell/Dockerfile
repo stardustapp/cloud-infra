@@ -1,5 +1,5 @@
 FROM docker:dind
-RUN apk add python2 git bash vim
+RUN apk add --no-cache python2 git bash vim
 WORKDIR /root
 
 ARG CloudSdkPath=dl/cloudsdk/channels/rapid/downloads/
