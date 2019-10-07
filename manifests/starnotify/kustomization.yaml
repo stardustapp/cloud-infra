@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: starnotify
+
+resources:
+- ../../apps/starnotify
+
+patches:
+- path: deployment-env.yaml
+  target:
+    kind: Deployment
+- path: preemptible-pods.yaml
+  target:
+    kind: Deployment
+
+secretGenerator:
+- envs:
+  - credentials.env
+  name: credentials
+
+images:
+- name: danopia/multi-starnotify
+  newTag: h104

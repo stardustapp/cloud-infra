@@ -1,0 +1,15 @@
+namespace: starnotify
+commonLabels:
+  service: multi-starnotify
+
+resources:
+- deployments.yaml
+
+patches:
+- path: deployments-patch.yaml
+  target:
+    kind: Deployment
+
+images:
+- name: gcr.io/stardust-156404/multi-starnotify
+  newTag: h105

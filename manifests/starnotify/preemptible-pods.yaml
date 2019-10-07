@@ -1,0 +1,12 @@
+apiVersion: apps/v1beta2
+kind: not-important
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule

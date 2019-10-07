@@ -6,6 +6,12 @@ metadata:
 spec:
   template:
     spec:
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
+
       containers:
       - name: external-dns
         args:

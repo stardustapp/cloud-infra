@@ -63,6 +63,12 @@ spec:
         configMap:
           name: nagios-auth-config
 
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
+
 ---
 apiVersion: v1
 kind: Service

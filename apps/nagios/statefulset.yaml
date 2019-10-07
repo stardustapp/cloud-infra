@@ -5,7 +5,11 @@ metadata:
   name: nagios
 spec:
   serviceName: nagios
+
   replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
   template:
     spec:
       terminationGracePeriodSeconds: 5

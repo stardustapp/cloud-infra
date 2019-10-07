@@ -13,6 +13,11 @@ configMapGenerator:
   - email_list.txt
   - oauth2_proxy.cfg
 
+patches:
+- path: preemptible-pods.yaml
+  target:
+    kind: StatefulSet
+
 secretGenerator:
 - name: nagios-oauth
   envs:

@@ -1,0 +1,41 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
+
+      containers:
+      - name: app
+        env:
+
+        - name: STARNOTIFY_FLAGS
+          valueFrom:
+            secretKeyRef:
+              name: credentials
+              key: STARNOTIFY_FLAGS
+
+        - name: IRC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: credentials
+              key: IRC_PASSWORD
+
+        - name: AWS_REGION
+          value: us-west-2
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: credentials
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: credentials
+              key: AWS_SECRET_ACCESS_KEY
