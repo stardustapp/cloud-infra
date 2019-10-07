@@ -31,7 +31,10 @@ exports.notify = function notify(channel, message) {
       cb(null, code);
     });
   }).sync();
+
   console.log(`child process exited with code ${code}`);
+  if (code !== 0) throw new Error(
+    `'starnotify' process exited with code ${code}`);
 };
 
 // execute a main loop to process SQS messages in a blocking fashion
