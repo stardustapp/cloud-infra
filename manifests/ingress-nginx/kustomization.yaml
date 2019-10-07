@@ -4,8 +4,8 @@ commonLabels:
   app.kubernetes.io/part-of: ingress-nginx
 
 bases:
-- https://github.com/kubernetes/ingress-nginx/deploy/cloud-generic?ref=nginx-0.25.1
-- https://github.com/kubernetes/ingress-nginx/deploy/cluster-wide?ref=nginx-0.25.1
+- https://github.com/kubernetes/ingress-nginx/deploy/cloud-generic?ref=nginx-0.26.1
+- https://github.com/kubernetes/ingress-nginx/deploy/cluster-wide?ref=nginx-0.26.1
 resources:
 - namespace.yaml
 
