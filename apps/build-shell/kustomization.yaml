@@ -1,0 +1,5 @@
+commonLabels:
+  app: build-shell
+
+resources:
+- statefulset.yaml
