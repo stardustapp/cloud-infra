@@ -32,7 +32,7 @@ exports.notify = function notify(channel, message) {
     });
   }).sync();
 
-  console.log(`child process exited with code ${code}`);
+  console.log(`child process exited with code ${code}!`);
   if (code !== 0) throw new Error(
     `'starnotify' process exited with code ${code}`);
 };
