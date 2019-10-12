@@ -12,7 +12,7 @@ spec:
         effect: NoSchedule
 
       containers:
-      - name: app
+      - name: starnotify
         env:
 
         - name: STARNOTIFY_FLAGS

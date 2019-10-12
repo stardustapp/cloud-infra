@@ -20,5 +20,6 @@ secretGenerator:
   name: credentials
 
 images:
-- name: danopia/multi-starnotify
-  newTag: h104
+- name: gcr.io/stardust-156404/multi-starnotify
+  newName: danopia/multi-starnotify
+  newTag: h106

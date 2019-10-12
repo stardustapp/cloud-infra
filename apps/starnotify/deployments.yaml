@@ -14,7 +14,7 @@ spec:
         starnotify: cloudwatch
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -39,7 +39,7 @@ spec:
         starnotify: github
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -64,7 +64,7 @@ spec:
         starnotify: jenkins
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -86,7 +86,7 @@ spec:
         starnotify: travisci
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -111,7 +111,7 @@ spec:
         starnotify: slackjack
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -136,7 +136,7 @@ spec:
         starnotify: sonarr
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -164,7 +164,7 @@ spec:
         starnotify: radarr
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -192,7 +192,7 @@ spec:
         starnotify: bugsnag
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -217,7 +217,7 @@ spec:
         starnotify: mailgun
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
@@ -242,7 +242,7 @@ spec:
         starnotify: upcheck
     spec:
       containers:
-      - name: app
+      - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
