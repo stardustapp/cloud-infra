@@ -1,0 +1,10 @@
+# TODO: maybe disk.yaml now?
+# https://github.com/DataDog/datadog-agent/issues/1961#issuecomment-446918067
+
+init_config:
+
+instances:
+- use_mount: false
+  excluded_filesystems:
+  - autofs
+  - /proc/sys/fs/binfmt_misc

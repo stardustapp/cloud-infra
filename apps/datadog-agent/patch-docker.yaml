@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: datadog-agent
+spec:
+  template:
+    spec:
+      containers:
+      - name: datadog-agent
+
+        volumeMounts:
+        - name: dockersocket
+          mountPath: /var/run/docker.sock
+
+      volumes:
+      - hostPath:
+          path: /var/run/docker.sock
+        name: dockersocket

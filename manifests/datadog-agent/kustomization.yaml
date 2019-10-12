@@ -1,0 +1,20 @@
+namespace: kube-infra
+bases:
+- ../../apps/datadog-agent
+
+patchesStrategicMerge:
+- patch-config.yaml
+configMapGenerator:
+- name: datadog-config
+  files:
+  - disk_check.yaml=conf.d/disk_check.yaml
+
+secretGenerator:
+- name: datadog-secret
+  envs:
+  - credential.env
+
+images:
+# https://hub.docker.com/r/datadog/agent/tags
+- name: datadog/agent
+  newTag: 6.14.1

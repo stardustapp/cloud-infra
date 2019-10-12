@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: datadog-agent
+spec:
+  template:
+    spec:
+      containers:
+      - name: datadog-agent
+
+        volumeMounts:
+        - name: datadog-agent-config
+          mountPath: /conf.d
+
+      volumes:
+      - name: datadog-agent-config
+        configMap:
+          name: datadog-config

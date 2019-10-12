@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: datadog-agent
+spec:
+  template:
+    spec:
+      containers:
+      - name: datadog-agent
+
+        volumeMounts:
+        - mountPath: /var/run/s6
+          name: s6-run
+        - mountPath: /host/var/run
+          name: var-run
+          readOnly: true
+
+      volumes:
+      - hostPath:
+          path: /var/run
+          type: DirectoryOrCreate
+        name: var-run
+      - hostPath:
+          path: /var/run/s6
+        name: s6-run

@@ -1,0 +1,12 @@
+commonLabels:
+  app: datadog-agent
+
+resources:
+- rbac/clusterrole.yaml
+- rbac/serviceaccount.yaml
+- rbac/clusterrolebinding.yaml
+- daemonset.yaml
+
+patchesStrategicMerge:
+- patch-containerd.yaml
+- patch-fs-perms.yaml
