@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conduit-api-server
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: app
+        image: gcr.io/stardust-156404/conduit-api-server
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 25m
+            memory: 25Mi
+          limits:
+            cpu: 1000m
+            memory: 75Mi
+
+        env:
+        - name: DUST_WS_URI
+          value: ws://dustpoc-proxy.wg69.svc.cluster.local/websocket
