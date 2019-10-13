@@ -17,6 +17,7 @@ spec:
         args:
         - --source=ingress
         - --domain-filter=devmode.cloud
+        - --domain-filter=wg69.net
         - --provider=google
         - --google-project=stardust-156404
         - --registry=txt

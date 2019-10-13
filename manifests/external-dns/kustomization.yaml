@@ -1,4 +1,4 @@
-namespace: ingress-nginx
+namespace: kube-infra
 
 bases:
 - ../../apps/external-dns
