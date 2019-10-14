@@ -405,6 +405,35 @@ function processMessage(data) {
         "\x0306"+label.name +"\x0F");
     return;
 
+  case 'commit_comment':
+    var {action, repository, sender, comment} = payload;
+    if (!isActionRelevant(action)) {
+      console.log('Ignoring irrelevant action', action);
+      return;
+    }
+
+    var subject = 'commit '+
+      "\x0314"+comment.commit_id.slice(0, 7)+"\x0F";
+
+    // special syntax: user commented on issue #423: body... <url>
+    if (action === 'created') {
+      notify(channel,
+          "[\x0313"+repository.name+"\x0F] "+
+          "\x0315"+sender.login+"\x0F "+
+          "commented on "+subject+": "+
+          trimText(comment.body, 140)+"\x0F "+
+          "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+      return;
+    }
+
+    // basic syntax
+    notify(channel,
+        "[\x0313"+repository.name+"\x0F] "+
+        "\x0315"+sender.login+"\x0F "+
+        action+" a comment on "+subject+": "+
+        "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+    return;
+
   case 'issue_comment':
     var {action, repository, sender, issue, comment} = payload;
     if (!isActionRelevant(action)) {
