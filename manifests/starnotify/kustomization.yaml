@@ -25,7 +25,6 @@ secretGenerator:
   - credentials.env
   name: credentials
 
-images:
-- name: gcr.io/stardust-156404/multi-starnotify
-  #newName: danopia/multi-starnotify
-  newTag: ee49523
+# images:
+# - name: gcr.io/stardust-156404/multi-starnotify
+#   newTag: ee49523

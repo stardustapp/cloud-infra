@@ -5,7 +5,7 @@ metadata:
 spec:
   template:
     spec:
-      
+
       containers:
       - name: starnotify
         env:
@@ -34,3 +34,9 @@ spec:
             secretKeyRef:
               name: credentials
               key: AWS_SECRET_ACCESS_KEY
+
+        - name: JENKINS_WS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: credentials
+              key: JENKINS_WS_HOST

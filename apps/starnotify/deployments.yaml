@@ -56,7 +56,7 @@ metadata:
   labels:
     starnotify: jenkins
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 1
   template:
     metadata:
