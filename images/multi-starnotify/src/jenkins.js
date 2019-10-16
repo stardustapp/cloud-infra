@@ -4,7 +4,10 @@ const Sync = require('sync');
 const WebSocket = require('ws');
 const fetch = require('node-fetch');
 
-const ws = new WebSocket('ws://apt:32257/jenkins');
+const process = require('process');
+if (!process.env.JENKINS_WS_HOST) throw new Error(
+  `set JENKINS_WS_HOST to host:port and rerun`);
+const ws = new WebSocket('ws://'+process.env.JENKINS_WS_HOST+'/jenkins');
 
 ws.on('open', () => {
   console.log('connected to websocket');
