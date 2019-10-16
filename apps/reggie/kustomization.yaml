@@ -1,0 +1,5 @@
+commonLabels:
+  app: reggie
+
+resources:
+- statefulset.yaml
