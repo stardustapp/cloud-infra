@@ -5,14 +5,20 @@ namespace: starnotify
 
 resources:
 - ../../apps/starnotify
+- ../../apps/stardriver-irc-client
 
 patches:
 - path: deployment-env.yaml
   target:
     kind: Deployment
+# deployments get deleted whenever
 - path: preemptible-pods.yaml
   target:
     kind: Deployment
+# statefulsets stay running
+- path: persistent-pods.yaml
+  target:
+    kind: StatefulSet
 
 secretGenerator:
 - envs:
@@ -21,5 +27,5 @@ secretGenerator:
 
 images:
 - name: gcr.io/stardust-156404/multi-starnotify
-  newName: danopia/multi-starnotify
-  newTag: h106
+  #newName: danopia/multi-starnotify
+  newTag: ee49523
