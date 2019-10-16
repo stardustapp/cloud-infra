@@ -1,0 +1,17 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: lambdabot
+spec:
+  template:
+    spec:
+
+      nodeSelector:
+        lifetime: persistent
+
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "false"
+        effect: NoSchedule
