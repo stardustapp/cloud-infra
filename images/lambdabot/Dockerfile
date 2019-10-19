@@ -20,4 +20,12 @@ RUN cabal update \
  && hoogle data \
  && cabal install lens
 
+# Facade mueval-core to install a higher timeout
+# (lambdabot doesn't cope well on spinning or network disk)
+RUN mv "${HOME}/.cabal/bin/mueval-core"{,-real} \
+ && { echo '#!/bin/sh'; \
+      echo 'mueval-core-real -t ${MUEVAL_TIMEOUT:-15} "$@"'; \
+ }> "${HOME}/.cabal/bin/mueval-core" \
+ && chmod +x "${HOME}/.cabal/bin/mueval-core"
+
 ENTRYPOINT ["${HOME}/.cabal/bin/lambdabot"]
