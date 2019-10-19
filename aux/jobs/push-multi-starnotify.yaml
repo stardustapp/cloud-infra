@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: push-multi-starnotify
+  labels:
+    purpose: build
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 30
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: docker
+        image: gcr.io/stardust-156404/build-shell
+        securityContext:
+          privileged: true
+        args:
+        - bash
+        - -exc
+        - |
+          export DOCKER_HOST=
+          dockerd --host=unix:///var/run/docker.sock &
+          git clone https://github.com/stardustapp/cloud-infra
+          cd cloud-infra
+
+          cd images/multi-starnotify
+          GitHash="$(git describe --always --long --dirty)"
+          Image="gcr.io/stardust-156404/multi-starnotify"
+          GitImage="$Image:$GitHash"
+          docker build --build-arg GitHash="$GitHash" -t "$GitImage" .
+          docker push "$GitImage"
+          docker tag "$GitImage" "$Image:latest"
+          docker push "$Image:latest"
+
+          kubectl -n starnotify set image deployment.v1.apps/bugsnag starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/cloudwatch starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/github starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/jenkins starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/mailgun starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/radarr starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/slackjack starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/sonarr starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/travisci starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/upcheck starnotify="$GitImage"
+
+          kubectl delete job push-multi-starnotify
+
+      nodeSelector:
+        purpose: build
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule

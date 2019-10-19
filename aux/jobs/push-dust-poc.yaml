@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: push-dust-poc
+  labels:
+    purpose: build
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 30
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: docker
+        image: gcr.io/stardust-156404/build-shell
+        securityContext:
+          privileged: true
+        args:
+        - bash
+        - -exc
+        - |
+          export DOCKER_HOST=
+          dockerd --host=unix:///var/run/docker.sock &
+          git clone https://github.com/stardustapp/dust-poc
+          cd dust-poc
+
+          GitHash="$(git describe --always --long --dirty)"
+          Image="gcr.io/stardust-156404/dust-poc"
+          GitImage="$Image:$GitHash"
+          docker build --build-arg GitHash="$GitHash" -t "$GitImage" .
+          docker push "$GitImage"
+          docker tag "$GitImage" "$Image:latest"
+          docker push "$Image:latest"
+          #kubectl -n wg69 set image deployment.v1.apps/dust-poc app="$GitImage"
+          cd -
+
+          kubectl delete job push-dust-poc
+
+      nodeSelector:
+        purpose: build
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule

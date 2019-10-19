@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: push-conduit
+  labels:
+    purpose: build
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 30
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: docker
+        image: gcr.io/stardust-156404/build-shell
+        securityContext:
+          privileged: true
+        args:
+        - bash
+        - -exc
+        - |
+          export DOCKER_HOST=
+          dockerd --host=unix:///var/run/docker.sock &
+          git clone https://github.com/stardustapp/conduit
+          cd conduit
+
+          cd api-server
+          GitHash="$(git describe --always --long --dirty)"
+          Image="gcr.io/stardust-156404/conduit-api-server"
+          GitImage="$Image:$GitHash"
+          docker build --build-arg GitHash="$GitHash" -t "$GitImage" .
+          docker push "$GitImage"
+          docker tag "$GitImage" "$Image:latest"
+          docker push "$Image:latest"
+          kubectl -n wg69 set image deployment.v1.apps/conduit-api-server app="$GitImage"
+          cd -
+
+          kubectl delete job push-conduit
+
+      nodeSelector:
+        purpose: build
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
