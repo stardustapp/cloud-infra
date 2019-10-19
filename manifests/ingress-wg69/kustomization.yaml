@@ -6,6 +6,8 @@ bases:
 resources:
 - namespace.yaml
 - endpoint.yaml
+- wg-config.yaml
+- wg-keymaterial.yaml
 
 patches:
 
@@ -36,3 +38,4 @@ patches:
   target:
     kind: Deployment
     name: nginx-ingress-controller
+- path: wg-sidecar-patch.yaml

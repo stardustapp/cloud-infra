@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wg-nginx-configmap
+data:
+  wg0.conf: |
+    [Interface]
+    Address = 10.69.4.66/32
+    PostUp = wg set wg0 private-key /etc/wireguard/privatekey
+
+    [Peer]
+    PublicKey = RcQZuVzD4PQor2DSoPFcQi2/2Baqp4LE/f49/xsjlFQ=
+    AllowedIPs = 10.69.0.0/20
+    Endpoint = wg1.devmode.cloud:51821
+    PersistentKeepalive = 55

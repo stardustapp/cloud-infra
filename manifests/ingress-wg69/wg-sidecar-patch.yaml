@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-ingress-controller
+spec:
+  template:
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: wireguard
+        command:
+        - /entrypoint.sh
+        env:
+        - name: LOG_LEVEL
+          value: info
+        image: masipcat/wireguard-go
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+          privileged: true
+        volumeMounts:
+        - mountPath: /etc/wireguard/wg0.conf
+          name: cfgmap
+          subPath: wg0.conf
+        - mountPath: /etc/wireguard/privatekey
+          name: keymaterial
+          subPath: privateKey
+      volumes:
+      - name: cfgmap
+        configMap:
+          defaultMode: 420
+          name: wg-nginx-configmap
+      - name: keymaterial
+        secret:
+          defaultMode: 420
+          secretName: wg-nginx-key
