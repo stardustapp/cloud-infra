@@ -1,0 +1,12 @@
+- op: replace
+  path: "/kind"
+  value: StatefulSet
+
+- op: add
+  path: "/spec/serviceName"
+  value: nginx-wg69
+
+- op: add
+  path: "/spec/updateStrategy"
+  value:
+    type: RollingUpdate

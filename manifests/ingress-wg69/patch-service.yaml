@@ -1,0 +1,13 @@
+- op: remove
+  path: "/spec/type"
+
+- op: add
+  path: "/spec/clusterIP"
+  value: None
+
+- op: remove
+  path: "/spec/externalTrafficPolicy"
+
+# to make it headless, for endpoints
+- op: remove
+  path: "/spec/selector"

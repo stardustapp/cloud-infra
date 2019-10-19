@@ -1,0 +1,38 @@
+namespace: ingress-wg69
+
+bases:
+- https://github.com/kubernetes/ingress-nginx/deploy/cloud-generic?ref=nginx-0.26.1
+- https://github.com/kubernetes/ingress-nginx/deploy/cluster-wide?ref=nginx-0.26.1
+resources:
+- namespace.yaml
+- endpoint.yaml
+
+patches:
+
+- path: patch-role.yaml
+  target:
+    kind: Role
+    name: nginx-ingress-role
+
+- path: patch-crb.yaml
+  target:
+    kind: ClusterRoleBinding
+    name: nginx-ingress-clusterrole-nisa-binding
+
+# rewire the service a little
+- path: patch-service.yaml
+  target:
+    kind: Service
+    name: ingress-nginx
+
+# Configure ingress class
+- path: patch-container-args.yaml
+  target:
+    kind: Deployment
+    name: nginx-ingress-controller
+
+# Convert into a statefulset to run exactly 1
+- path: patch-to-statefulset.yaml
+  target:
+    kind: Deployment
+    name: nginx-ingress-controller
