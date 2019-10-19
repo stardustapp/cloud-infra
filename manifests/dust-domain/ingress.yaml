@@ -5,7 +5,7 @@ metadata:
   name: firebase-server-fe
   annotations:
     external-dns.alpha.kubernetes.io/ttl: "60"
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: internet
     certmanager.k8s.io/issuer: letsencrypt-prod
     certmanager.k8s.io/acme-challenge-type: http01
 spec:

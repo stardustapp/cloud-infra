@@ -1,7 +1,4 @@
 namespace: ingress-internet
-commonLabels:
-  app.kubernetes.io/name: ingress-nginx
-  app.kubernetes.io/part-of: ingress-nginx
 
 bases:
 - https://github.com/kubernetes/ingress-nginx/deploy/cloud-generic?ref=nginx-0.26.1
@@ -9,7 +6,17 @@ bases:
 resources:
 - namespace.yaml
 
-patches:
+patches: #Json6902:
+
+- path: patch-role.yaml
+  target:
+    kind: Role
+    name: nginx-ingress-role
+
+- path: patch-crb.yaml
+  target:
+    kind: ClusterRoleBinding
+    name: nginx-ingress-clusterrole-nisa-binding
 
 - path: patch-service.yaml
   target:
