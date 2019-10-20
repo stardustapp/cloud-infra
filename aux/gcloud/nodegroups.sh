@@ -42,12 +42,13 @@ gcloud container \
   --node-taints cloud.google.com/gke-preemptible="false":PreferNoSchedule
 
 gcloud container \
-  node-pools create build2 \
+  node-pools create build3 \
   --disk-size 25GB \
+  --disk-type pd-ssd \
   --enable-autorepair \
   --enable-autoupgrade \
   --image-type COS_CONTAINERD \
-  --machine-type n1-standard-1 \
+  --machine-type n1-standard-2 \
   --max-pods-per-node 25 \
   --num-nodes 0 \
   --node-labels purpose=build,lifetime=preemptible \
