@@ -7,18 +7,32 @@ resources:
 - auth-proxy.yaml
 - letsencrypt.yaml
 
+patches:
+
+- path: preemptible-pods.yaml
+  target:
+    kind: StatefulSet
+- path: wireguard-sidecar.yaml
+  target:
+    kind: StatefulSet
+
+secretGenerator:
+
+- name: nagios-oauth
+  envs:
+  - auth-proxy.env
+
+- name: wireguard-key
+  envs:
+  - wireguard.env
+
 configMapGenerator:
+
 - name: nagios-auth-config
   files:
   - email_list.txt
   - oauth2_proxy.cfg
 
-patches:
-- path: preemptible-pods.yaml
-  target:
-    kind: StatefulSet
-
-secretGenerator:
-- name: nagios-oauth
-  envs:
-  - auth-proxy.env
+- name: wireguard-conf
+  files:
+  - wg0.conf=wireguard.conf
