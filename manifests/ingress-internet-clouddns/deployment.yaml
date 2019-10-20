@@ -16,8 +16,8 @@ spec:
       - name: external-dns
         args:
         - --source=ingress
-        - --domain-filter=devmode.cloud
-        - --domain-filter=wg69.net
+        - --zone-id-filter=devmodecloud
+        - --zone-id-filter=wg69net
         - --provider=google
         - --google-project=stardust-156404
         - --registry=txt
