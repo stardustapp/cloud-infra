@@ -1,0 +1,16 @@
+apiVersion: apps/v1beta2
+kind: not-important
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+
+      nodeSelector:
+        lifetime: persistent
+
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "false"
+        effect: NoSchedule

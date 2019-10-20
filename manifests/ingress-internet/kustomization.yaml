@@ -35,6 +35,11 @@ patches: #Json6902:
     kind: Deployment
     name: nginx-ingress-controller
 
+# internet-facing NGINX stays running
+- path: persistent-pods-patch.yaml
+  target:
+    kind: Deployment
+
 # Convert into a DaemonSet to run exactly 1 per node
 - path: patch-to-daemonset.yaml
   target:
