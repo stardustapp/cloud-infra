@@ -1,0 +1,7 @@
+nick: regexbot
+server: chat.freenode.net
+channels:
+  - '#dagd'
+  - '##danopia'
+  - '#stardust'
+max-bangs: 6
