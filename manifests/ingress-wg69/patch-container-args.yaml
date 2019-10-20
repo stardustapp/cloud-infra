@@ -1,3 +1,4 @@
+# configure the VPN endpoint for all Ingresses
 - op: test
   path: '/spec/template/spec/containers/0/args/4'
   value: --publish-service=$(POD_NAMESPACE)/$(SERVICE_NAME)
@@ -5,6 +6,12 @@
   path: '/spec/template/spec/containers/0/args/4'
   value: --publish-status-address=10.69.4.66
 
+# class as internal ingresses
 - op: add
   path: '/spec/template/spec/containers/0/args/6'
   value: --ingress-class=wg69
+
+# the IP is static, do not delete DNS on shutdown
+- op: add
+  path: '/spec/template/spec/containers/0/args/7'
+  value: --update-status-on-shutdown=false
