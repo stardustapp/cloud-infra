@@ -10,3 +10,8 @@ secretGenerator:
 - name: external-dns-gcloud-key
   files:
   - key.json=gcloud-key.json
+
+images:
+# https://github.com/kubernetes-incubator/external-dns/releases
+- name: registry.opensource.zalan.do/teapot/external-dns
+  newTag: v0.5.17
