@@ -27,18 +27,18 @@ spec:
             - NET_ADMIN
           privileged: true
         volumeMounts:
-        - mountPath: /etc/wireguard/wg0.conf
-          name: cfgmap
+        - name: cfgmap
+          mountPath: /etc/wireguard/wg0.conf
           subPath: wg0.conf
-        - mountPath: /etc/wireguard/privatekey
-          name: keymaterial
-          subPath: privateKey
+        - name: keymaterial
+          mountPath: /secret/wg-key
+
       volumes:
       - name: cfgmap
         configMap:
+          name: wireguard-conf
           defaultMode: 420
-          name: wg-nginx-configmap
       - name: keymaterial
         secret:
+          secretName: wireguard-key
           defaultMode: 420
-          secretName: wg-nginx-key

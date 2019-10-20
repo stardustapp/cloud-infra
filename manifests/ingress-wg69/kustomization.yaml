@@ -6,8 +6,6 @@ bases:
 resources:
 - namespace.yaml
 - endpoint.yaml
-- wg-config.yaml
-- wg-keymaterial.yaml
 
 patches:
 
@@ -38,4 +36,14 @@ patches:
   target:
     kind: Deployment
     name: nginx-ingress-controller
-- path: wg-sidecar-patch.yaml
+- path: wireguard-sidecar.yaml
+
+secretGenerator:
+- name: wireguard-key
+  envs:
+  - wireguard.env
+
+configMapGenerator:
+- name: wireguard-conf
+  files:
+  - wg0.conf=wireguard.conf
