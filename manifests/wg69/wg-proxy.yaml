@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wg-proxy
+  labels:
+    app: wg-proxy
+spec:
+  replicas: 1
+  serviceName: wg-proxy
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: wg-proxy
+  template:
+    metadata:
+      labels:
+        app: wg-proxy
+    spec:
+      containers:
+
+      - name: skylink-proxy
+        image: alpine/socat
+        args:
+        - -s
+        - TCP-LISTEN:8080,fork,su=nobody
+        - TCP:irc-client.starnotify.svc.cluster.local:80
+
+      - name: dustpoc-proxy
+        image: alpine/socat
+        args:
+        - -s
+        - TCP-LISTEN:8081,fork,su=nobody
+        - TCP:10.69.1.12:80
+
+      - name: jenkins-ws-proxy
+        image: alpine/socat
+        args:
+        - -s
+        - TCP-LISTEN:8082,fork,su=nobody
+        - TCP:10.69.1.11:32257
+
+      - name: wireguard
+        command:
+        - /entrypoint.sh
+        env:
+        - name: LOG_LEVEL
+          value: info
+        image: masipcat/wireguard-go
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+          privileged: true
+        volumeMounts:
+        - name: cfgmap
+          mountPath: /etc/wireguard/wg0.conf
+          subPath: wg0.conf
+        - name: keymaterial
+          mountPath: /secret/wg-key
+
+      volumes:
+      - name: cfgmap
+        configMap:
+          name: wg-proxy-conf
+          defaultMode: 420
+      - name: keymaterial
+        secret:
+          secretName: wg-proxy-key
+          defaultMode: 420

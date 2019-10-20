@@ -1,0 +1,25 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: conduit-api-fe
+  annotations:
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    kubernetes.io/ingress.class: internet
+    certmanager.k8s.io/issuer: letsencrypt-prod
+    certmanager.k8s.io/acme-challenge-type: http01
+spec:
+
+  tls:
+  - hosts:
+    - conduit.wg69.net
+    secretName: tls-conduit.wg69.net
+
+  rules:
+  - host: conduit.wg69.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: conduit-api-server
+          servicePort: 80

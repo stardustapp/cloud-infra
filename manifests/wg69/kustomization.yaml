@@ -1,0 +1,22 @@
+namespace: wg69
+
+bases:
+- ../../apps/conduit-api-server
+
+resources:
+- namespace.yaml
+- ingress.yaml
+- letsencrypt.yaml
+
+- wg-proxy.yaml
+- wg-proxy-services.yaml
+
+secretGenerator:
+- name: wg-proxy-key
+  envs:
+  - wg-proxy.env
+
+configMapGenerator:
+- name: wg-proxy-conf
+  files:
+  - wg0.conf=wg-proxy.conf

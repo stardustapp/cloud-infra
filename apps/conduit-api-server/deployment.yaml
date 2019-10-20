@@ -22,4 +22,4 @@ spec:
 
         env:
         - name: DUST_WS_URI
-          value: ws://dustpoc-proxy.wg69.svc.cluster.local/websocket
+          value: ws://dust-poc.dust-poc.svc.cluster.local/websocket
