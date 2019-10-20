@@ -4,8 +4,9 @@ kind: Ingress
 metadata:
   name: dust-poc-int
   annotations:
-    external-dns.alpha.kubernetes.io/ttl: "600"
     kubernetes.io/ingress.class: wg69
+    external-dns.alpha.kubernetes.io/ttl: "600"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.69.1.1/27
 spec:
   rules:
 
