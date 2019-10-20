@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dust-poc
+  labels:
+    component: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: app
+  template:
+    metadata:
+      labels:
+        component: app
+    spec:
+      containers:
+      - name: app
+        image: gcr.io/stardust-156404/dust-poc:latest
+        env:
+        - name: PORT
+          value: '3000'
+        - name: ROOT_URL
+          value: 'http://dustbox.wg69.net'
+        # - name: METEOR_SETTINGS
+        #   value: >-
+        #     {"datadog":{"api_key":""}}
+        - name: MONGO_URL
+          value: 'mongodb://dust-mongo/stardust'
+        - name: MONGO_OPLOG_URL
+          value: 'mongodb://dust-mongo/local'
+        ports:
+        - name: http
+          containerPort: 3000
+        resources:
+          requests:
+            cpu: 50m
+            memory: 75Mi
+          limits:
+            cpu: 1000m
+            memory: 150Mi
+        readinessProbe:
+          httpGet:
+            httpHeaders:
+              - name: X-Forwarded-Proto
+                value: https
+              - name: Host
+                value: dust-poc
+            path: /
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 3

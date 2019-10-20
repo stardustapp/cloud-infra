@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dust-mongo
+  labels:
+    component: mongod
+spec:
+
+  serviceName: mongod
+  selector:
+    matchLabels:
+      component: mongod
+
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  template:
+    metadata:
+      labels:
+        component: mongod
+    spec:
+      containers:
+        - name: data
+          image: mongo
+          args:
+          - --noauth
+          - --replSet
+          - rs0
+          ports:
+          - name: mongo
+            containerPort: 27017
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /data/db
+            name: data
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: solid-state
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

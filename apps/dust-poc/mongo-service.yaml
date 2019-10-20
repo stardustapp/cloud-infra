@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dust-mongo
+spec:
+  type: ClusterIP
+  selector:
+    component: mongod
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: mongo

@@ -1,0 +1,8 @@
+commonLabels:
+  app: dust-poc
+
+resources:
+- mongo-statefulset.yaml
+- mongo-service.yaml
+- deployment.yaml
+- service.yaml

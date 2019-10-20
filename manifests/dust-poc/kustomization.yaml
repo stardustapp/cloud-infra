@@ -1,0 +1,14 @@
+namespace: dust-poc
+
+bases:
+- ../../apps/dust-poc
+resources:
+- namespace.yaml
+- ingress.yaml
+
+# patchesStrategicMerge:
+# - deployment.yaml
+
+images:
+- name: gcr.io/stardust-156404/dust-poc
+  newTag: 0df3bf5
