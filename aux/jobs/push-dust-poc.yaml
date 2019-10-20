@@ -22,8 +22,8 @@ spec:
           export DOCKER_HOST=
           dockerd --host=unix:///var/run/docker.sock &
           git clone https://github.com/stardustapp/dust-poc
-          cd dust-poc
 
+          cd dust-poc
           GitHash="$(git describe --always --long --dirty)"
           Image="gcr.io/stardust-156404/dust-poc"
           GitImage="$Image:$GitHash"
@@ -34,7 +34,22 @@ spec:
           #kubectl -n wg69 set image deployment.v1.apps/dust-poc app="$GitImage"
           cd -
 
+          cd $(mktemp -d)
+          { echo "FROM $GitImage";
+            echo "ADD https://storage.googleapis.com/kubernetes-release/release/v1.16.1/bin/linux/amd64/kubectl /usr/local/bin/kubectl";
+            echo "RUN set -x \\";
+            echo " && apk add --no-cache curl ca-certificates \\";
+            echo " && chmod +x /usr/local/bin/kubectl \\";
+            echo " && kubectl version --client";
+          } > Dockerfile
+          docker build -t "$GitImage-kubectl" .
+          docker push "$GitImage-kubectl"
+
           kubectl delete job push-dust-poc
+
+        resources:
+          requests:
+            memory: 4Gi
 
       nodeSelector:
         purpose: build

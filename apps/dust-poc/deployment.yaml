@@ -15,6 +15,7 @@ spec:
       labels:
         component: app
     spec:
+      serviceAccountName: dust-poc
       containers:
       - name: app
         image: gcr.io/stardust-156404/dust-poc:latest

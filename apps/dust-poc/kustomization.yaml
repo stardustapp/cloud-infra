@@ -4,5 +4,9 @@ commonLabels:
 resources:
 - mongo-statefulset.yaml
 - mongo-service.yaml
+
 - deployment.yaml
 - service.yaml
+
+- serviceaccount.yaml
+- rbac.yaml
