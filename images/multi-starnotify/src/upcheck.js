@@ -1,6 +1,6 @@
 const { runWorker, shortenUrl, notify } = require('./_lib');
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('uptimerobot webhook data:', JSON.stringify(data));
 
   const {parameters} = data;

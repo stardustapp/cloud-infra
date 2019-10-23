@@ -1,6 +1,6 @@
 const { runWorker, shortenUrl, notify } = require('./_lib');
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('slackjack webhook data:', JSON.stringify(data));
 
   const {channel, text, username} = data.payload;

@@ -1,6 +1,6 @@
 const { runWorker, trimText, notify } = require('./_lib');
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('mailgun webhook data:', JSON.stringify(data));
 
   const {payload} = data;

@@ -1,6 +1,6 @@
 const { runWorker, shortenUrl, notify } = require('./_lib');
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('cloudwatch SNS data:', JSON.stringify(data));
   const channel = process.env.NOTIFICATION_CHANNEL || '#stardust-noise';
 

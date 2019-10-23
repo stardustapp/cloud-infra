@@ -4,7 +4,7 @@ const accountChannelMap = {
   'Danopia': '##danopia',
 }
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('bugsnag webhook data:', JSON.stringify(data));
 
   const {payload} = data;

@@ -20,7 +20,7 @@ const commitMsgLengthMap = {
   '#dagd': 200,
 };
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('github webhook data:', JSON.stringify(data));
   const {payload} = data;
   const eventType = data.headers['X-GitHub-Event'];

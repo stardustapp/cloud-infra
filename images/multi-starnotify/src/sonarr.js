@@ -3,7 +3,7 @@ const moment = require('moment');
 require('moment-timezone');
 const { runWorker, shortenUrl, notify } = require('./_lib');
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('sonarr webhook payload:', JSON.stringify(data.payload));
   const {eventType} = data.payload;
 

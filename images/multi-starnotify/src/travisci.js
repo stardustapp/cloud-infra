@@ -7,7 +7,7 @@ const orgChannelMap = {
   'noexc': '#noexc',
 }
 
-function processMessage(data) {
+exports.processMessage = function processMessage(data) {
   console.log('travisci webhook data:', JSON.stringify(data));
 
   const {payload} = data;
