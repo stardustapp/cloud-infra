@@ -15,8 +15,8 @@
 #   --max-nodes 3
 
 gcloud container \
-  node-pools create small5 \
-  --disk-size 10GB \
+  node-pools create small6 \
+  --disk-size 20GB \
   --enable-autorepair \
   --enable-autoupgrade \
   --image-type COS_CONTAINERD \
