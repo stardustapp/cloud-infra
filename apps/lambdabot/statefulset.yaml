@@ -17,6 +17,9 @@ spec:
       - name: lambdabot
         image: gcr.io/stardust-156404/lambdabot
 
+        # env:
+        # - name: MUEVAL_TIMEOUT
+        #   value: "25"
         args:
         - --trust=lambdabot-trusted
         - --trust=base

@@ -30,8 +30,8 @@ gcloud container \
   --node-taints cloud.google.com/gke-preemptible="true":PreferNoSchedule
 
 gcloud container \
-  node-pools create persist1 \
-  --disk-size 15GB \
+  node-pools create persist2 \
+  --disk-size 20GB \
   --enable-autorepair \
   --enable-autoupgrade \
   --image-type COS_CONTAINERD \
