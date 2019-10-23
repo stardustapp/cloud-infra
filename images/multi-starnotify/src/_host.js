@@ -32,12 +32,12 @@ if (!module.parent) {
     if (Messages && Messages.length) {
       const msg = Messages[0];
       console.log("Processing message", msg.MessageId);
-      processMessage(JSON.parse(msg.Body));
+      processor.processMessage(JSON.parse(msg.Body));
+
       sqs.deleteMessage.sync(sqs, {
         QueueUrl: queueUrl,
         ReceiptHandle: msg.ReceiptHandle,
       });
-
       sleep.sync(null, 1000);
     }
   }

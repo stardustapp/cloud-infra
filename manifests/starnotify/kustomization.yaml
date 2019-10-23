@@ -27,4 +27,4 @@ secretGenerator:
 
 images:
 - name: gcr.io/stardust-156404/multi-starnotify
-  newTag: 38efa9e
+  newTag: 14d7e5d

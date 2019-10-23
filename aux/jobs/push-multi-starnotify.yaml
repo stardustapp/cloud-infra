@@ -33,16 +33,8 @@ spec:
           docker tag "$GitImage" "$Image:latest"
           docker push "$Image:latest"
 
-          kubectl -n starnotify set image deployment.v1.apps/bugsnag starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/cloudwatch starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/github starnotify="$GitImage"
+          kubectl -n starnotify set image deployment.v1.apps/multi-sqs starnotify="$GitImage"
           kubectl -n starnotify set image deployment.v1.apps/jenkins starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/mailgun starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/radarr starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/slackjack starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/sonarr starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/travisci starnotify="$GitImage"
-          kubectl -n starnotify set image deployment.v1.apps/upcheck starnotify="$GitImage"
 
           kubectl delete job push-multi-starnotify
 
