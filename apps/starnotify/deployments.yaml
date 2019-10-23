@@ -22,6 +22,8 @@ spec:
         env:
         - name: SQS_QUEUE_URL_BASE
           value: https://sqs.us-west-2.amazonaws.com/414064234042/
+        - name: VIEWING_TIMEZONE
+          value: America/Los_Angeles
 
 ---
 apiVersion: extensions/v1beta1
