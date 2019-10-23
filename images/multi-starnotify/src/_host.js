@@ -21,8 +21,10 @@ if (!module.parent) {
   const {SQS_QUEUE_URL_BASE} = process.env;
 
   function doOneWork(processor) {
+    const queueUrl = SQS_QUEUE_URL_BASE + processor.queue;
+
     const {Messages} = sqs.receiveMessage.sync(sqs, {
-      QueueUrl: SQS_QUEUE_URL_BASE+processor,
+      QueueUrl: queueUrl,
       MaxNumberOfMessages: 1,
       WaitTimeSeconds: 20,
     });
@@ -32,7 +34,7 @@ if (!module.parent) {
       console.log("Processing message", msg.MessageId);
       processMessage(JSON.parse(msg.Body));
       sqs.deleteMessage.sync(sqs, {
-        QueueUrl: SQS_QUEUE_URL,
+        QueueUrl: queueUrl,
         ReceiptHandle: msg.ReceiptHandle,
       });
 
@@ -56,8 +58,8 @@ if (!module.parent) {
         } catch (err) {
           notify('#stardust-noise',
             processor.queue+' CRASH: '+
-            err.stack.slice(0, 400).replace(/\n/g, '␤'));
-          sleep.sync(null, 5000);
+            err.stack.slice(0, 400).replace(/\n/g, '␤')); // NL char
+          sleep.sync(null, 10*1000);
         }
       }
     }, (err, res) => {

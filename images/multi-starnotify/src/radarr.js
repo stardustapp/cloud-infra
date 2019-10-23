@@ -90,5 +90,5 @@ function formatReleaseDate(timestamp) {
 
 // start working
 if (!module.parent) {
-  runWorker(processMessage);
+  runWorker(exports.processMessage);
 }
