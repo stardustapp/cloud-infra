@@ -2,51 +2,26 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: cloudwatch
+  name: multi-sqs
   labels:
-    starnotify: cloudwatch
+    starnotify: multi-sqs
 spec:
   replicas: 1
   revisionHistoryLimit: 1
   template:
     metadata:
       labels:
-        starnotify: cloudwatch
+        starnotify: multi-sqs
     spec:
       containers:
       - name: starnotify
         image: gcr.io/stardust-156404/multi-starnotify
         args:
         - 'node'
-        - 'src/cloudwatch'
+        - 'src/_host'
         env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-cloudwatch
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: github
-  labels:
-    starnotify: github
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: github
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/github'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-github
+        - name: SQS_QUEUE_URL_BASE
+          value: https://sqs.us-west-2.amazonaws.com/414064234042/
 
 ---
 apiVersion: extensions/v1beta1
@@ -69,184 +44,3 @@ spec:
         args:
         - 'node'
         - 'src/jenkins'
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: travisci
-  labels:
-    starnotify: travisci
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: travisci
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/travisci'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-travisci
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: slackjack
-  labels:
-    starnotify: slackjack
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: slackjack
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/slackjack'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-slackjack
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: sonarr
-  labels:
-    starnotify: sonarr
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: sonarr
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/sonarr'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-sonarr
-        # this is special!
-        - name: VIEWING_TIMEZONE
-          value: America/Los_Angeles
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: radarr
-  labels:
-    starnotify: radarr
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: radarr
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/radarr'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-radarr
-        # this is special!
-        - name: VIEWING_TIMEZONE
-          value: America/Los_Angeles
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: bugsnag
-  labels:
-    starnotify: bugsnag
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: bugsnag
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/bugsnag'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-bugsnag
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: mailgun
-  labels:
-    starnotify: mailgun
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: mailgun
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/mailgun'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-mailgun
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: upcheck
-  labels:
-    starnotify: upcheck
-spec:
-  replicas: 1
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: upcheck
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/upcheck'
-        env:
-        - name: SQS_QUEUE_URL
-          value: https://sqs.us-west-2.amazonaws.com/414064234042/hooks-from-upcheck
