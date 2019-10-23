@@ -1,10 +1,17 @@
 const { runWorker, shortenUrl, notify } = require('./_lib');
 
+const orgChannelMap = {
+  'danopia': '#stardust-noise',
+};
+
 exports.processMessage = function processMessage(data) {
   console.log('uptimerobot webhook data:', JSON.stringify(data));
 
-  const {parameters} = data;
-  var channel = parameters.channel;
+  const {parameters, payload} = data;
+  let channel = orgChannelMap[payload.organization_name];
+  if (parameters) {
+    channel = parameters.channel || channel;
+  }
   if (!channel) {
     return;
   }
