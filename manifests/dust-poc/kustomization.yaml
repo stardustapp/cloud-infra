@@ -11,4 +11,5 @@ resources:
 
 images:
 - name: gcr.io/stardust-156404/dust-poc
-  newTag: 719af39-kubectl
+  newName: gcr.io/stardust-156404/dust-poc-kubectl
+  newTag: a04bf93
