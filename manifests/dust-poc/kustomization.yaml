@@ -6,8 +6,13 @@ resources:
 - namespace.yaml
 - ingress.yaml
 
-# patchesStrategicMerge:
-# - deployment.yaml
+patchesStrategicMerge:
+- deployment-patch.yaml
+
+secretGenerator:
+- envs:
+  - aws-credential.env
+  name: aws-credential
 
 images:
 - name: gcr.io/stardust-156404/dust-poc
