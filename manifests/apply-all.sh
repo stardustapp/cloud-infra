@@ -4,7 +4,8 @@
 
 kustomize build manifests/datadog-agent | kubectl apply -f -
 kubectl apply -k manifests/dust-domain
-kubectl apply -k manifests/dust-poc
+kustomize build manifests/dust-poc | kubectl apply -f -
+#kubectl apply -k manifests/dust-poc # fails on 1.16?
 kustomize build manifests/ingress-internet | kubectl apply -f -
 kubectl apply -k manifests/ingress-internet-clouddns
 kustomize build manifests/ingress-wg69 | kubectl apply -f -
