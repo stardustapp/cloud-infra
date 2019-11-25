@@ -16,6 +16,7 @@ spec:
       - name: external-dns
         args:
         - --source=ingress
+        #- --annotation-filter=kubernetes.io/ingress.class=internet
         - --zone-id-filter=devmodecloud
         - --zone-id-filter=wg69net
         - --provider=google
