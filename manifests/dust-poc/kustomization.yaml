@@ -17,4 +17,4 @@ secretGenerator:
 images:
 - name: gcr.io/stardust-156404/dust-poc
   newName: gcr.io/stardust-156404/dust-poc-kubectl
-  newTag: 8111fd7
+  newTag: 8bb9f30
