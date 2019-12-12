@@ -2,7 +2,7 @@
 
 #go get github.com/kubernetes-sigs/kustomize/cmd/kustomize
 
-kustomize build manifests/datadog-agent | kubectl apply -f -
+#kustomize build manifests/datadog-agent | kubectl apply -f -
 kubectl apply -k manifests/dust-domain
 kustomize build manifests/dust-poc | kubectl apply -f -
 # kubectl apply -k manifests/dust-poc # fails on 1.16?

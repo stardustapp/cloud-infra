@@ -3,4 +3,4 @@ kubectl get namespaces \
 | grep Active \
 | cut -d' ' -f1 \
 | xargs -n1 \
-  -- kubectl top pods -n
+  -- kubectl top pods $* -n

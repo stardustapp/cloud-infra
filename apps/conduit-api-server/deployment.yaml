@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: gcr.io/stardust-156404/conduit-api-server
+        image: gcr.io/stardust-156404/conduit-api-server:2b16113
         ports:
         - containerPort: 8080
         resources:
@@ -22,4 +22,4 @@ spec:
 
         env:
         - name: DUST_WS_URI
-          value: ws://dust-poc.dust-poc.svc.cluster.local/websocket
+          value: ws://dust-poc.dust-poc.svc.cluster.local
