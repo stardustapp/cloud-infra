@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conduit-api-server
+spec:
+  template:
+    spec:
+      containers:
+      - name: app
+
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+        - name: GCLOUD_PROJECT
+          value: stardust-156404
+
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: conduit-gcloud-key

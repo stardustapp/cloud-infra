@@ -11,7 +11,14 @@ resources:
 - wg-proxy.yaml
 - wg-proxy-services.yaml
 
+patchesStrategicMerge:
+- conduit-gcloud-patch.yaml
+
 secretGenerator:
+- name: conduit-gcloud-key
+  files:
+  - key.json=conduit-gcloud-key.json
+
 - name: wg-proxy-key
   envs:
   - wg-proxy.env
@@ -20,3 +27,8 @@ configMapGenerator:
 - name: wg-proxy-conf
   files:
   - wg0.conf=wg-proxy.conf
+
+images:
+- name: conduit-api-server
+  newName: gcr.io/stardust-156404/conduit-api-server
+  newTag: 59f2a58
