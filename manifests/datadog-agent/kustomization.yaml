@@ -11,8 +11,7 @@ configMapGenerator:
 
 secretGenerator:
 - name: datadog-secret
-  envs:
-  - credential.env
+  env: credential.env
 
 images:
 # https://hub.docker.com/r/datadog/agent/tags

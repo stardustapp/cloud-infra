@@ -21,8 +21,7 @@ patches:
     kind: StatefulSet
 
 secretGenerator:
-- envs:
-  - credentials.env
+- env: credentials.env
   name: credentials
 
 images:

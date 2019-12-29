@@ -40,8 +40,7 @@ patches:
 
 secretGenerator:
 - name: wireguard-key
-  envs:
-  - wireguard.env
+  env: wireguard.env
 
 configMapGenerator:
 - name: wireguard-conf

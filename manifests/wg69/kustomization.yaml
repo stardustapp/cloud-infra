@@ -20,8 +20,7 @@ secretGenerator:
   - key.json=conduit-gcloud-key.json
 
 - name: wg-proxy-key
-  envs:
-  - wg-proxy.env
+  env: wg-proxy.env
 
 configMapGenerator:
 - name: wg-proxy-conf

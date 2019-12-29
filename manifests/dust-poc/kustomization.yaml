@@ -10,8 +10,7 @@ patchesStrategicMerge:
 - deployment-patch.yaml
 
 secretGenerator:
-- envs:
-  - aws-credential.env
+- env: aws-credential.env # TODO: eventually becomes 'envs: - ...'
   name: aws-credential
 
 images:
