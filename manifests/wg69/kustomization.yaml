@@ -30,4 +30,4 @@ configMapGenerator:
 images:
 - name: conduit-api-server
   newName: gcr.io/stardust-156404/conduit-api-server
-  newTag: 59f2a58
+  newTag: fcb8ce3

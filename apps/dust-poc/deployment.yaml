@@ -40,7 +40,7 @@ spec:
             memory: 75Mi
           limits:
             cpu: 1000m
-            memory: 250Mi
+            memory: 350Mi
         readinessProbe:
           httpGet:
             httpHeaders:
