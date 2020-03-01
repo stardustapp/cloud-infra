@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tautulli-int
+  annotations:
+    kubernetes.io/ingress.class: wg69
+    external-dns.alpha.kubernetes.io/ttl: "600"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.69.1.1/27, 10.69.1.49/27
+    cert-manager.io/cluster-issuer: wg69-issuer
+spec:
+  tls:
+  - hosts:
+    - tautulli.int.wg69.net
+    secretName: tls-tautulli.int.wg69.net
+  rules:
+  - host: tautulli.int.wg69.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tautulli
+          servicePort: http

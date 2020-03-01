@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: usenet
+  annotations:
+    conduit.wg69.net/container-hostname: ausbox
+    conduit.wg69.net/container-name: usenet
+spec:
+  ports:
+  - protocol: TCP
+    name: sabnzbd
+    port: 8080
+    targetPort: 8080
+  - protocol: TCP
+    name: sonarr
+    targetPort: 8989
+    port: 8989
+  - protocol: TCP
+    name: radarr
+    port: 7878
+    targetPort: 7878
+
+---
+# TODO: dynamically managed by conduit
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: usenet
+subsets:
+- addresses:
+  - ip: 10.69.2.38
+  ports:
+  - port: 8080
+    name: sabnzbd
+    protocol: TCP
+  - port: 8989
+    name: sonarr
+    protocol: TCP
+  - port: 7878
+    name: radarr
+    protocol: TCP

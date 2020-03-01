@@ -1,0 +1,10 @@
+namespace: media
+
+resources:
+- usenet-service.yaml
+- sabnzbd-ingress.yaml
+- sonarr-ingress.yaml
+- radarr-ingress.yaml
+
+- tautulli-service.yaml
+- tautulli-ingress.yaml
