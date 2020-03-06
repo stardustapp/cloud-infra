@@ -535,6 +535,18 @@ exports.processMessage = function processMessage(data) {
         "\x0315"+sender.login+"\x0F changed the wiki: "+pageText);
     return;
 
+  // TODO: what's appropriate here?
+  case 'check_run':
+    var {action, check_run, repository} = payload;
+    var {id, node_id, external_id, head_sha, html_url, status, conclusion, started_at, completed_at, output, name, check_suite} = check_run;
+    console.log('TODO: check_run', {action, id, head_sha, status, conclusion, name});
+    return;
+  case 'check_suite':
+    var {action, check_suite, repository} = payload;
+    var {id, node_id, node_branch, head_sha, status, conclusion, created_at, updated_at, latest_check_runs_count, head_commit} = check_suite;
+    console.log('TODO: check_suite', {action, id, head_sha, node_branch, status, conclusion, latest_check_runs_count});
+    return;
+
   case 'status':
   case 'deployment':
   case 'deployment_status':
