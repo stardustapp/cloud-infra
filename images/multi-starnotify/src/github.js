@@ -543,8 +543,8 @@ exports.processMessage = function processMessage(data) {
     return;
   case 'check_suite':
     var {action, check_suite, repository} = payload;
-    var {id, node_id, node_branch, head_sha, status, conclusion, created_at, updated_at, latest_check_runs_count, head_commit} = check_suite;
-    console.log('TODO: check_suite', {action, id, head_sha, node_branch, status, conclusion, latest_check_runs_count});
+    var {id, node_id, head_branch, head_sha, status, conclusion, created_at, updated_at, latest_check_runs_count, head_commit} = check_suite;
+    console.log('TODO: check_suite', {action, id, head_sha, head_branch, status, conclusion, latest_check_runs_count});
     return;
 
   case 'status':
