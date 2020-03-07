@@ -6,7 +6,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: wg69
     external-dns.alpha.kubernetes.io/ttl: "600"
-    nginx.ingress.kubernetes.io/whitelist-source-range: 10.69.1.1/27
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.69.1.1/27, 10.69.1.49/27
 spec:
   rules:
 
