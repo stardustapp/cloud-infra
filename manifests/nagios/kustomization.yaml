@@ -5,7 +5,6 @@ bases:
 
 resources:
 - auth-proxy.yaml
-- letsencrypt.yaml
 
 patches:
 
