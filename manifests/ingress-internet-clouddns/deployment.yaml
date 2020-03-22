@@ -16,9 +16,12 @@ spec:
       - name: external-dns
         args:
         - --source=ingress
-        #- --annotation-filter=kubernetes.io/ingress.class=internet
+        - --events
+        - --interval=30m
+        - --annotation-filter=kubernetes.io/ingress.class=internet
         - --zone-id-filter=devmodecloud
         - --zone-id-filter=wg69net
+        - --zone-id-filter=skychatapp
         - --provider=google
         - --google-project=stardust-156404
         - --registry=txt

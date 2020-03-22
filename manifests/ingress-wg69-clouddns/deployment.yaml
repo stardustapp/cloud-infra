@@ -16,7 +16,9 @@ spec:
       - name: external-dns
         args:
         - --source=ingress
-        - --annotation-filter=kubernetes.io/ingress.class=wg69
+        - --events
+        - --interval=30m
+        # - --annotation-filter=kubernetes.io/ingress.class=wg69
         - --zone-id-filter=wg69net-int
         - --provider=google
         - --google-project=stardust-156404
