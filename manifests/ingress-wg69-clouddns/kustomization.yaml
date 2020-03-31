@@ -1,4 +1,5 @@
 namespace: ingress-wg69
+nameSuffix: -wg69
 
 bases:
 - ../../apps/external-dns

@@ -1,4 +1,5 @@
-namespace: kube-infra
+namespace: ingress-internet
+nameSuffix: -www
 
 bases:
 - ../../apps/external-dns
