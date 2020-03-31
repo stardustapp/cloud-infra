@@ -3,9 +3,9 @@ kind: Kustomization
 
 namespace: default
 
-resources:
+bases:
 - ../../apps/reggie
-patchesStrategicMerge:
+patches:
 - node-assignment.yaml
 
 configMapGenerator:

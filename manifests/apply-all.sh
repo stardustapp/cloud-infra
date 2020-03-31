@@ -9,9 +9,9 @@ kustomize build manifests/ingress-internet | kubectl apply -f -
 kubectl apply -k manifests/ingress-internet-clouddns
 kustomize build manifests/ingress-wg69 | kubectl apply -f -
 kubectl apply -k manifests/ingress-wg69-clouddns
-kustomize build manifests/lambdabot | kubectl apply -f -
+kubectl apply -k manifests/lambdabot
 kubectl apply -k manifests/media
 kustomize build manifests/nagios | kubectl apply -f -
-kustomize build manifests/reggie | kubectl apply -f -
+kubectl apply -k manifests/reggie
 kustomize build manifests/starnotify | kubectl apply -f -
 kubectl apply -k manifests/wg69

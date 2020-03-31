@@ -10,6 +10,7 @@ spec:
   updateStrategy:
     type: RollingUpdate
 
+  volumeClaimTemplates: []
   template:
     spec:
       # imagePullSecrets:

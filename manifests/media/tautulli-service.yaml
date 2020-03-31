@@ -20,7 +20,7 @@ metadata:
   name: tautulli
 subsets:
 - addresses:
-  - ip: 10.69.2.41
+  - ip: 10.69.2.47
   ports:
   - protocol: TCP
     port: 8181

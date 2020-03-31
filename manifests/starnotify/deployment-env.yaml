@@ -8,35 +8,7 @@ spec:
 
       containers:
       - name: starnotify
-        env:
 
-        - name: STARNOTIFY_FLAGS
-          valueFrom:
-            secretKeyRef:
-              name: credentials
-              key: STARNOTIFY_FLAGS
-
-        - name: IRC_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: credentials
-              key: IRC_PASSWORD
-
-        - name: AWS_REGION
-          value: us-west-2
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: credentials
-              key: AWS_ACCESS_KEY_ID
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: credentials
-              key: AWS_SECRET_ACCESS_KEY
-
-        - name: JENKINS_WS_HOST
-          valueFrom:
-            secretKeyRef:
-              name: credentials
-              key: JENKINS_WS_HOST
+        envFrom:
+        - secretRef:
+            name: credentials
