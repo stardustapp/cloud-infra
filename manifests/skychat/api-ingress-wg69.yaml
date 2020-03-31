@@ -1,0 +1,24 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: skychat-api-wg69-fe
+  annotations:
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    kubernetes.io/ingress.class: wg69
+    cert-manager.io/cluster-issuer: wg69-issuer
+
+spec:
+  tls:
+  - hosts:
+    - skychat-api.wg69.net
+    secretName: tls-skychat-api.wg69.net
+
+  rules:
+  - host: skychat-api.wg69.net
+    http: &http_rules
+      paths:
+      - path: /
+        backend:
+          serviceName: skychat-api
+          servicePort: 80

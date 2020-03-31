@@ -1,0 +1,7 @@
+commonLabels:
+  app: stardriver-irc-modem
+  stardriver: irc-modem
+
+resources:
+- statefulset.yaml
+- service.yaml

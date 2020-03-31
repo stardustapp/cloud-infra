@@ -1,0 +1,6 @@
+commonLabels:
+  app: skychat
+  component: automaton
+
+resources:
+- statefulset.yaml

@@ -1,0 +1,30 @@
+namespace: skychat
+
+images:
+
+- name: skychat-logic
+  newName: gcr.io/stardust-156404/skychat-logic
+  newTag: f3804d8
+
+- name: stardriver-irc-modem
+  newName: gcr.io/stardust-156404/irc-modem
+  newTag: h20
+
+bases:
+- ../../apps/skychat-api
+- ../../apps/stardriver-irc-modem
+- automatons/dan-irc
+
+resources:
+- namespace.yaml
+- api-ingress.yaml
+- api-ingress-wg69.yaml
+
+patchesStrategicMerge:
+- deployment-patch.yaml
+- persistent-modem.yaml
+
+secretGenerator:
+- name: admin-credential
+  files:
+  - firebase-adminsdk-key.json

@@ -13,5 +13,6 @@ kubectl apply -k manifests/lambdabot
 kubectl apply -k manifests/media
 kustomize build manifests/nagios | kubectl apply -f -
 kubectl apply -k manifests/reggie
+kubectl apply -k manifests/skychat
 kustomize build manifests/starnotify | kubectl apply -f -
 kubectl apply -k manifests/wg69

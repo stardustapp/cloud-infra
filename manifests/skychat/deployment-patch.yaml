@@ -1,0 +1,19 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skychat-api
+spec:
+  template:
+    spec:
+      containers:
+      - name: app
+
+        env:
+        - name: FIREBASE_DATABASE_URL
+          value: https://stardust-skychat.firebaseio.com
+
+      volumes:
+      - name: secrets
+        secret:
+          secretName: admin-credential

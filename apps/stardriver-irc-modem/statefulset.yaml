@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: irc-modem
+spec:
+  serviceName: stardriver-irc-modem
+
+  replicas: 1
+  updateStrategy:
+    type: OnDelete
+
+  volumeClaimTemplates: []
+  template:
+    spec:
+      containers:
+
+      - name: driver
+        image: stardriver-irc-modem
+
+        ports:
+        - containerPort: 9234
+          name: http
+          protocol: TCP
+
+        volumeMounts:
+        - name: ca-certs
+          mountPath: /etc/ssl/certs/ca-certificates.crt
+
+        resources:
+          requests:
+            memory: 10Mi
+            cpu: 5m
+          limits:
+            memory: 15Mi
+            cpu: 100m
+
+      volumes:
+      - name: ca-certs
+        hostPath:
+          path: /etc/ssl/certs/ca-certificates.crt
