@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: conduit-api-server
 spec:
-  replicas: 1
+  replicas: 0
   template:
     spec:
       containers:
