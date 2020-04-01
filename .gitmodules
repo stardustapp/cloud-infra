@@ -1,3 +1,0 @@
-[submodule "upstreams/ingress-nginx"]
-	path = upstreams/ingress-nginx
-	url = https://github.com/kubernetes/ingress-nginx

@@ -1,7 +1,7 @@
 # configure the VPN endpoint for all Ingresses
 - op: test
   path: '/spec/template/spec/containers/0/args/4'
-  value: --publish-service=$(POD_NAMESPACE)/$(SERVICE_NAME)
+  value: --publish-service=$(POD_NAMESPACE)/ingress-nginx
 - op: replace
   path: '/spec/template/spec/containers/0/args/4'
   value: --publish-status-address=10.69.4.66
