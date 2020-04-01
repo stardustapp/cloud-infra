@@ -13,12 +13,10 @@ spec:
   volumeClaimTemplates: []
   template:
     spec:
-      # imagePullSecrets:
-      # - name: github-personal
       containers:
 
       - name: bot
-        image: danopia/reggie:097dbb9
+        image: gcr.io/stardust-156404/reggie
 
         resources:
           requests:

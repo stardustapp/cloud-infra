@@ -15,12 +15,11 @@ spec:
       containers:
 
       - name: auth
-        image: quay.io/pusher/oauth2_proxy:v4.0.0
+        image: quay.io/oauth2-proxy/oauth2-proxy:v5.1.0
         ports:
         - containerPort: 4180
           name: http
-        command:
-        - oauth2_proxy
+        args:
         - -upstream
         - http://nagios-http
         - -config

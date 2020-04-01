@@ -13,11 +13,11 @@ spec:
   template:
     spec:
       terminationGracePeriodSeconds: 5
+      shareProcessNamespace: true
       containers:
 
       - name: nagios
-        image: danopia/nagios:v4
-        imagePullPolicy: Always
+        image: gcr.io/stardust-156404/nagios:h1
         args:
         - sh
         - -exc
@@ -48,7 +48,7 @@ spec:
           subPath: log
 
       - name: httpd
-        image: danopia/nagios:v4
+        image: gcr.io/stardust-156404/nagios:h1
         args:
         - /usr/sbin/apachectl
         - -DFOREGROUND
@@ -89,7 +89,7 @@ spec:
           subPath: log
 
       - name: sshd
-        image: danopia/sshd:v2
+        image: gcr.io/stardust-156404/sshd:h1
         args:
         - sh
         - -exc
@@ -125,7 +125,7 @@ spec:
 
       initContainers:
       - name: setup
-        image: danopia/nagios:v4
+        image: gcr.io/stardust-156404/nagios:h1
         command:
         - sh
         - -exc
