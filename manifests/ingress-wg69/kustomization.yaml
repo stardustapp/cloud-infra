@@ -1,8 +1,8 @@
 namespace: ingress-wg69
 
 bases:
-- https://github.com/kubernetes/ingress-nginx/deploy/cloud-generic?ref=nginx-0.26.1
-- https://github.com/kubernetes/ingress-nginx/deploy/cluster-wide?ref=nginx-0.26.1
+- ../../upstreams/ingress-nginx/deploy/cloud-generic
+- ../../upstreams/ingress-nginx/deploy/cluster-wide
 resources:
 - namespace.yaml
 - endpoint.yaml
