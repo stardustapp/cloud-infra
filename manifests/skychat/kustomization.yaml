@@ -4,7 +4,7 @@ images:
 
 - name: skychat-logic
   newName: gcr.io/stardust-156404/skychat-logic
-  newTag: '6530d76'
+  newTag: 'cb751cf'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem
