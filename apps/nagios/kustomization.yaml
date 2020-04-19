@@ -13,6 +13,7 @@ configMapGenerator:
   - nagios.conf=httpd-conf/nagios.conf
   - php.conf=httpd-conf/php.conf
 
-- name: root-ssh
-  files:
-  - authorized_keys
+images:
+- name: nagios
+  newName: gcr.io/stardust-156404/nagios
+  newTag: h2
