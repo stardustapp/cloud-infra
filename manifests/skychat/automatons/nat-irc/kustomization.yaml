@@ -1,0 +1,11 @@
+nameSuffix: -nat-irc
+commonLabels:
+  user: nat
+  app: irc
+
+bases:
+- ../irc
+
+secretGenerator:
+- env: credentials.env
+  name: automaton-env

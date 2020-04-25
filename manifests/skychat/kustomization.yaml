@@ -14,6 +14,7 @@ bases:
 - ../../apps/skychat-api
 - ../../apps/stardriver-irc-modem
 - automatons/dan-irc
+- automatons/nat-irc
 
 resources:
 - namespace.yaml
