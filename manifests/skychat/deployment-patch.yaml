@@ -13,6 +13,10 @@ spec:
         - name: FIREBASE_DATABASE_URL
           value: https://stardust-skychat.firebaseio.com
 
+        envFrom:
+        - secretRef:
+            name: integrations
+
       volumes:
       - name: secrets
         secret:

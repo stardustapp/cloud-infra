@@ -24,7 +24,14 @@ patchesStrategicMerge:
 - deployment-patch.yaml
 - persistent-modem.yaml
 
+# patchesJson6902:
+# - path: integrations-env-patch.yaml
+#   target:
+#     kind: StatefulSet
+
 secretGenerator:
 - name: admin-credential
   files:
   - firebase-adminsdk-key.json
+- name: integrations
+  env: integrations.env
