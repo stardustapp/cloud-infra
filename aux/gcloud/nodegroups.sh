@@ -57,7 +57,7 @@ gcloud container \
   --node-taints cloud.google.com/gke-preemptible="false":PreferNoSchedule
 
 gcloud container \
-  node-pools create build3 \
+  node-pools create build4 \
   --disk-size 25GB \
   --disk-type pd-ssd \
   --enable-autorepair \
@@ -67,7 +67,7 @@ gcloud container \
   --max-pods-per-node 25 \
   --num-nodes 0 \
   --node-labels purpose=build,lifetime=preemptible \
-  --node-taints cloud.google.com/gke-preemptible="true":NoSchedule \
+  --node-taints cloud.google.com/gke-preemptible=true:NoSchedule,node-purpose=build:NoSchedule \
   --preemptible \
   --enable-autoscaling \
   --min-nodes 0 \
