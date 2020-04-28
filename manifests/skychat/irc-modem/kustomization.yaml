@@ -1,0 +1,14 @@
+bases:
+- ../../../apps/stardriver-irc-modem
+
+patchesStrategicMerge:
+- wireguard-sidecar.yaml
+
+secretGenerator:
+- name: wireguard-key
+  env: wireguard.env
+
+configMapGenerator:
+- name: wireguard-conf
+  files:
+  - wg0.conf=wireguard.conf

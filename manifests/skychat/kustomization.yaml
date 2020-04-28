@@ -12,7 +12,7 @@ images:
 
 bases:
 - ../../apps/skychat-api
-- ../../apps/stardriver-irc-modem
+- irc-modem
 - automatons/dan-irc
 - automatons/nat-irc
 
