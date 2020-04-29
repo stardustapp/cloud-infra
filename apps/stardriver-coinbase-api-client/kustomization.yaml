@@ -1,0 +1,7 @@
+commonLabels:
+  app: stardriver-coinbase-api-client
+  stardriver: coinbase-api-client
+
+resources:
+- deployment.yaml
+- service.yaml

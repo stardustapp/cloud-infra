@@ -4,14 +4,19 @@ images:
 
 - name: skychat-logic
   newName: gcr.io/stardust-156404/skychat-logic
-  newTag: '3831ac0'
+  newTag: 'eb522ba'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem
   newTag: h20
 
+- name: stardriver-coinbase-api-client
+  newName: gcr.io/stardust-156404/coinbase-api-client
+  newTag: h4
+
 bases:
 - ../../apps/skychat-api
+- ../../apps/stardriver-coinbase-api-client # for !btc
 - irc-modem
 - automatons/dan-irc
 - automatons/nat-irc

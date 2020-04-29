@@ -23,3 +23,5 @@ spec:
         - session://persist/irc
         - --/state
         - temp://
+        - --/coinbase-api
+        - skylink+http://coinbase-api-client
