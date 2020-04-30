@@ -15,7 +15,7 @@ spec:
 
         envFrom:
         - secretRef:
-            name: integrations
+            name: api-environment
 
       volumes:
       - name: secrets

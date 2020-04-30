@@ -4,7 +4,7 @@ images:
 
 - name: skychat-logic
   newName: gcr.io/stardust-156404/skychat-logic
-  newTag: 'eb522ba'
+  newTag: 'c2d19f7'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem
@@ -18,6 +18,7 @@ bases:
 - ../../apps/skychat-api
 - ../../apps/stardriver-coinbase-api-client # for !btc
 - irc-modem
+# - ../../apps/bitlbee
 - automatons/dan-irc
 - automatons/nat-irc
 
@@ -39,5 +40,5 @@ secretGenerator:
 - name: admin-credential
   files:
   - firebase-adminsdk-key.json
-- name: integrations
-  env: integrations.env
+- name: api-environment
+  env: api-env.env
