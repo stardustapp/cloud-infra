@@ -10,6 +10,7 @@ spec:
       - name: app
 
         args:
+        - --unhandled-rejections=strict
         - automaton
         - --app
         - irc

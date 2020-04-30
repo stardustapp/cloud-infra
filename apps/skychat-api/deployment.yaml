@@ -11,6 +11,7 @@ spec:
       - name: app
         image: skychat-logic
         args:
+        - --unhandled-rejections=strict
         - api
         ports:
         - name: http
