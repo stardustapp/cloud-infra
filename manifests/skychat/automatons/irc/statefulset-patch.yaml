@@ -14,15 +14,8 @@ spec:
         - automaton
         - --app
         - irc
-        - --/source
-        - file://routines/irc
+        - --default-mounts
         - --/irc-modem
         - skylink+http://irc-modem
-        - --/config
-        - session://config/irc
-        - --/persist
-        - session://persist/irc
-        - --/state
-        - temp://
         - --/coinbase-api
         - skylink+http://coinbase-api-client
