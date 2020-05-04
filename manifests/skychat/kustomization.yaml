@@ -4,7 +4,7 @@ images:
 
 - name: skychat-logic
   newName: gcr.io/stardust-156404/skychat-logic
-  newTag: 'c2d19f7'
+  newTag: 'e292c76'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem
@@ -19,8 +19,12 @@ bases:
 - ../../apps/stardriver-coinbase-api-client # for !btc
 - irc-modem
 # - ../../apps/bitlbee
+
+# human users
 - automatons/dan-irc
 - automatons/nat-irc
+# chatbots
+- automatons/skyhook-irc
 
 resources:
 - namespace.yaml

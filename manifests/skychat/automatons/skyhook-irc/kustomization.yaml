@@ -1,0 +1,11 @@
+nameSuffix: -skyhook-irc
+commonLabels:
+  user: skyhook
+  app: irc
+
+bases:
+- ../irc
+
+secretGenerator:
+- env: credentials.env
+  name: automaton-env
