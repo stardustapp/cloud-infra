@@ -30,10 +30,10 @@ spec:
         resources:
           requests:
             cpu: 25m
-            memory: 250Mi
+            memory: 50Mi
           limits:
             cpu: 1000m
-            memory: 500Mi
+            memory: 75Mi
 
       # don't care about preemptible status
       tolerations:
