@@ -6,7 +6,7 @@ RUN yum clean expire-cache \
  && yum install -y \
       nagios nagios-selinux nagios-plugins-all \
       perl-LWP-Protocol-https perl-Crypt-SSLeay perl-libwww-perl \
-      vim python-requests \
+      vim python-requests nagios-plugins-nrpe \
  && yum clean all
 
 # patch baseurl for direct hosting
