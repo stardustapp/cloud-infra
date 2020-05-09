@@ -5,6 +5,13 @@ bases:
 
 resources:
 - auth-proxy.yaml
+- serviceaccount.yaml
+- rbac.yaml
+
+images:
+- name: nagios
+  newName: gcr.io/stardust-156404/nagios
+  newTag: h4
 
 patches:
 
@@ -12,6 +19,9 @@ patches:
   target:
     kind: StatefulSet
 - path: wireguard-sidecar.yaml
+  target:
+    kind: StatefulSet
+- path: serviceaccount-assignment.yaml
   target:
     kind: StatefulSet
 

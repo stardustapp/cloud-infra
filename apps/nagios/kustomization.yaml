@@ -12,8 +12,3 @@ configMapGenerator:
   files:
   - nagios.conf=httpd-conf/nagios.conf
   - php.conf=httpd-conf/php.conf
-
-images:
-- name: nagios
-  newName: gcr.io/stardust-156404/nagios
-  newTag: h2
