@@ -1,0 +1,7 @@
+commonLabels:
+  app: nagios
+  component: api-checks
+
+resources:
+- deployment.yaml
+- service.yaml

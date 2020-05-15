@@ -2,6 +2,7 @@ namespace: nagios
 
 bases:
 - ../../apps/nagios
+- ../../apps/nagios-api-checks
 
 resources:
 - auth-proxy.yaml
@@ -11,6 +12,9 @@ resources:
 images:
 - name: nagios
   newName: gcr.io/stardust-156404/nagios
+  newTag: h4
+- name: nagios-api-checks
+  newName: gcr.io/stardust-156404/nagios-api-checks
   newTag: h4
 
 patches:
@@ -29,6 +33,9 @@ secretGenerator:
 
 - name: nagios-oauth
   env: auth-proxy.env
+
+- name: nagios-api-checks
+  env: api-checks.env
 
 - name: wireguard-key
   env: wireguard.env

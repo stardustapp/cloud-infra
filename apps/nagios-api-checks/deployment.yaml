@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nagios-api-checks
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: app
+        image: nagios-api-checks
+        ports:
+        - name: nrpe
+          containerPort: 5666
+
+        resources:
+          requests:
+            cpu: 10m
+            memory: 25Mi
+          limits:
+            cpu: 500m
+            memory: 50Mi
+
+        readinessProbe:
+          tcpSocket:
+            port: nrpe
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+        envFrom:
+        - secretRef:
+            name: nagios-api-checks
+
+      # don't care about preemptible status
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Exists
+        effect: NoSchedule
