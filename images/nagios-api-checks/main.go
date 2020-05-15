@@ -21,17 +21,24 @@ func nrpeHandler(c nrpe.Command) (*nrpe.CommandResult, error) {
 	switch c.Name {
 
 	case "check_plex":
-		status, text = checkPlex(c.Args[1])
+		status, text = checkPlex(c.Args[0])
 	}
 
+	log.Printf("Check '%v %v' resulted in '%v %v'", c.Name, c.Args, status, text)
 	return &nrpe.CommandResult{
 		StatusLine: text,
 		StatusCode: statusMap[status],
 	}, nil
 }
 
+func connectionHandler(conn net.Conn) {
+	nrpe.ServeOne(conn, nrpeHandler, false, 0)
+	log.Println("Connection closed.")
+	conn.Close()
+}
+
 func main() {
-	ln, err := net.Listen("tcp", ":5667")
+	ln, err := net.Listen("tcp", ":5666")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -43,8 +50,7 @@ func main() {
 			log.Println(err)
 			continue
 		}
-
-		defer conn.Close()
-		go nrpe.ServeOne(conn, nrpeHandler, true, 0)
+		log.Println("Accepted connection from", conn.RemoteAddr().String())
+		go connectionHandler(conn)
 	}
 }
