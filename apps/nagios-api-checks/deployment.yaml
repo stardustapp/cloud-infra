@@ -17,10 +17,10 @@ spec:
         resources:
           requests:
             cpu: 10m
-            memory: 25Mi
+            memory: 10Mi
           limits:
             cpu: 500m
-            memory: 50Mi
+            memory: 20Mi
 
         envFrom:
         - secretRef:
