@@ -29,7 +29,7 @@ metadata:
   name: usenet
 subsets:
 - addresses:
-  - ip: 10.69.2.56
+  - ip: 10.69.2.59
   ports:
   - port: 8080
     name: sabnzbd
