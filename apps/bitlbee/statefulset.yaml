@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bitlbee
+spec:
+  serviceName: bitlbee
+
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  template:
+    spec:
+      containers:
+
+      - name: app
+        image: ezkrg/bitlbee-libpurple
+        ports:
+        - name: irc
+          containerPort: 6667
+        args:
+        - /usr/sbin/bitlbee
+        - -F # run as forking daemon
+        - -n # run in foreground
+        - -v # verbose
+        # - -u
+        # - bitlbee
+        - -d # data dir
+        - /bitlbee-data
+
+        resources:
+          requests:
+            cpu: 25m
+            memory: 50Mi
+          limits:
+            cpu: 1000m
+            memory: 50Mi
+
+        volumeMounts:
+        - name: data
+          mountPath: /bitlbee-data
+
+      # prefer non-preemptible nodes
+      nodeSelector:
+        lifetime: persistent
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "false"
+        effect: NoSchedule
+
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

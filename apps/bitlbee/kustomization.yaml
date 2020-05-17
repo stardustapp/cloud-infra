@@ -1,0 +1,7 @@
+commonLabels:
+  app: skychat
+  component: bitlbee
+
+resources:
+- service.yaml
+- statefulset.yaml
