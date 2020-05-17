@@ -4,6 +4,7 @@ metadata:
   name: build-shell
 spec:
   serviceName: build-shell
+  volumeClaimTemplates: []
   template:
     spec:
       containers:
@@ -17,4 +18,8 @@ spec:
       - key: cloud.google.com/gke-preemptible
         operator: Equal
         value: "true"
+        effect: NoSchedule
+      - key: node-purpose
+        operator: Equal
+        value: "build"
         effect: NoSchedule
