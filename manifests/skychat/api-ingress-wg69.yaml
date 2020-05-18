@@ -20,5 +20,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: skychat-api
+          serviceName: dustjs-backend-firebase
           servicePort: 80

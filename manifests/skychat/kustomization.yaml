@@ -2,9 +2,13 @@ namespace: skychat
 
 images:
 
+- name: dustjs-backend-firebase
+  newName: gcr.io/stardust-156404/dustjs-backend-firebase
+  newTag: 'dc98c14'
+
 - name: skychat-logic
   newName: gcr.io/stardust-156404/skychat-logic
-  newTag: 'e292c76'
+  newTag: '429f679'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem
@@ -15,7 +19,7 @@ images:
   newTag: h4
 
 bases:
-- ../../apps/skychat-api
+- api
 - ../../apps/stardriver-coinbase-api-client # for !btc
 - irc-modem
 # - ../../apps/bitlbee
@@ -31,18 +35,7 @@ resources:
 - api-ingress.yaml
 - api-ingress-wg69.yaml
 
-patchesStrategicMerge:
-- deployment-patch.yaml
-- persistent-modem.yaml
-
 # patchesJson6902:
 # - path: integrations-env-patch.yaml
 #   target:
 #     kind: StatefulSet
-
-secretGenerator:
-- name: admin-credential
-  files:
-  - firebase-adminsdk-key.json
-- name: api-environment
-  env: api-env.env

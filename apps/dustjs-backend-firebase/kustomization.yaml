@@ -1,6 +1,5 @@
 commonLabels:
-  app: skychat
-  component: api
+  component: backend
 
 resources:
 - deployment.yaml

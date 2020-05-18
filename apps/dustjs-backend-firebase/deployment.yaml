@@ -2,17 +2,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skychat-api
+  name: dustjs-backend-firebase
 spec:
   replicas: 1
   template:
     spec:
       containers:
       - name: app
-        image: skychat-logic
-        args:
-        - --unhandled-rejections=strict
-        - api
+        image: dustjs-backend-firebase
         ports:
         - name: http
           containerPort: 9231
