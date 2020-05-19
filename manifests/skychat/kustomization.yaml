@@ -4,11 +4,11 @@ images:
 
 - name: dustjs-backend-firebase
   newName: gcr.io/stardust-156404/dustjs-backend-firebase
-  newTag: 'dc98c14'
+  newTag: '3bbb079'
 
 - name: skychat-logic
   newName: gcr.io/stardust-156404/skychat-logic
-  newTag: '429f679'
+  newTag: 'a4dd568'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem

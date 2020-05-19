@@ -19,12 +19,10 @@ export function builder(El, addRoot) {
 
     '/networks': new El.NamedCollection({
       '/auto-connect': Boolean,
-      // TODO: convert to string map
-      '/channels': [String],
-      // '/channels': new El.StringMap({
-      //   '/auto-join': Boolean,
-      //   '/key': String,
-      // }),
+      '/channels': new El.StringMap({
+        '/auto-join': Boolean,
+        '/key': String,
+      }),
       '/full-name': String,
       '/hostname': String,
       '/ident': String,
