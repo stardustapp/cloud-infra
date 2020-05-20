@@ -92,6 +92,7 @@ export function builder(El, addRoot) {
         '/topic/latest': String,
         '/topic/set-at': Date,
         '/topic/set-by': String,
+        '/channel-url': String,
       }),
 
       '/queries': new El.NamedCollection({
