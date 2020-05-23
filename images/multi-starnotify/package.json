@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.108.0",
+    "fibers": "^5.0.0",
     "filesize": "^3.5.11",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",

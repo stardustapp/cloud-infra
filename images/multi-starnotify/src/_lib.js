@@ -95,7 +95,11 @@ exports.shortenUrl = function shortenUrl(url) {
       dagdClient.get(fullPath, (err, req, res, data) => {
         // TODO: record latency
         if (err) { cb(err); }
-        else if (res.statusCode === 200) { cb(null, data); } // yay
+        else if (res.statusCode === 200) {
+          if (data.includes('://')) cb(null, data)
+          else throw new Error(
+            `da.gd response seemed bad: ${JSON.stringify(data)}`);
+        }
         else { cb(new Error(`da.gd returned status code ${res.statusCode}`)); }
       });
     }).sync();
