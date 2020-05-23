@@ -738,10 +738,10 @@ exports.processMessage = function processMessage(data) {
     return;
 
   case 'ping':
-    const context = payload.hook.type === 'Organization'
+    const pingCtx = payload.hook.type === 'Organization'
       ? payload.organization.login
       : payload.repository.name;
-    notify(channel, "[\x0313"+context+"\x0F] "+
+    notify(channel, "[\x0313"+pingCtx+"\x0F] "+
         "This GitHub hook is working! Received a `ping` event. "+
         payload.zen + ' '+
         "\x0302\x1F"+urlHandler(payload.repository.html_url)+"\x0F");
