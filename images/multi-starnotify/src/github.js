@@ -750,11 +750,17 @@ exports.processMessage = function processMessage(data) {
         "\x0302\x1F"+urlHandler(pingUrl)+"\x0F");
     return;
 
+  case 'meta':
+    notify(channel, "[\x0313"+hookSource+"\x0F] "+
+        "Looks like this GitHub webhook was "+
+        "\x0305"+payload.action+"\x0F");
+    return;
+
   }
   console.log('got weird message', JSON.stringify(data));
   notify(channel, "[\x0313"+hookSource+"\x0F] "+
          "Got Github event of unhandled type: " + eventType);
-  notify('#stardust', "Got Github event of unhandled type: `" + eventType + '`');
+  notify('#stardust-noise', "Got Github event of unhandled type: `" + eventType + '`');
 }
 
 // start working
