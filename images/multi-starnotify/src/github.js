@@ -24,6 +24,9 @@ exports.processMessage = function processMessage(data) {
   console.log('github webhook data:', JSON.stringify(data));
   const {payload} = data;
   const eventType = data.headers['X-GitHub-Event'];
+  const hookSource = payload.repository
+    ? payload.repository.name
+    : payload.organization.login;
 
   var channel;
   var urlHandler = (url) => shortenUrl(url);
@@ -738,13 +741,10 @@ exports.processMessage = function processMessage(data) {
     return;
 
   case 'ping':
-    const pingCtx = payload.hook.type === 'Organization'
-      ? payload.organization.login
-      : payload.repository.name;
     const pingUrl = payload.hook.type === 'Organization'
       ? `https://github.com/${payload.organization.login}`
       : payload.repository.html_url;
-    notify(channel, "[\x0313"+pingCtx+"\x0F] "+
+    notify(channel, "[\x0313"+hookSource+"\x0F] "+
         "This GitHub hook is working! Received a `ping` event. "+
         payload.zen + ' '+
         "\x0302\x1F"+urlHandler(pingUrl)+"\x0F");
@@ -752,7 +752,7 @@ exports.processMessage = function processMessage(data) {
 
   }
   console.log('got weird message', JSON.stringify(data));
-  notify(channel, "[\x0313"+payload.repository.name+"\x0F] "+
+  notify(channel, "[\x0313"+hookSource+"\x0F] "+
          "Got Github event of unhandled type: " + eventType);
   notify('#stardust', "Got Github event of unhandled type: `" + eventType + '`');
 }
