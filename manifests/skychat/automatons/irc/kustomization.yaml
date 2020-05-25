@@ -1,4 +1,4 @@
 bases:
-- ../../../../apps/skychat-automaton
+- ../../../../apps/dustjs-automaton-lua
 patchesStrategicMerge:
 - statefulset-patch.yaml

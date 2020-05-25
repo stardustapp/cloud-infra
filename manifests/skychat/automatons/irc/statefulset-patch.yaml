@@ -10,8 +10,9 @@ spec:
       - name: app
 
         args:
+        - node
         - --unhandled-rejections=strict
-        - automaton
+        - /app
         - --app
         - irc
         - --default-mounts
@@ -19,3 +20,11 @@ spec:
         - skylink+http://irc-modem
         - --/coinbase-api
         - skylink+http://coinbase-api-client
+
+        volumeMounts:
+        - name: routines
+          mountPath: /app/routines
+      volumes:
+      - name: routines
+        configMap:
+          name: routines-irc-8gd2ftt954

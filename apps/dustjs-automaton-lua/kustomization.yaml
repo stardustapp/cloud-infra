@@ -1,5 +1,4 @@
 commonLabels:
-  app: skychat
   component: automaton
 
 resources:

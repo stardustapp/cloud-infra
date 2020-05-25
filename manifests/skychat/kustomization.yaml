@@ -2,13 +2,9 @@ namespace: skychat
 
 images:
 
-- name: dustjs-backend-firebase
-  newName: gcr.io/stardust-156404/dustjs-backend-firebase
-  newTag: '3bbb079'
-
-- name: skychat-logic
-  newName: gcr.io/stardust-156404/skychat-logic
-  newTag: 'a4dd568'
+- name: dustjs-automaton-lua
+  newName: gcr.io/stardust-156404/dustjs-automaton-lua
+  newTag: 'f7df7f9'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem
@@ -19,7 +15,7 @@ images:
   newTag: h4
 
 bases:
-- api
+# - api
 - ../../apps/stardriver-coinbase-api-client # for !btc
 - irc-modem
 # - ../../apps/bitlbee
@@ -32,8 +28,8 @@ bases:
 
 resources:
 - namespace.yaml
-- api-ingress.yaml
-- api-ingress-wg69.yaml
+# - api-ingress.yaml
+# - api-ingress-wg69.yaml
 
 # patchesJson6902:
 # - path: integrations-env-patch.yaml
