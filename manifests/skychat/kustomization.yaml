@@ -15,7 +15,6 @@ images:
   newTag: h4
 
 bases:
-# - api
 - ../../apps/stardriver-coinbase-api-client # for !btc
 - irc-modem
 # - ../../apps/bitlbee
