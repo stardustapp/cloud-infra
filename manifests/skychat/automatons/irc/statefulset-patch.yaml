@@ -15,6 +15,8 @@ spec:
         - /app
         - --app
         - irc
+        - --service
+        - irc-automaton
         - --default-mounts
         - --/irc-modem
         - skylink+http://irc-modem

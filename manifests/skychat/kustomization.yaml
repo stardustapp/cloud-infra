@@ -4,7 +4,7 @@ images:
 
 - name: dustjs-automaton-lua
   newName: gcr.io/stardust-156404/dustjs-automaton-lua
-  newTag: 'f7df7f9'
+  newTag: '64c9168'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/irc-modem
