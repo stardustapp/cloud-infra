@@ -34,6 +34,13 @@ spec:
         - TCP-LISTEN:8081,fork,su=nobody
         - TCP:10.69.1.12:80
 
+      - name: modem2-proxy
+        image: alpine/socat
+        args:
+        - -s
+        - TCP-LISTEN:9234,fork,su=nobody
+        - TCP:10.69.1.12:9234
+
       - name: jenkins-ws-proxy
         image: alpine/socat
         args:
