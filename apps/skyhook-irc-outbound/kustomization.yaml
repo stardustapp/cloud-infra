@@ -1,0 +1,6 @@
+commonLabels:
+  app: skyhook
+  component: irc-outbound
+
+resources:
+- statefulset.yaml

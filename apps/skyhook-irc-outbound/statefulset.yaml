@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: irc-outbound
+spec:
+  serviceName: skyhook-irc-outbound
+
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  volumeClaimTemplates: []
+  template:
+    spec:
+      containers:
+
+      - name: app
+        image: skyhook-irc-outbound
+
+        envFrom:
+        - secretRef:
+            name: irc-outbound-env
+
+        resources:
+          requests:
+            memory: 40Mi
+            cpu: 10m
+          limits:
+            memory: 40Mi
+            cpu: 1000m
+
+      # don't care about preemptible status
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Exists
+        effect: NoSchedule

@@ -6,6 +6,7 @@ namespace: starnotify
 resources:
 - ../../apps/starnotify
 - ../../apps/stardriver-irc-client
+- ../../apps/skyhook-irc-outbound
 
 patches:
 - path: deployment-env.yaml
@@ -24,6 +25,14 @@ secretGenerator:
 - env: credentials.env
   name: credentials
 
+- env: irc-outbound.env
+  name: irc-outbound-env
+
 images:
+
 - name: gcr.io/stardust-156404/multi-starnotify
-  newTag: h13
+  newTag: h14
+
+- name: skyhook-irc-outbound
+  newName: gcr.io/stardust-156404/skyhook-irc-outbound
+  newTag: h4
