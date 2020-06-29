@@ -1,0 +1,11 @@
+nameSuffix: -relrod-irc
+commonLabels:
+  user: relrod
+  app: irc
+
+bases:
+- ../irc
+
+secretGenerator:
+- env: credentials.env
+  name: automaton-env

@@ -22,6 +22,9 @@ bases:
 # human users
 - automatons/dan-irc
 - automatons/nat-irc
+- automatons/nb-irc
+- automatons/fox-irc
+- automatons/relrod-irc
 # chatbots
 - automatons/skyhook-irc
 

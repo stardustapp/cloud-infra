@@ -1,0 +1,11 @@
+nameSuffix: -fox-irc
+commonLabels:
+  user: fox
+  app: irc
+
+bases:
+- ../irc
+
+secretGenerator:
+- env: credentials.env
+  name: automaton-env
