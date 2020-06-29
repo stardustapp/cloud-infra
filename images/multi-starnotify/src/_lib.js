@@ -116,7 +116,7 @@ exports.shortenUrl = function shortenUrl(url) {
         // TODO: record latency
         if (err) { cb(err); }
         else if (res.statusCode === 200) {
-          if (data.includes('://')) cb(null, data)
+          if (data.includes('://')) cb(null, data.trim())
           else cb(new Error(
             `da.gd response seemed bad: ${JSON.stringify(data)}`));
         }
