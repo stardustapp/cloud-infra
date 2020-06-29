@@ -11,9 +11,30 @@ const {STARNOTIFY_FLAGS} = process.env;
 const extraFlags = STARNOTIFY_FLAGS ? STARNOTIFY_FLAGS.split(' ') : [];
 console.log('Using extra starnotify opts:', extraFlags);
 
+const sqs = new AWS.SQS();
+
 // shell out to starnotify
 exports.notify = function notify(channel, message) {
   console.log('Sending to', channel, '-', message);
+
+  // Certain channels should use the new bot
+  if (['##danopia'].includes(channel)) {
+    const payload = JSON.stringify({ "ver": 1,
+      "protocol": "irc", "network": "freenode",
+      "target": channel, "message": message,
+    });
+
+    const {SQS_QUEUE_URL_BASE, SQS_QUEUE_IRC_OUTBOUND} = process.env;
+    sqs.sendMessage.sync(sqs, {
+      QueueUrl: SQS_QUEUE_URL_BASE + SQS_QUEUE_IRC_OUTBOUND,
+      MessageBody: payload,
+      MessageDeduplicationId: Math.random().toString().slice(2),
+      MessageGroupId: ['irc', 'freenode', channel].map(encodeURIComponent).join('/')
+    });
+
+    return;
+  }
+
   const app = spawn('starnotify', [
     ...extraFlags,
     '-irc-channel', channel,
@@ -39,7 +60,6 @@ exports.notify = function notify(channel, message) {
 
 // execute a main loop to process SQS messages in a blocking fashion
 exports.runWorker = function runWorker(processMessage) {
-  const sqs = new AWS.SQS();
   const {SQS_QUEUE_URL} = process.env;
 
   function doOneWork() {
