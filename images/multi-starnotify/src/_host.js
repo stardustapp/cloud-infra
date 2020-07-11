@@ -6,6 +6,7 @@ const sleep = (ms, cb) => { setTimeout(cb, ms); };
 const allProcessors = [
   { queue: 'hooks-from-bugsnag', ...require('./bugsnag.js') },
   { queue: 'hooks-from-cloudwatch', ...require('./cloudwatch.js') },
+  { queue: 'hooks-from-grafana', ...require('./grafana.js') },
   { queue: 'hooks-from-github', ...require('./github.js') },
   { queue: 'hooks-from-mailgun', ...require('./mailgun.js') },
   { queue: 'hooks-from-radarr', ...require('./radarr.js') },
