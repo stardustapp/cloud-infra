@@ -31,7 +31,7 @@ secretGenerator:
 images:
 
 - name: gcr.io/stardust-156404/multi-starnotify
-  newTag: h16
+  newTag: h17
 
 - name: skyhook-irc-outbound
   newName: gcr.io/stardust-156404/skyhook-irc-outbound
