@@ -1,0 +1,11 @@
+nameSuffix: -mkb-irc
+commonLabels:
+  user: mkb
+  app: irc
+
+bases:
+- ../irc
+
+secretGenerator:
+- env: credentials.env
+  name: automaton-env
