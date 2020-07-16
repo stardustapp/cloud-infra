@@ -26,7 +26,7 @@ exports.processMessage = function processMessage(data) {
   const eventType = data.headers['X-GitHub-Event'];
   const hookSource = payload.repository
     ? payload.repository.name
-    : payload.organization.login;
+    : (payload.organization || payload.sender).login;
 
   var channel;
   var urlHandler = (url) => shortenUrl(url);
