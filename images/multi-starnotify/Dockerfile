@@ -8,7 +8,7 @@ RUN wget -P /bin http://dist.stardustapp.run.s3.amazonaws.com/core-utils/starnot
  && chmod +x /bin/starnotify
 
 # Add node deps
-ADD package.json .
+ADD package*.json ./
 RUN npm install
 
 # Add source files
