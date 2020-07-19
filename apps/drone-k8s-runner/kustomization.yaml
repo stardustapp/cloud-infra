@@ -1,0 +1,7 @@
+commonLabels:
+  app: drone
+  component: runner
+
+resources:
+- service-account.yaml
+- deployment.yaml

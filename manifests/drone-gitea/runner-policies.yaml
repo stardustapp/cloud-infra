@@ -1,0 +1,17 @@
+# https://github.com/drone-runners/drone-runner-kube/pull/18#issuecomment-637674508
+
+---
+kind: policy
+name: default
+
+node_selector:
+  purpose: build
+tolerations:
+- key: cloud.google.com/gke-preemptible
+  operator: Equal
+  value: 'true'
+  effect: NoSchedule
+- key: node-purpose
+  operator: Equal
+  value: build
+  effect: NoSchedule

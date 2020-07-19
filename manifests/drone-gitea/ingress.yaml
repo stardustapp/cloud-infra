@@ -1,0 +1,24 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: drone-web
+  annotations:
+    kubernetes.io/ingress.class: internet
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+spec:
+  tls:
+  - hosts:
+    - drone-gitea.devmode.cloud
+    secretName: tls-drone-gitea.devmode.cloud
+
+  rules:
+
+  - host: drone-gitea.devmode.cloud
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: drone-server
+          servicePort: 80

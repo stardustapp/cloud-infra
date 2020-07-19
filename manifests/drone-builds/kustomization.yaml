@@ -1,0 +1,6 @@
+namespace: drone-builds
+
+resources:
+- namespace.yaml
+- rbac.yaml
+- rbac-gitea.yaml

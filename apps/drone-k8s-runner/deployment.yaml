@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drone-k8s-runner
+spec:
+  replicas: 1
+  template:
+    spec:
+      serviceAccount: drone-k8s-runner
+      containers:
+      - name: app
+        image: drone/drone-runner-kube
+        ports:
+        - containerPort: 3000
+
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+          limits:
+            cpu: 1000m
+            memory: 50Mi
+
+        env:
+        - name: DRONE_RPC_HOST
+          value: drone-server
+        - name: DRONE_RPC_PROTO
+          value: http
+
+        envFrom:
+        - secretRef:
+            name: drone-runner-env
+        - secretRef:
+            name: drone-rpc-env
+
+        volumeMounts:
+        - name: policies
+          mountPath: /drone-cfg
+      volumes:
+      - name: policies
+        configMap:
+          name: runner-policies
+
+      # don't care about preemptible status
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Exists
+        effect: NoSchedule
+
+      enableServiceLinks: false

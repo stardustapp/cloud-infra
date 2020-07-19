@@ -1,0 +1,7 @@
+commonLabels:
+  app: drone
+  component: server
+
+resources:
+- service.yaml
+- statefulset.yaml

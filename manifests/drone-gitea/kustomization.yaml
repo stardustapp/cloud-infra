@@ -1,0 +1,24 @@
+namespace: drone-gitea
+
+bases:
+- ../../apps/drone-server
+- ../../apps/drone-k8s-runner
+resources:
+- namespace.yaml
+- ingress.yaml
+
+# patchesStrategicMerge:
+# - deployment-patch.yaml
+
+secretGenerator:
+- env: server-secrets.env # TODO: eventually becomes 'envs: - ...'
+  name: drone-server-env
+- env: runner-config.env
+  name: drone-runner-env
+- env: rpc-secret.env
+  name: drone-rpc-env
+
+configMapGenerator:
+- name: runner-policies
+  files:
+  - runner-policies.yaml
