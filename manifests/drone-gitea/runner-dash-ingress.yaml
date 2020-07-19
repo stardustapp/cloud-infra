@@ -1,0 +1,30 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: drone-runner-dash
+  annotations:
+    kubernetes.io/ingress.class: wg69
+    external-dns.alpha.kubernetes.io/ttl: "600"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.69.1.1/27, 10.69.1.49/27
+
+    # fill in the basic auth
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_input_headers "Authorization: Basic cm9vdDpyb290";
+
+    cert-manager.io/cluster-issuer: wg69-issuer
+spec:
+  tls:
+  - hosts:
+    - drone-gitea-runner.int.wg69.net
+    secretName: tls-drone-gitea-runner.int.wg69.net
+
+  rules:
+
+  - host: drone-gitea-runner.int.wg69.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: drone-runner-dash
+          servicePort: 80

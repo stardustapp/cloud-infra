@@ -1,4 +1,6 @@
 namespace: drone-gitea
+commonLabels:
+  app: drone
 
 bases:
 - ../../apps/drone-server
@@ -6,6 +8,7 @@ bases:
 resources:
 - namespace.yaml
 - ingress.yaml
+- runner-dash-ingress.yaml
 
 # patchesStrategicMerge:
 # - deployment-patch.yaml

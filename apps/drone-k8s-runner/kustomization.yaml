@@ -5,3 +5,4 @@ commonLabels:
 resources:
 - service-account.yaml
 - deployment.yaml
+- dash-service.yaml
