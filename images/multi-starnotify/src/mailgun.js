@@ -56,7 +56,7 @@ exports.processMessage = function processMessage(data) {
     .map(x => {
       let str = `\x0315${x.filename||x.name}\x0314`;
       const sizeHeader = x.headers.find(y => y[0].toLowerCase() === 'content-length');
-      if (sizeHeader && parseInt(sizeHeader[0]) > 0) {
+      if (sizeHeader && parseInt(sizeHeader[1]) > 0) {
         str += ` (${filesize(parseInt(sizeHeader[1]))})`;
       }
       return str;
