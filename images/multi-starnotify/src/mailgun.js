@@ -1,3 +1,4 @@
+const filesize = require('filesize');
 const { runWorker, trimText, notify } = require('./_lib');
 
 exports.processMessage = function processMessage(data) {
@@ -47,9 +48,27 @@ exports.processMessage = function processMessage(data) {
     contents = urlMatch[0];
   }
 
+  let trailer = '';
+  let attachments = Object
+    .keys(payload)
+    .filter(x => payload[x].filename)
+    .map(x => payload[x])
+    .map(x => {
+      let str = `\x0315${x.filename||x.name}\x0314`;
+      const sizeHeader = x.headers.find(y => y[0].toLowerCase() === 'content-length');
+      if (sizeHeader && parseInt(sizeHeader[0]) > 0) {
+        str += ` (${filesize(parseInt(sizeHeader[1]))})`;
+      }
+      return str;
+    });
+  if (attachments.length > 0) {
+    const attachS = attachments.length > 1 ? 's' : '';
+    trailer += ` \x0314/ \x02${attachments.length}\x02 attachment${attachS}: ${attachments.join(', ')}`;
+  }
+
   notify(channel,
     "[\x0313email\x0F/\x0306"+origSender+"\x0F] "+
-    trimText(subject, 150)+" \x0315/ "+trimText(contents, 150)+"\x0F");
+    trimText(subject, 150)+" \x0315/ "+trimText(contents, 150)+trailer+"\x0F");
 }
 
 // start working
