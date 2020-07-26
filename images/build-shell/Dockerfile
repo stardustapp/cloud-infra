@@ -10,8 +10,9 @@ RUN wget "https://dl.google.com/${CloudSdkPath}${CloudSdkFile}" \
  && ./google-cloud-sdk/install.sh
 
 ARG KustomizePath=https://api.github.com/repos/kubernetes-sigs/kustomize
-RUN wget $KustomizePath/releases/latest -O - \
+RUN wget $KustomizePath/releases -O - \
     | grep browser_download \
+    | grep kustomize_v \
     | grep linux \
     | cut -d '"' -f 4 \
     | xargs wget -O /bin/kustomize \
