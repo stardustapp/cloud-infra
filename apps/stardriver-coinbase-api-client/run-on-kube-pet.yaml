@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coinbase-api-client
+spec:
+  template:
+    spec:
+
+      nodeSelector:
+        kubernetes.io/role: pet
+        kubernetes.io/hostname: pet-berbox
+
+      tolerations:
+      - key: kubernetes.io/pet-node
+        operator: Exists
+        effect: NoSchedule

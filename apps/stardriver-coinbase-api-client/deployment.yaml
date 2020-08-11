@@ -11,6 +11,7 @@ spec:
 
       - name: driver
         image: stardriver-coinbase-api-client
+        imagePullPolicy: IfNotPresent
 
         ports:
         - containerPort: 9234
@@ -26,8 +27,8 @@ spec:
             memory: 10Mi
             cpu: 5m
           limits:
-            memory: 15Mi
-            cpu: 100m
+            memory: 25Mi
+            cpu: 1000m
 
       volumes:
       - name: ca-certs
