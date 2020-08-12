@@ -1,0 +1,19 @@
+namespace: kube-pets
+nameSuffix: -nodes
+
+bases:
+- ../../apps/external-dns
+
+patchesStrategicMerge:
+- deployment.yaml
+
+secretGenerator:
+- name: external-dns-gcloud-key
+  files:
+  - key.json=gcloud-key.json
+
+images:
+# https://github.com/kubernetes-sigs/external-dns/releases
+- name: external-dns
+  newName: us.gcr.io/k8s-artifacts-prod/external-dns/external-dns
+  newTag: v0.7.1
