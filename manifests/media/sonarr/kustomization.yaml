@@ -1,0 +1,7 @@
+commonLabels:
+  app: sonarr
+
+resources:
+- statefulset.yaml
+- service.yaml
+- ingress.yaml

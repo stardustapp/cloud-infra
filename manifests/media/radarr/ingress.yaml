@@ -19,12 +19,12 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: usenet
-          servicePort: radarr
+          serviceName: radarr
+          servicePort: http
   - host: radarr.wg69.elrod.me
     http:
       paths:
       - path: /
         backend:
-          serviceName: usenet
-          servicePort: radarr
+          serviceName: radarr
+          servicePort: http

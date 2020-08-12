@@ -1,0 +1,7 @@
+commonLabels:
+  app: tautulli
+
+resources:
+- statefulset.yaml
+- service.yaml
+- ingress.yaml

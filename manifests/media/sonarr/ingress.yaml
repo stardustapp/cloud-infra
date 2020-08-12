@@ -19,12 +19,12 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: usenet
-          servicePort: sonarr
+          serviceName: sonarr
+          servicePort: http
   - host: sonarr.wg69.elrod.me
     http:
       paths:
       - path: /
         backend:
-          serviceName: usenet
-          servicePort: sonarr
+          serviceName: sonarr
+          servicePort: http

@@ -1,0 +1,7 @@
+commonLabels:
+  app: radarr
+
+resources:
+- statefulset.yaml
+- service.yaml
+- ingress.yaml

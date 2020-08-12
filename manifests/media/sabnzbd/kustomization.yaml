@@ -1,0 +1,7 @@
+commonLabels:
+  app: sabnzbd
+
+resources:
+- statefulset.yaml
+- service.yaml
+- ingress.yaml

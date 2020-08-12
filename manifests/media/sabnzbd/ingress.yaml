@@ -19,12 +19,12 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: usenet
-          servicePort: sabnzbd
+          serviceName: sabnzbd
+          servicePort: http
   - host: sabnzbd.wg69.elrod.me
     http:
       paths:
       - path: /
         backend:
-          serviceName: usenet
-          servicePort: sabnzbd
+          serviceName: sabnzbd
+          servicePort: http
