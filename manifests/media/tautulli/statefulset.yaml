@@ -19,7 +19,7 @@ spec:
 
       nodeSelector:
         kubernetes.io/role: pet
-        kubernetes.io/hostname: pet-ausbox
+        kubernetes.io/hostname: ausbox
 
       tolerations:
       - key: kubernetes.io/pet-node

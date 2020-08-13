@@ -8,7 +8,7 @@ spec:
 
       nodeSelector:
         kubernetes.io/role: pet
-        kubernetes.io/hostname: pet-berbox
+        kubernetes.io/hostname: berbox
 
       tolerations:
       - key: kubernetes.io/pet-node
