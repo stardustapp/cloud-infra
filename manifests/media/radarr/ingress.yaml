@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: radarr-int
+  name: int
   annotations:
     kubernetes.io/ingress.class: wg69
     external-dns.alpha.kubernetes.io/ttl: "600"
@@ -19,12 +19,12 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: radarr
+          serviceName: srv
           servicePort: http
   - host: radarr.wg69.elrod.me
     http:
       paths:
       - path: /
         backend:
-          serviceName: radarr
+          serviceName: srv
           servicePort: http

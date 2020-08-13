@@ -1,7 +1,10 @@
+namePrefix: sabnzbd-
 commonLabels:
   app: sabnzbd
 
+bases:
+- ../../../apps/linuxserver-base
 resources:
-- statefulset.yaml
-- service.yaml
 - ingress.yaml
+patches:
+- spec-patch.yaml

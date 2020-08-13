@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: srv
+spec:
+  serviceName: srv
+  volumeClaimTemplates: []
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  template:
+    metadata:
+      annotations:
+        vk.podman.io/systemd.srv: 'false'
+        vk.podman.io/volume-selinux.config: relabel-private
+    spec:
+
+      nodeSelector:
+        kubernetes.io/role: pet
+        kubernetes.io/hostname: ausbox
+
+      tolerations:
+      - key: kubernetes.io/pet-node
+        operator: Exists
+        effect: NoSchedule
+
+      containers:
+
+      - name: srv
+        env:
+        - name: PUID
+          value: "1002"
+        - name: PGID
+          value: "1002"
+        - name: TZ
+          value: "America/Los_Angeles"

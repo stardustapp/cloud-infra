@@ -5,3 +5,6 @@ bases:
 - tautulli
 - sonarr
 - radarr
+
+resources:
+- namespace.yaml

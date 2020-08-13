@@ -1,7 +1,10 @@
+namePrefix: tautulli-
 commonLabels:
   app: tautulli
 
+bases:
+- ../../../apps/linuxserver-base
 resources:
-- statefulset.yaml
-- service.yaml
 - ingress.yaml
+patches:
+- spec-patch.yaml

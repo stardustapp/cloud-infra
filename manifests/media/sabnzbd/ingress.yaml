@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: sabnzbd-int
+  name: int
   annotations:
     kubernetes.io/ingress.class: wg69
     external-dns.alpha.kubernetes.io/ttl: "600"
@@ -19,12 +19,12 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: sabnzbd
+          serviceName: srv
           servicePort: http
   - host: sabnzbd.wg69.elrod.me
     http:
       paths:
       - path: /
         backend:
-          serviceName: sabnzbd
+          serviceName: srv
           servicePort: http

@@ -1,7 +1,10 @@
+namePrefix: radarr-
 commonLabels:
   app: radarr
 
+bases:
+- ../../../apps/linuxserver-base
 resources:
-- statefulset.yaml
-- service.yaml
 - ingress.yaml
+patches:
+- spec-patch.yaml

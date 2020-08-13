@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: tautulli-int
+  name: int
   annotations:
     kubernetes.io/ingress.class: wg69
     external-dns.alpha.kubernetes.io/ttl: "600"
@@ -19,5 +19,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: tautulli
+          serviceName: srv
           servicePort: http
