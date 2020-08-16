@@ -9,8 +9,8 @@ RUN wget -P /bin http://dist.stardustapp.run.s3.amazonaws.com/core-utils/starnot
 
 # Add node deps
 ADD package*.json ./
-RUN npm install
+RUN npm ci
 
 # Add source files
-ADD src src
+# ADD src src
 CMD ["node"]
