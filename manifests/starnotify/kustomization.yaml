@@ -22,16 +22,18 @@ patches:
     kind: StatefulSet
 
 secretGenerator:
-- env: credentials.env
+- envs:
+  - credentials.env
   name: credentials
 
-- env: irc-outbound.env
+- envs:
+  - irc-outbound.env
   name: irc-outbound-env
 
 images:
 
-- name: gcr.io/stardust-156404/multi-starnotify
-  newTag: h22
+- name: gcr.io/stardust-156404/multi-starnotify-deps
+  newTag: h23
 
 - name: skyhook-irc-outbound
   newName: gcr.io/stardust-156404/skyhook-irc-outbound

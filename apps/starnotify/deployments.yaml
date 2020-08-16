@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
+        image: gcr.io/stardust-156404/multi-starnotify-deps
         args:
         - 'node'
         - 'src/_host'
@@ -25,24 +25,11 @@ spec:
         - name: VIEWING_TIMEZONE
           value: America/Los_Angeles
 
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: jenkins
-  labels:
-    starnotify: jenkins
-spec:
-  replicas: 0
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      labels:
-        starnotify: jenkins
-    spec:
-      containers:
-      - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify
-        args:
-        - 'node'
-        - 'src/jenkins'
+        volumeMounts:
+        - name: source
+          mountPath: /src
+
+      volumes:
+      - name: source
+        configMap:
+          name: multi-sqs-source

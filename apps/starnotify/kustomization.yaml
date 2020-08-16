@@ -2,6 +2,8 @@ namespace: starnotify
 commonLabels:
   service: multi-starnotify
 
+bases:
+- ../../images/multi-starnotify
 resources:
 - deployments.yaml
 
