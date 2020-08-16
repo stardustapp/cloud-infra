@@ -8,6 +8,7 @@ const allProcessors = [
   { queue: 'hooks-from-cloudwatch', ...require('./cloudwatch.js') },
   { queue: 'hooks-from-grafana', ...require('./grafana.js') },
   { queue: 'hooks-from-github', ...require('./github.js') },
+  { queue: 'hooks-from-gitlab', ...require('./gitlab.js') },
   { queue: 'hooks-from-mailgun', ...require('./mailgun.js') },
   { queue: 'hooks-from-radarr', ...require('./radarr.js') },
   { queue: 'hooks-from-slackjack', ...require('./slackjack.js') },

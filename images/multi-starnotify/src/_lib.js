@@ -12,13 +12,14 @@ const extraFlags = STARNOTIFY_FLAGS ? STARNOTIFY_FLAGS.split(' ') : [];
 console.log('Using extra starnotify opts:', extraFlags);
 
 const sqs = new AWS.SQS();
+const s3 = new AWS.S3();
 
 // shell out to starnotify
 exports.notify = function notify(channel, message) {
   console.log('Sending to', channel, '-', message);
 
   // Certain channels should use the new bot
-  if (['##danopia'].includes(channel)) {
+  if (['##danopia', '#robigalia'].includes(channel)) {
     const payload = JSON.stringify({ "ver": 1,
       "protocol": "irc", "network": "freenode",
       "target": channel, "message": message,
@@ -57,6 +58,18 @@ exports.notify = function notify(channel, message) {
   if (code !== 0) throw new Error(
     `'starnotify' process exited with code ${code}`);
 };
+
+exports.storeSpeciman = function storeSpeciman(key, body) {
+  const fullKey = `skyhook-specimans/${key}-${new Date().toISOString()}.json`;
+  const url = `s3://stardust/${fullKey}`;
+  console.log('storing speciman to', url);
+  s3.putObject.sync(s3, {
+    Bucket: 'stardust',
+    Key: fullKey,
+    Body: JSON.stringify(body, null, 2),
+  });
+  return url;
+}
 
 // execute a main loop to process SQS messages in a blocking fashion
 exports.runWorker = function runWorker(processMessage) {

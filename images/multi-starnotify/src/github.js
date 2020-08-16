@@ -757,10 +757,13 @@ exports.processMessage = function processMessage(data) {
     return;
 
   }
+
+  const speciman = storeSpeciman(`github/${eventType}`, data);
+
   console.log('got weird message', JSON.stringify(data));
   notify(channel, "[\x0313"+hookSource+"\x0F] "+
          "Got Github event of unhandled type: " + eventType);
-  notify('#stardust-noise', "Got Github event of unhandled type: `" + eventType + '`');
+  notify('#stardust-noise', `Got Github event for ${channel} of unhandled type "${eventType}": ${speciman}`);
 }
 
 // start working
