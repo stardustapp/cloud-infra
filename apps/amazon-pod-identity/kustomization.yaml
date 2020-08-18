@@ -1,0 +1,16 @@
+namespace: kube-system
+commonLabels:
+  app: pod-identity-webhook
+
+resources:
+- auth-sa.yaml
+- auth-secrets.yaml
+- auth-cluster.yaml
+- deployment.yaml
+- service.yaml
+- mutatingwebhook.yaml
+
+images:
+- name: pod-identity-webhook
+  newName: gcr.io/stardust-156404/amazon-eks-pod-identity-webhook
+  newTag: e77f089

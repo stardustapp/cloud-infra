@@ -1,0 +1,5 @@
+bases:
+- ../../apps/amazon-pod-identity
+
+patches:
+- webhook-ca-patch.yaml

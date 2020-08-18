@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-identity-webhook
+spec:
+  replicas: 1
+  template:
+    spec:
+      serviceAccountName: pod-identity-webhook
+      containers:
+      - name: app
+        image: pod-identity-webhook
+        command:
+        - /webhook
+        - --in-cluster
+        - --aws-default-region=us-west-2
+        - --namespace=kube-system
+        - --service-name=pod-identity-webhook
+        - --tls-secret=pod-identity-webhook
+        - --annotation-prefix=eks.amazonaws.com
+        - --token-audience=sts.amazonaws.com
+        - --logtostderr
+        volumeMounts:
+        - name: webhook-certs
+          mountPath: /var/run/app/certs
+          readOnly: false
+      volumes:
+      - name: webhook-certs
+        emptyDir: {}
