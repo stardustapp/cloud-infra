@@ -12,4 +12,4 @@ patchesStrategicMerge:
 images:
 - name: gcr.io/stardust-156404/dust-poc
   newName: gcr.io/stardust-156404/dust-poc-kubectl
-  newTag: a543f57
+  newTag: 236f01c
