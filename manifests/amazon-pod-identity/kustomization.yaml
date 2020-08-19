@@ -3,3 +3,8 @@ bases:
 
 patches:
 - webhook-ca-patch.yaml
+
+images:
+- name: pod-identity-webhook
+  newName: gcr.io/stardust-156404/amazon-eks-pod-identity-webhook
+  newTag: 2ec3516

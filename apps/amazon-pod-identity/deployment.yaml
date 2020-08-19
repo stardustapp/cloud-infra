@@ -10,6 +10,7 @@ spec:
       containers:
       - name: app
         image: pod-identity-webhook
+        imagePullPolicy: IfNotPresent
         command:
         - /webhook
         - --in-cluster
