@@ -97,8 +97,16 @@ exports.processMessage = function processMessage(data) {
     var info = {
       created: payload.before === '0000000000000000000000000000000000000000',
       deleted: payload.after === '0000000000000000000000000000000000000000',
-      compareLink: `${payload.project.web_url}/-/compare/${payload.before}...${payload.after}`,
+      pushLink: `${payload.project.web_url}/-/`,
     };
+
+    if (payload.commits.length === 1) {
+      info.pushLink += `commit/${payload.after}`;
+    } else if (info.created || info.deleted) {
+      info.pushLink += `commits/${encodeURIComponent(branch)}/`;
+    } else {
+      info.pushLink += `compare/${payload.before}...${payload.after}`;
+    }
 
     // are empty pushes even pushes at all?
     if (payload.commits.length === 0) {
@@ -118,7 +126,7 @@ exports.processMessage = function processMessage(data) {
             "\x0315"+payload.user_username+"\x0F "+
             '\x02created\x02 '+
             "branch \x0306"+branch+"\x0F"+suffix+": "+
-            "\x0302\x1F"+urlHandler(info.compareLink)+"\x0F");
+            "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
         return;
 
       // // force-push without adding anything new
@@ -150,7 +158,7 @@ exports.processMessage = function processMessage(data) {
           (payload.commits.length == 2 ? 'commit' : 'commits')+" "+
           "from \x0306"+baseBranch+"\x0F "+
           "into \x0306"+branch+"\x0F: "+
-          "\x0302\x1F"+urlHandler(info.compareLink)+"\x0F");
+          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
       return;
     }
 
@@ -162,7 +170,7 @@ exports.processMessage = function processMessage(data) {
           "created \x0306"+branch+"\x0F "+
           "with \x02"+payload.commits.length+"\x02 "+
           "new "+noun+": "+
-          "\x0302\x1F"+urlHandler(info.compareLink)+"\x0F");
+          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
 
     // shorthand for adding one commit to an existing branch
     } else if (payload.commits.length === 1) {
@@ -182,7 +190,7 @@ exports.processMessage = function processMessage(data) {
           "\x0314"+commit.id.slice(0, 7)+"\x0F"+
           committerName+": "+
           trimText(commit.message, commitMsgLength)+"\x0F "+
-          "\x0302\x1F"+urlHandler(info.compareLink)+"\x0F");
+          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
 
       // we already sent the commit. don't repeat ourselves.
       return;
@@ -196,7 +204,7 @@ exports.processMessage = function processMessage(data) {
           "\x02"+payload.commits.length+"\x02 "+
           'new '+noun+" "+
           "to \x0306"+branch+"\x0F: "+
-          "\x0302\x1F"+urlHandler(info.compareLink)+"\x0F");
+          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
     }
 
     // if we haven't bailed yet, we still want to read out the first few commits
