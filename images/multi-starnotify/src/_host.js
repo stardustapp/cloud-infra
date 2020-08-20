@@ -19,6 +19,9 @@ const allProcessors = [
 
 // start working
 if (!module.parent) {
+  if (!process.env.AWS_REGION) throw new Error(
+    `Missing AWS configuration!`);
+
   const sqs = new AWS.SQS();
   const {SQS_QUEUE_URL_BASE} = process.env;
 

@@ -38,4 +38,4 @@ images:
 
 - name: skyhook-irc-outbound
   newName: gcr.io/stardust-156404/skyhook-irc-outbound
-  newTag: h4
+  newTag: h5
