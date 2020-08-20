@@ -5,6 +5,7 @@ metadata:
   name: coinbase-api-client
 spec:
   type: ClusterIP
+  publishNotReadyAddresses: true # TODO: kube-pet-node workaround
   ports:
   - name: http
     port: 80

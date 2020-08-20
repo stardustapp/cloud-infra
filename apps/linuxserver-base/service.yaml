@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: srv
 spec:
+  publishNotReadyAddresses: true # TODO: kube-pet-node workaround
   ports:
   - protocol: TCP
     name: http
