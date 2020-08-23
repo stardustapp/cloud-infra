@@ -1,6 +1,7 @@
 namespace: nagios
 commonLabels:
   app: nagios
+  component: controller
 
 resources:
 - statefulset.yaml

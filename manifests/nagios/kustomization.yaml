@@ -32,13 +32,16 @@ patches:
 secretGenerator:
 
 - name: nagios-oauth
-  env: auth-proxy.env
+  envs:
+  - auth-proxy.env
 
 - name: nagios-api-checks
-  env: api-checks.env
+  envs:
+  - api-checks.env
 
 - name: wireguard-key
-  env: wireguard.env
+  envs:
+  - wireguard.env
 
 configMapGenerator:
 
