@@ -298,7 +298,28 @@ exports.processMessage = function processMessage(data) {
         // <user> changed the body of MR !31...
         const fields = Object.keys(changes)
           .filter(x => !x.startsWith('updated_') && !x.startsWith('last_edited_'));
-        if (fields.length > 0) {
+        let isDraft = false;
+        if (fields.includes('title')) {
+          const {previous, current} = changes['title'];
+          const wipExp = /^(WIP|Draft): /;
+          if (!previous.match(wipExp) && current.match(wipExp)) {
+            isDraft = true;
+            fields.push('is-draft');
+            if (previous === current.replace(wipExp, '')) {
+              fields.splice(fields.indexOf('title'), 1);
+            }
+          } else if (previous.match(wipExp) && !current.match(wipExp)) {
+            fields.push('is-draft');
+            if (previous.replace(wipExp, '') === current) {
+              fields.splice(fields.indexOf('title'), 1);
+            }
+          }
+        }
+
+        if (fields.join(',') === 'is-draft') {
+          interjection = isDraft ? 'marked ' : 'unmarked ';
+          suffix = ' as a \x0307Work In Progress\x0F';
+        } else if (fields.length > 0) {
           interjection = 'changed the ' + fields.join(', ') + ' of ';
           title = '';
         }
