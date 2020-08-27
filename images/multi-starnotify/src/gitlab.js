@@ -301,7 +301,7 @@ exports.processMessage = function processMessage(data) {
         let isDraft = false;
         if (fields.includes('title')) {
           const {previous, current} = changes['title'];
-          const wipExp = /^(WIP|Draft): /;
+          const wipExp = /^((WIP|Draft):|\[(WIP|Draft)\]|\(Draft\)) /;
           if (!previous.match(wipExp) && current.match(wipExp)) {
             isDraft = true;
             fields.push('is-draft');
@@ -318,7 +318,7 @@ exports.processMessage = function processMessage(data) {
 
         if (fields.join(',') === 'is-draft') {
           interjection = isDraft ? 'marked ' : 'unmarked ';
-          suffix = ' as a \x0307Work In Progress\x0F';
+          suffix = ` as a \x03${isDraft ? '07' : '14'}Work In Progress\x0F`;
         } else if (fields.length > 0) {
           interjection = 'changed the ' + fields.join(', ') + ' of ';
           title = '';
