@@ -1,9 +1,9 @@
-FROM centos:7
+FROM centos:8
 MAINTAINER ricky@elrod.me
 
 # Obtain haskell and core deps
 RUN yum clean all \
- && yum -y install deltarpm yum-plugin-fastestmirror \
+ && yum -y install drpm \
  && curl -o /etc/yum.repos.d/ghc.repo \
       https://copr.fedorainfracloud.org/coprs/petersen/ghc-8.6.1/repo/epel-7/petersen-ghc-8.6.1-epel-7.repo \
  && sed -i s/gpgcheck=1/gpgcheck=0/ /etc/yum.repos.d/ghc.repo \
@@ -18,6 +18,7 @@ RUN cabal update \
  && cabal install $HOME/djinn/djinn.cabal \
  && rm -rf $HOME/djinn \
  && cabal install --constraint 'transformers installed' lambdabot \
+ && export PATH="${HOME}/.cabal/bin:${PATH}" \
  && hoogle generate \
  && hoogle data \
  && cabal install lens
