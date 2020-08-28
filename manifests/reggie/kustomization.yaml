@@ -12,3 +12,7 @@ configMapGenerator:
 - name: reggie-config
   files:
   - config.yml
+
+images:
+- name: gcr.io/stardust-156404/reggie
+  newTag: h2
