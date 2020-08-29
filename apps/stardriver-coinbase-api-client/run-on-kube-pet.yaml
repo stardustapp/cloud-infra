@@ -6,11 +6,18 @@ spec:
   template:
     spec:
 
+      # We want a pet
       nodeSelector:
-        kubernetes.io/role: pet
-        kubernetes.io/hostname: berbox
+        lifetime: persistent
+        purpose: pet
 
+      # Passlist of pets we'll be ok with
       tolerations:
       - key: kubernetes.io/pet-node
-        operator: Exists
+        operator: Equal
+        value: pet-laxbox
+        effect: NoSchedule
+      - key: kubernetes.io/pet-node
+        operator: Equal
+        value: pet-berbox
         effect: NoSchedule
