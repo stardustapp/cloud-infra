@@ -16,4 +16,4 @@ images:
 # https://github.com/kubernetes-sigs/external-dns/releases
 - name: external-dns
   newName: us.gcr.io/k8s-artifacts-prod/external-dns/external-dns
-  newTag: v0.7.1
+  newTag: v0.7.3
