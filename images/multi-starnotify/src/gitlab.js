@@ -112,6 +112,9 @@ exports.processMessage = function processMessage(data) {
     if (payload.commits.length === 0) {
       // branch deletion
       if (info.deleted) {
+        // TODO: branch delete NOT related to a MR is probably still relevant
+        if (true) return;
+
         notify(channel,
             "[\x0313"+payload.repository.name+"\x0F] "+
             "\x0315"+payload.user_username+"\x0F "+
@@ -331,8 +334,8 @@ exports.processMessage = function processMessage(data) {
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.user.username+"\x0F "+
         interjection+
-        type+" \x02"+identifier+"\x02"+suffix+": "+
-        trimText(object_attributes.title, 70)+"\x0F "+
+        type+" \x02"+identifier+"\x02"+suffix+
+        title+" "+
         "\x0302\x1F"+urlHandler(object_attributes.url)+"\x0F");
     return;
 
