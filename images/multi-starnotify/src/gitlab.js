@@ -289,6 +289,11 @@ exports.processMessage = function processMessage(data) {
         interjection = 'reopened ';
         break;
 
+      case 'approved':
+        title = '';
+        interjection = 'approved ';
+        break;
+
       case 'merge':
         interjection = 'closed and merged ';
         if (type === 'MR') {
