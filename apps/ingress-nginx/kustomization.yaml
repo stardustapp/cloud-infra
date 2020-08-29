@@ -12,8 +12,8 @@ resources:
 
 images:
 - name: nginx-ingress-controller
-  newName: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
-  newTag: 0.30.0
+  newName: k8s.gcr.io/ingress-nginx/controller
+  newTag: v0.35.0
 
 configMapGenerator:
 - name: nginx-configuration
