@@ -20,18 +20,19 @@ spec:
         image: nagios
         args:
         - sh
-        - -exc
+        - -euxc
         - |
+          ping -w10 -c2 10.69.1.1 # fails if no packets are received
           chown nagios:nagios /var/spool/nagios
           chown nagios:nagios /var/log/nagios
           exec /usr/sbin/nagios /etc/nagios/nagios.cfg
         resources:
           requests:
             cpu: 25m
-            memory: 25Mi
+            memory: 50Mi
           limits:
             cpu: 1500m
-            memory: 75Mi
+            memory: 150Mi
         ports:
         - containerPort: 80
           name: web
