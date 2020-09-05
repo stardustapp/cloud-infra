@@ -5,6 +5,9 @@ metadata:
   name: srv
 spec:
   template:
+    metadata:
+      annotations:
+        vk.podman.io/volume-selinux.incomplete: relabel-private
     spec:
       containers:
       - name: srv
@@ -26,6 +29,8 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+        - name: incomplete
+          mountPath: /incomplete-downloads
         - name: tv
           mountPath: /downloads/tv
         - name: movies
@@ -35,6 +40,10 @@ spec:
       - name: config
         hostPath:
           path: /tank/data/sabnzbd
+          type: Directory
+      - name: incomplete
+        hostPath:
+          path: /tank/media/partial
           type: Directory
       - name: tv
         hostPath:
