@@ -240,7 +240,7 @@ exports.processMessage = function processMessage(data) {
   case 'Issue Hook':
   case 'Merge Request Hook':
     var {object_attributes, changes, object_kind} = payload;
-    var {action} = object_attributes;
+    var {action, oldrev} = object_attributes;
 
     var type, identifier;
     switch (object_kind) {
@@ -330,6 +330,9 @@ exports.processMessage = function processMessage(data) {
         } else if (fields.length > 0) {
           interjection = 'changed the ' + fields.join(', ') + ' of ';
           title = '';
+        } else if (oldrev && oldrev !== object_attributes.last_commit.id) {
+          // TODO: git branch changed (probably already handled by push hooks)
+          return;
         }
         break;
     }
