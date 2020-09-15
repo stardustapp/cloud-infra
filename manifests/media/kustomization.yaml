@@ -5,6 +5,7 @@ bases:
 - tautulli
 - sonarr
 - radarr
+- ombi
 
 resources:
 - namespace.yaml

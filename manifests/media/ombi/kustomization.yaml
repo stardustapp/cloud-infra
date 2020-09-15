@@ -1,0 +1,10 @@
+namePrefix: ombi-
+commonLabels:
+  app: ombi
+
+bases:
+- ../../../apps/linuxserver-base
+resources:
+- ingress.yaml
+patches:
+- spec-patch.yaml
