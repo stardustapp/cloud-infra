@@ -56,9 +56,9 @@ exports.processMessage = function processMessage(data) {
   if (channel && output) {
     notify(channel, `[\x0307radarr\x0F] `+output);
   }
-  if (channel === '##danopia' && eventType == 'Download' && output) {
-    notify('##purdue', output);
-  }
+  // if (channel === '##danopia' && eventType == 'Download' && output) {
+  //   notify('##purdue', output);
+  // }
 
   //"\x0302\x1F"+shortenUrl(payload.build_url)+"\x0F");
 }
