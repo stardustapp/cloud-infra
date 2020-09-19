@@ -1,0 +1,10 @@
+namePrefix: nzbhydra-
+commonLabels:
+  app: nzbhydra
+
+bases:
+- ../../../apps/linuxserver-base
+resources:
+- ingress.yaml
+patches:
+- spec-patch.yaml

@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: srv
+spec:
+  template:
+    spec:
+      containers:
+      - name: srv
+
+        image: linuxserver/nzbhydra2
+        ports:
+        - containerPort: 5076
+          name: http
+          protocol: TCP
+
+        resources:
+          requests:
+            memory: 150Mi
+            cpu: 25m
+          limits:
+            memory: 500Mi
+            cpu: 1000m
+
+        volumeMounts:
+        - name: config
+          mountPath: /config
+
+      volumes:
+      - name: config
+        hostPath:
+          path: /tank/data/nzbhydra
+          type: Directory

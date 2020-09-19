@@ -5,6 +5,7 @@ bases:
 - tautulli
 - sonarr
 - radarr
+- nzbhydra
 - ombi
 
 resources:

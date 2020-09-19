@@ -1,0 +1,22 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ext
+  annotations:
+    kubernetes.io/ingress.class: internet
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+spec:
+  tls:
+  - hosts:
+    - nzbhydra.ext.wg69.net
+    secretName: tls-nzbhydra.ext.wg69.net
+  rules:
+  - host: nzbhydra.ext.wg69.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: srv
+          servicePort: http
