@@ -5,15 +5,7 @@ const SQS = new AWS.SQS({ apiVersion: '2012-11-05' });
 const querystring = require('querystring');
 
 const queueBase = 'https://sqs.us-west-2.amazonaws.com/414064234042/';
-const oldQueues = [
-    // 'bugsnag',
-    // 'cloudwatch', 'grafana', 'upcheck',
-    // 'github',
-    // 'gitlab',
-    // 'mailgun', 'slackjack',
-    // 'radarr', 'sonarr',
-    // 'travisci',
-];
+const queueName = 'skyhook-webhook-inbound.fifo';
 
 exports.handler = (event, context, callback) => {
     try {
@@ -23,6 +15,12 @@ exports.handler = (event, context, callback) => {
         body.headers = event.headers;
         body.parameters = event.queryStringParameters;
         body.receivedAt = Date.now();
+
+        if (event.pathParameters) {
+            body.hookFlavor = event.pathParameters.hook;
+        } else {
+            body.hookFlavor = event.resource.split('/')[2];
+        }
 
         // select content-type
         for (const key in event.headers) {
@@ -82,26 +80,7 @@ exports.handler = (event, context, callback) => {
 
         console.log('Hook came from IP', sourceIp);
         console.log('Hook came from UA', userAgent);
-
-        if (event.pathParameters) {
-            body.hookFlavor = event.pathParameters.hook;
-        } else {
-            body.hookFlavor = event.resource.split('/')[2];
-        }
-
-        // route to an SQS queue
-        const isOldHook = oldQueues.includes(body.hookFlavor);
-        const messageReq = isOldHook ? {
-            QueueUrl: queueBase + 'hooks-from-' + body.hookFlavor,
-            MessageBody: JSON.stringify(body),
-        } : {
-            QueueUrl: queueBase + 'skyhook-webhook-inbound.fifo',
-            MessageBody: JSON.stringify(body),
-            // TODO: actual deduplication?
-            MessageDeduplicationId: Math.random().toString().slice(2)+'-'+Date.now(),
-            MessageGroupId: ['webhook', body.hookFlavor].map(encodeURIComponent).join('/')
-        };
-        console.log('Routing to SQSq', messageReq.QueueUrl.replace(queueBase, ''));
+        console.log('Sending to SQSq', queueName);
 
         // prepare placeholder response
         var response = {
@@ -113,7 +92,13 @@ exports.handler = (event, context, callback) => {
         };
 
         // actually store the message
-        SQS.sendMessage(messageReq, (err, data) => {
+        SQS.sendMessage({
+            QueueUrl: queueBase + 'skyhook-webhook-inbound.fifo',
+            MessageBody: JSON.stringify(body),
+            // TODO: actual deduplication?
+            MessageDeduplicationId: Math.random().toString().slice(2)+'-'+Date.now(),
+            MessageGroupId: ['webhook', body.hookFlavor].map(encodeURIComponent).join('/')
+        }, (err, data) => {
             if (err) {
                 if (err.code === "AWS.SimpleQueueService.NonExistentQueue") {
                     response.statusCode = 404;
