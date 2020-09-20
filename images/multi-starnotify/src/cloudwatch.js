@@ -4,10 +4,15 @@ exports.processMessage = function processMessage(data) {
   console.log('cloudwatch SNS data:', JSON.stringify(data));
   const channel = process.env.NOTIFICATION_CHANNEL || '#stardust-noise';
 
-  const {Type, MessageId, TopicArn, Subject, Message, Timestamp} = data;
+  const {Type, MessageId, TopicArn, Subject, Message, Timestamp} = data.payload;
   // also signature and unsub stuff
-  if (Type != 'Notification') {
-    return notify(channel, `Received SNS '${Type}' from ${TopicArn}. "${Subject||''}"`)
+  switch (Type) {
+    case 'SubscriptionConfirmation':
+      return notify(channel, `SNS Subscription, confirm here: ${data.payload.SubscribeURL}`);
+    case 'Notification':
+      break;
+    default:
+      return notify(channel, `Received SNS '${Type}' from ${TopicArn}. "${Subject||''}"`);
   }
   console.log('cloudwatch SNS message body:', Message);
 
