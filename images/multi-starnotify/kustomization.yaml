@@ -16,3 +16,4 @@ configMapGenerator:
   - travisci.js=src/travisci.js
   - upcheck.js=src/upcheck.js
   - gitlab.js=src/gitlab.js
+  - ombi.js=src/ombi.js
