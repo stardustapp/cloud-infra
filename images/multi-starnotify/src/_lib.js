@@ -67,6 +67,7 @@ exports.storeSpeciman = function storeSpeciman(key, body) {
     Bucket: 'stardust',
     Key: fullKey,
     Body: JSON.stringify(body, null, 2),
+    ContentType: 'application/json',
   });
   return url;
 }

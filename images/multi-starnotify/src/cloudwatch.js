@@ -25,7 +25,7 @@ exports.processMessage = function processMessage(data) {
   // Color-code the status
   const stateColor = ({
     'ALARM': '\x0304', // red
-    'OK': '\x0303', // green
+    'OK': '\x0303', // green
   })[NewStateValue];
 
   // Try making a shorter description

@@ -4,17 +4,31 @@ const { runWorker, notify } = require('./_lib');
 const sleep = (ms, cb) => { setTimeout(cb, ms); };
 
 const allProcessors = [
-  { queue: 'hooks-from-bugsnag', ...require('./bugsnag.js') },
-  { queue: 'hooks-from-cloudwatch', ...require('./cloudwatch.js') },
-  { queue: 'hooks-from-grafana', ...require('./grafana.js') },
+  { queue: 'hooks-from-bugsnag', ...require('./bugsnag.js'), passive: true },
+  { queue: 'hooks-from-cloudwatch', ...require('./cloudwatch.js'), passive: true },
+  { queue: 'hooks-from-grafana', ...require('./grafana.js'), passive: true },
   { queue: 'hooks-from-github', ...require('./github.js') },
-  { queue: 'hooks-from-gitlab', ...require('./gitlab.js') },
-  { queue: 'hooks-from-mailgun', ...require('./mailgun.js') },
-  { queue: 'hooks-from-radarr', ...require('./radarr.js') },
-  { queue: 'hooks-from-slackjack', ...require('./slackjack.js') },
-  { queue: 'hooks-from-sonarr', ...require('./sonarr.js') },
-  { queue: 'hooks-from-travisci', ...require('./travisci.js') },
-  { queue: 'hooks-from-upcheck', ...require('./upcheck.js') },
+  { queue: 'hooks-from-gitlab', ...require('./gitlab.js'), passive: true },
+  { queue: 'hooks-from-mailgun', ...require('./mailgun.js'), passive: true },
+  { queue: 'hooks-from-radarr', ...require('./radarr.js'), passive: true },
+  { queue: 'hooks-from-slackjack', ...require('./slackjack.js'), passive: true },
+  { queue: 'hooks-from-sonarr', ...require('./sonarr.js'), passive: true },
+  { queue: 'hooks-from-travisci', ...require('./travisci.js'), passive: true },
+  { queue: 'hooks-from-upcheck', ...require('./upcheck.js'), passive: true },
+
+  // Special queue that reroutes to the proper processor
+  { queue: 'skyhook-webhook-inbound.fifo', processMessage(data) {
+    const fakeQueueName = `hooks-from-${data.hookFlavor}`;
+    const processor = allProcessors.find(x => x.queue === fakeQueueName);
+    if (processor) {
+      console.log(`Rerouting general inbound hook to ${fakeQueueName}`);
+      return processor.processMessage(data);
+    }
+
+    notify('#stardust-noise',
+      `Payload received for unregistered hook '${data.hookFlavor}'`);
+    return false; // don't delete message
+  }},
 ];
 
 // start working
@@ -37,12 +51,14 @@ if (!module.parent) {
     if (Messages && Messages.length) {
       const msg = Messages[0];
       console.log("Processing message", msg.MessageId);
-      processor.processMessage(JSON.parse(msg.Body));
+      const result = processor.processMessage(JSON.parse(msg.Body));
 
-      sqs.deleteMessage.sync(sqs, {
-        QueueUrl: queueUrl,
-        ReceiptHandle: msg.ReceiptHandle,
-      });
+      if (result !== false) {
+        sqs.deleteMessage.sync(sqs, {
+          QueueUrl: queueUrl,
+          ReceiptHandle: msg.ReceiptHandle,
+        });
+      }
       sleep.sync(null, 1000);
     }
   }
@@ -55,6 +71,8 @@ if (!module.parent) {
 
   // the actual loop
   for (const processor of allProcessors) {
+    if (processor.passive) continue;
+
     Sync(() => {
       console.log(`Starting main SQS loop for`, processor.queue);
       while (true) {
