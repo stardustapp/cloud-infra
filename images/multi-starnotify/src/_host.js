@@ -7,7 +7,7 @@ const allProcessors = [
   { queue: 'hooks-from-bugsnag', ...require('./bugsnag.js'), passive: true },
   { queue: 'hooks-from-cloudwatch', ...require('./cloudwatch.js'), passive: true },
   { queue: 'hooks-from-grafana', ...require('./grafana.js'), passive: true },
-  { queue: 'hooks-from-github', ...require('./github.js') },
+  { queue: 'hooks-from-github', ...require('./github.js'), passive: true },
   { queue: 'hooks-from-gitlab', ...require('./gitlab.js'), passive: true },
   { queue: 'hooks-from-mailgun', ...require('./mailgun.js'), passive: true },
   { queue: 'hooks-from-radarr', ...require('./radarr.js'), passive: true },
