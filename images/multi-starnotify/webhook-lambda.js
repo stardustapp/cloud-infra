@@ -66,6 +66,16 @@ exports.handler = (event, context, callback) => {
             body.payloadType = 'json';
             break;
 
+            case 'text/plain':
+                if (event.body[0] === '{') {
+                    body.payload = JSON.parse(event.body);
+                    body.payloadType = 'json';
+                } else {
+                    body.payload = {text: event.body};
+                    body.payloadType = 'text';
+                }
+                break;
+
         default:
             throw new Error('Unsupported Content-Type: '+body.contentType);
         }
