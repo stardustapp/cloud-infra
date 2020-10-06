@@ -12,7 +12,7 @@ resources:
 images:
 - name: nagios
   newName: gcr.io/stardust-156404/nagios
-  newTag: h5
+  newTag: h6
 - name: nagios-api-checks
   newName: gcr.io/stardust-156404/nagios-api-checks
   newTag: h6
