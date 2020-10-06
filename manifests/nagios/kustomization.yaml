@@ -19,7 +19,7 @@ images:
 
 patches:
 
-- path: preemptible-pods.yaml
+- path: node-assignment.yaml
   target:
     kind: StatefulSet
 - path: wireguard-sidecar.yaml
