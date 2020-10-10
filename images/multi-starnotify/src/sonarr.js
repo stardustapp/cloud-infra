@@ -88,7 +88,7 @@ function buildEpisodeString(episodes, showAirTags) {
         if (showAirTags) {
           airTag = ` \x0314[aired \x0315${formatAirDate(firstEp.airDateUtc)} thru \x0315${formatAirDate(lastEp.airDateUtc)}\x0314]`;
         }
-        return `\x0303s${padNum(firstSeason), '\x0309'}\x0303e${padNum(firstEp.episodeNumber, '\x0309')}\x0303..e${padNum(lastEp.episodeNumber, '\x0309')}${airTag}\x0F`;
+        return `\x0303s${padNum(firstSeason, '\x0309')}\x0303e${padNum(firstEp.episodeNumber, '\x0309')}\x0303..e${padNum(lastEp.episodeNumber, '\x0309')}${airTag}\x0F`;
       }
     }
 
