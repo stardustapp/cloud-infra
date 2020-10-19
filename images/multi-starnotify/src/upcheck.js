@@ -32,26 +32,34 @@ exports.processMessage = function processMessage(data) {
     let statusText = state;
     switch (statusText) {
       case 'OK':
+      case 'UP':
         statusText = '\x0303\x02'+statusText+'\x0F';
         break;
       case 'WARNING':
         statusText = '\x0307\x02'+statusText+'\x0F';
         break;
       case 'CRITICAL':
+      case 'DOWN':
         statusText = '\x0305\x02'+statusText+'\x0F';
         break;
       case undefined:
-        throw new Error('freshping body had undefined status');
+        throw new Error('nagios body had undefined status');
       default:
-        console.log('WARN: freshping job did weird thing');
+        console.log('WARN: nagios job did weird thing');
+    }
+    
+    let context = "\x0313"+service_desc+"\x0F "+
+        `${notification_type}: `+
+        "\x0302\x1F"+hostname+"\x0F";
+    if (!service_desc) {
+      context = "\x0302\x1F"+hostname+"\x0F "+
+          `${notification_type}: `+
+          "Host";
     }
 
     notify(channel,
         "[\x0307"+'nagios'+"\x0F/\x0306"+nagios_server+"\x0F] "+
-        "\x0313"+service_desc+"\x0F "+
-        `${notification_type}: `+
-        "\x0302\x1F"+hostname+"\x0F @ "+
-        "is now "+statusText+
+        context+" is now "+statusText+
         `\x0314: ${output}\x0F`);
     return;
   }
