@@ -1,0 +1,10 @@
+namespace: kube-pets
+
+commonLabels:
+  app: pet-loops
+  loop: blockdevice
+
+resources:
+- auth-sa.yaml
+- auth-cluster.yaml
+- daemonset.yaml

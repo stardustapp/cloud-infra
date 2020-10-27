@@ -1,0 +1,81 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: loop-blockdevices
+spec:
+
+  updateStrategy:
+    type: RollingUpdate
+
+  template:
+    spec:
+
+      serviceAccountName: loop-blockdevices
+
+      # We only want pets
+      nodeSelector:
+        kubernetes.io/role: pet
+      # List the pets we want, for now
+      tolerations:
+      # - key: kubernetes.io/pet-node
+      #   operator: Equal
+      #   value: pet-penguin
+      #   effect: NoSchedule
+      - key: kubernetes.io/pet-node
+        operator: Equal
+        value: pet-ausbox
+        effect: NoSchedule
+      - key: kubernetes.io/pet-node
+        operator: Equal
+        value: pet-berbox
+        effect: NoSchedule
+
+      containers:
+
+      - name: loop
+        image: danopia/kube-pet-loops:d8db07d
+
+        securityContext:
+          capabilities:
+            add:
+            - CAP_SYS_RAWIO
+          seLinuxOptions:
+            type: unconfined_t
+
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+
+        args:
+        - sh
+        - -euxc
+        - |
+          while true
+          do date
+          deno run --allow-run --no-remote \
+              /src/pet-loops/blockdevice/mod.ts \
+              $NODE_NAME \
+          || echo "Failed!"
+          sleep 3600
+          done
+
+        resources:
+          requests:
+            memory: 40Mi
+            cpu: 10m
+          limits:
+            memory: 40Mi
+            cpu: 1000m
+
+        volumeMounts:
+        - name: dev
+          mountPath: /dev
+
+      volumes:
+      - name: dev
+        hostPath:
+          path: /dev
+          # type: Directory
