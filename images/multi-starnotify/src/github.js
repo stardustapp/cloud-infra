@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, trimText, notify } = require('./_lib');
+const { runWorker, shortenUrl, trimText, notify, storeSpeciman } = require('./_lib');
 const moment = require('moment');
 const multimatch = require('multimatch');
 
