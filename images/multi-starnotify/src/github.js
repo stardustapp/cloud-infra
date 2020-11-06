@@ -612,11 +612,28 @@ exports.processMessage = function processMessage(data) {
     return;
 
   case 'watch':
-  case 'star':
+    if ('stars' in data.parameters) {
+      console.log('Ignoring legacy star event due to "stars" param');
+      return;
+    }
     notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.sender.login+"\x0F "+
-        "starred the repository! ⭐");
+        "starred the repository! ⭐ (PS: This is from a legacy webhook event. Please check 'star' instead of 'watch' in the webhook settings, or add '&stars' to the webhook URL if you use the 'Send me everything' setting.)");
+    return;
+
+  case 'star':
+    if (payload.action === 'created') {
+      notify(channel,
+          "[\x0313"+payload.repository.name+"\x0F] "+
+          "\x0315"+payload.sender.login+"\x0F "+
+          "starred the repository! ⭐");
+    } else {
+      notify(channel,
+          "[\x0313"+payload.repository.name+"\x0F] "+
+          "\x0315"+payload.sender.login+"\x0F "+
+          payload.action+" their star of the repository.");
+    }
     return;
 
   case 'member':
@@ -630,7 +647,7 @@ exports.processMessage = function processMessage(data) {
       notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.member.login+"\x0F "+
-          "is now a repo collaborator 👍");
+          "is now a repository collaborator 👍");
     } else {
       notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
