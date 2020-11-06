@@ -556,8 +556,39 @@ exports.processMessage = function processMessage(data) {
   }
   case 'check_suite': {
     const {action, check_suite, repository} = payload;
-    const {id, node_id, head_branch, head_sha, status, conclusion, created_at, updated_at, latest_check_runs_count, head_commit} = check_suite;
-    console.log('TODO: check_suite', {action, id, head_sha, head_branch, status, conclusion, latest_check_runs_count});
+    const {id, node_id, head_branch, head_sha, status, conclusion, url, before, after, pull_requests, app, created_at, updated_at, latest_check_runs_count, head_commit} = check_suite;
+    // console.log('TODO: check_suite', {action, id, head_sha, head_branch, status, conclusion, latest_check_runs_count});
+
+    if (app.slug !== 'github-actions') {
+      console.log('TODO: ignoring github check_suite for non-Actions app:', app.slug, '-', app.name);
+      return;
+    }
+    if (status !== 'completed') {
+      console.log('ignoring github check_suite status', status);
+      return;
+    }
+
+    const totalSeconds = (new Date(updated_at) - new Date(created_at)) / 1000;
+    const timePassed = totalSeconds > 90
+      ? `${Math.floor(totalSeconds / 60)} min ${Math.floor(totalSeconds % 60)} sec`
+      : `${Math.floor(totalSeconds)} seconds`;
+
+    const webUrl = `${repository.html_url}/actions/runs/${id}`;
+
+    const jobS = latest_check_runs_count === 1 ? '' : 's';
+
+    // some colors
+    var stateFrag = conclusion;
+    if (conclusion === 'failure') stateFrag = `\x0304${'failed'}\x0F`;
+    else if (conclusion === 'success') stateFrag = `\x0303${'succeeded'}\x0F`;
+    else if (conclusion === 'action_required') stateFrag = `\x0315${conclusion}\x0F`;
+    else stateFrag = `\`${conclusion}\``;
+
+    notify(channel,
+        "[\x0313"+repository.name+"\x0F] "+
+        "\x0314"+head_sha.slice(0, 7)+"\x0F "+
+        `Actions workflow ${stateFrag} after ${latest_check_runs_count} job${jobS} took ${timePassed} `+
+        `\x0302\x1F${urlHandler(webUrl)}\x0F`);
     return;
   }
 
@@ -608,10 +639,10 @@ exports.processMessage = function processMessage(data) {
 
     // some colors
     var stateFrag = state;
-    if (state === 'failure') stateFrag = `\x0315${state}\x0F`;
+    if (state === 'failure') stateFrag = `\x0304${state}\x0F`;
     if (state === 'success' ||
         state === 'built') stateFrag = `\x0303${state}\x0F`;
-    if (state === 'pending') stateFrag = `\x0304${state}\x0F`;
+    if (state === 'pending') stateFrag = `\x0315${state}\x0F`;
 
     notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
