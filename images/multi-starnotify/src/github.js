@@ -84,13 +84,12 @@ exports.processMessage = function processMessage(data) {
   const maxCommits = channelMessageCapMap[channel] || 3;
   const commitMsgLength = commitMsgLengthMap[channel] || 70;
 
-  var msg;
   switch (eventType) {
 
-  case 'push':
+  case 'push': {
     // code was pushed
 
-    var noun = (payload.commits.length == 1 ? 'commit' : 'commits');
+    const noun = (payload.commits.length == 1 ? 'commit' : 'commits');
     const branch = payload.ref.split('/').slice(2).join('/');
     var verb = 'pushed';
     if (payload.forced) {
@@ -130,7 +129,7 @@ exports.processMessage = function processMessage(data) {
             notify('#stardust', 'halp, i just got an empty github branch creation based on itself');
           }
 
-          var baseBranch = payload.base_ref.split('/').slice(2).join('/');
+          const baseBranch = payload.base_ref.split('/').slice(2).join('/');
           suffix = ` based on \x0306${baseBranch}\x0F`;
         }
 
@@ -159,7 +158,7 @@ exports.processMessage = function processMessage(data) {
     // handle merges without listing the commits
     // (if we got this far, there are nonzero commits in the payload)
     if (payload.base_ref) {
-      var baseBranch = payload.base_ref.split('/').slice(2).join('/');
+      const baseBranch = payload.base_ref.split('/').slice(2).join('/');
       notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.pusher.name+"\x0F "+
@@ -259,9 +258,10 @@ exports.processMessage = function processMessage(data) {
             trimText(commit.message, commitMsgLength));
       });
     return;
+  }
 
-  case 'issues':
-    var {action} = payload;
+  case 'issues': {
+    const {action} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -299,9 +299,10 @@ exports.processMessage = function processMessage(data) {
         trimText(payload.issue.title, 70)+"\x0F "+
         "\x0302\x1F"+urlHandler(payload.issue.html_url)+"\x0F");
     return;
+  }
 
-  case 'pull_request':
-    var {action, pull_request} = payload;
+  case 'pull_request': {
+    const {action, pull_request} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -331,7 +332,7 @@ exports.processMessage = function processMessage(data) {
       case action === 'opened':
         // <user> opened new PR #31 with 3 commits from feature-branch...
         interjection = "new ";
-        var noun = (pull_request.commits == 1 ? 'commit' : 'commits');
+        const noun = (pull_request.commits == 1 ? 'commit' : 'commits');
         suffix = " with "+pull_request.commits+" "+noun+
             " from \x0306"+pull_request.head.label+"\x0F";
         break;
@@ -363,9 +364,10 @@ exports.processMessage = function processMessage(data) {
         trimText(pull_request.title, 70)+"\x0F "+
         "\x0302\x1F"+urlHandler(pull_request.html_url)+"\x0F");
     return;
+  }
 
-  case 'milestone':
-    var {milestone, action, sender, repository} = payload;
+  case 'milestone': {
+    const {milestone, action, sender, repository} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -380,9 +382,10 @@ exports.processMessage = function processMessage(data) {
         trimText(milestone.description, 140)+"\x0F "+
         "\x0302\x1F"+urlHandler(milestone.html_url)+"\x0F");
     return;
+  }
 
-  case 'label':
-    var {label, action, sender, repository} = payload;
+  case 'label': {
+    const {label, action, sender, repository} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -407,15 +410,16 @@ exports.processMessage = function processMessage(data) {
         action+" label "+
         "\x0306"+label.name +"\x0F");
     return;
+  }
 
-  case 'commit_comment':
-    var {action, repository, sender, comment} = payload;
+  case 'commit_comment': {
+    const {action, repository, sender, comment} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
     }
 
-    var subject = 'commit '+
+    const subject = 'commit '+
       "\x0314"+comment.commit_id.slice(0, 7)+"\x0F";
 
     // special syntax: user commented on issue #423: body... <url>
@@ -436,9 +440,10 @@ exports.processMessage = function processMessage(data) {
         action+" a comment on "+subject+": "+
         "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
     return;
+  }
 
-  case 'issue_comment':
-    var {action, repository, sender, issue, comment} = payload;
+  case 'issue_comment': {
+    const {action, repository, sender, issue, comment} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -467,9 +472,10 @@ exports.processMessage = function processMessage(data) {
         action+" a comment on "+type+" \x02#"+issue.number+"\x02: "+
         "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
     return;
+  }
 
-  case 'pull_request_review':
-    var {action, repository, sender, pull_request, review} = payload;
+  case 'pull_request_review': {
+    const {action, repository, sender, pull_request, review} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -490,9 +496,10 @@ exports.processMessage = function processMessage(data) {
       return;
     }
     break;
+  }
 
-  case 'pull_request_review_comment':
-    var {action, repository, sender, pull_request, comment} = payload;
+  case 'pull_request_review_comment': {
+    const {action, repository, sender, pull_request, comment} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -517,9 +524,10 @@ exports.processMessage = function processMessage(data) {
         action+" a comment on a review of PR \x02#"+pull_request.number+"\x02: "+
         "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
     return;
+  }
 
-  case 'gollum':
-    var {pages, repository, sender} = payload;
+  case 'gollum': {
+    const {pages, repository, sender} = payload;
     pages = pages.filter(p =>
         isActionRelevant(p.action));
 
@@ -537,35 +545,38 @@ exports.processMessage = function processMessage(data) {
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F changed the wiki: "+pageText);
     return;
+  }
 
   // TODO: what's appropriate here?
-  case 'check_run':
-    var {action, check_run, repository} = payload;
-    var {id, node_id, external_id, head_sha, html_url, status, conclusion, started_at, completed_at, output, name, check_suite} = check_run;
+  case 'check_run': {
+    const {action, check_run, repository} = payload;
+    const {id, node_id, external_id, head_sha, html_url, status, conclusion, started_at, completed_at, output, name, check_suite} = check_run;
     console.log('TODO: check_run', {action, id, head_sha, status, conclusion, name});
     return;
-  case 'check_suite':
-    var {action, check_suite, repository} = payload;
-    var {id, node_id, head_branch, head_sha, status, conclusion, created_at, updated_at, latest_check_runs_count, head_commit} = check_suite;
+  }
+  case 'check_suite': {
+    const {action, check_suite, repository} = payload;
+    const {id, node_id, head_branch, head_sha, status, conclusion, created_at, updated_at, latest_check_runs_count, head_commit} = check_suite;
     console.log('TODO: check_suite', {action, id, head_sha, head_branch, status, conclusion, latest_check_runs_count});
     return;
+  }
 
   case 'status':
   case 'deployment':
   case 'deployment_status':
-  case 'page_build':
-    var {repository, commit, state, description, target_url, context} = payload;
+  case 'page_build': {
+    const {repository, commit, state, description, target_url, context} = payload;
 
     // adapt deployments to look like normal statuses
     if (eventType === 'deployment') {
-      var {deployment} = payload;
+      const {deployment} = payload;
       state = 'info';
       commit = deployment; // for sha
       context = 'deployment';
       description = deployment.task+' '+deployment.environment;
     }
     if (eventType === 'deployment_status') {
-      var {deployment, deployment_status} = payload;
+      const {deployment, deployment_status} = payload;
       state = deployment_status.status;
       commit = deployment; // for sha
       context = 'deployment status';
@@ -573,7 +584,7 @@ exports.processMessage = function processMessage(data) {
       description = deployment.task+' '+deployment.environment;
     }
     if (eventType === 'page_build') {
-      var {build} = payload;
+      const {build} = payload;
       state = build.status;
       commit = {sha: build.commit};
       context = 'page';
@@ -610,8 +621,9 @@ exports.processMessage = function processMessage(data) {
         trimText(description, 140)+"\x0F"
         +urlField);
     return;
+  }
 
-  case 'watch':
+  case 'watch': {
     if ('stars' in data.parameters) {
       console.log('Ignoring legacy star event due to "stars" param');
       return;
@@ -621,8 +633,9 @@ exports.processMessage = function processMessage(data) {
         "\x0315"+payload.sender.login+"\x0F "+
         "starred the repository! ⭐ (PS: This is from a legacy webhook event. Please check 'star' instead of 'watch' in the webhook settings, or add '&stars' to the webhook URL if you use the 'Send me everything' setting.)");
     return;
+  }
 
-  case 'star':
+  case 'star': {
     if (payload.action === 'created') {
       notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
@@ -635,9 +648,10 @@ exports.processMessage = function processMessage(data) {
           payload.action+" their star of the repository.");
     }
     return;
+  }
 
-  case 'member':
-    var {action} = payload;
+  case 'member': {
+    const {action} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -655,18 +669,20 @@ exports.processMessage = function processMessage(data) {
           "was "+action+" as a collaborator");
     }
     return;
+  }
 
-  case 'fork':
+  case 'fork': {
     notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.forkee.owner.login+"\x0F "+
         "created a fork @ "+
         "\x0313"+payload.forkee.full_name+"\x0F");
     return;
+  }
 
   case 'create':
-  case 'delete':
-    var {ref, ref_type, repository, sender} = payload;
+  case 'delete': {
+    const {ref, ref_type, repository, sender} = payload;
 
     // Ignore branch create/delete event since push handles it w/ more detail
     if (ref_type === 'branch') {
@@ -681,9 +697,10 @@ exports.processMessage = function processMessage(data) {
         eventType+"d "+ref_type+" "+
         "\x0306"+ref+"\x0F");
     return;
+  }
 
-  case 'repository':
-    var {action, repository, sender} = payload;
+  case 'repository': {
+    const {action, repository, sender} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -694,9 +711,10 @@ exports.processMessage = function processMessage(data) {
         "\x0315"+sender.login+"\x0F "+
         action+" the repository");
     return;
+  }
 
-  case 'repository_vulnerability_alert':
-    var {action, repository, alert} = payload;
+  case 'repository_vulnerability_alert': {
+    const {action, repository, alert} = payload;
     if (action !== 'create') {
       console.log('Ignoring unrecognized action', action);
       return;
@@ -712,9 +730,10 @@ exports.processMessage = function processMessage(data) {
         "\x0310fixed in \x0306"+alert.fixed_in+"\x0F "+
         "\x0302\x1F"+urlHandler(alert.external_reference)+"\x0F");
     return;
+  }
 
-  case 'project_column':
-    var {action, project_column} = payload;
+  case 'project_column': {
+    const {action, project_column} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -726,9 +745,10 @@ exports.processMessage = function processMessage(data) {
         action+' '+
         "project column "+project_column.name);
     return;
+  }
 
-  case 'project_card':
-    var {action, project_card} = payload;
+  case 'project_card': {
+    const {action, project_card} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -741,9 +761,10 @@ exports.processMessage = function processMessage(data) {
         "project card: "+
         trimText(project_card.note, action == "created" ? 300 : 80));
     return;
+  }
 
-  case 'project':
-    var {action, project} = payload;
+  case 'project': {
+    const {action, project} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
@@ -756,8 +777,9 @@ exports.processMessage = function processMessage(data) {
         "project "+
         project.name);
     return;
+  }
 
-  case 'ping':
+  case 'ping': {
     const pingUrl = payload.hook.type === 'Organization'
       ? `https://github.com/${payload.organization.login}`
       : payload.repository.html_url;
@@ -766,12 +788,14 @@ exports.processMessage = function processMessage(data) {
         payload.zen + ' '+
         "\x0302\x1F"+urlHandler(pingUrl)+"\x0F");
     return;
+  }
 
-  case 'meta':
+  case 'meta': {
     notify(channel, "[\x0313"+hookSource+"\x0F] "+
         "Looks like this GitHub webhook was "+
         "\x0305"+payload.action+"\x0F");
     return;
+  }
 
   }
 
