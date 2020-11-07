@@ -1,4 +1,3 @@
-const Sync = require('sync');
 const AWS = require('aws-sdk');
 const { notify, sleep } = require('./_lib');
 
