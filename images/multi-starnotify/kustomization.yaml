@@ -7,6 +7,7 @@ configMapGenerator:
   - bugsnag.js=src/bugsnag.js
   - cloudwatch.js=src/cloudwatch.js
   - github.js=src/github.js
+  - github-actions.js=src/github-actions.js
   - grafana.js=src/grafana.js
   - mailgun.js=src/mailgun.js
   - radarr.js=src/radarr.js

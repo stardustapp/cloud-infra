@@ -1,11 +1,11 @@
 const { spawn } = require('child_process');
 const querystring = require('querystring');
 
+const fetch = require('node-fetch');
 const AWS = require('aws-sdk');
 
 // Allow injecting 'starnotify' options e.g. server URL
 const process = require('process');
-const { default: fetch } = require('node-fetch');
 const {STARNOTIFY_FLAGS} = process.env;
 const extraFlags = STARNOTIFY_FLAGS ? STARNOTIFY_FLAGS.split(' ') : [];
 console.log('Using extra starnotify opts:', extraFlags);

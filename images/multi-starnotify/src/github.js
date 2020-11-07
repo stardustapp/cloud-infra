@@ -1,6 +1,9 @@
-const { shortenUrl, trimText, notify, storeSpeciman, sleep } = require('./_lib');
+const fetch = require('node-fetch');
 const moment = require('moment');
 const multimatch = require('multimatch');
+
+const { shortenUrl, trimText, notify, storeSpeciman, sleep } = require('./_lib');
+const { resolveFromCheckSuiteApiUrl } = require('./github-actions');
 
 const orgChannelMap = {
   'stardustapp': '#stardust',
@@ -564,26 +567,43 @@ exports.processMessage = async function processMessage(data) {
       return;
     }
 
+    let webUrl = repository.html_url + '/actions';
+    let flowName = `Actions workflow`;
+
+    if (repository.private === false) {
+      // try {
+        const actionsRun = await resolveFromCheckSuiteApiUrl(check_suite.url);
+
+        if (actionsRun.conclusion === 'success' && actionsRun.event === 'schedule') {
+          // Ignore successful crons
+          return;
+        }
+        const workflow = await fetch(actionsRun.workflow_url).then(x => x.json());
+
+        webUrl = actionsRun.html_url;
+        flowName = `${workflow.name} #${actionsRun.run_number}`;
+
+      // } catch (err) {
+      //   throw new Error(`Failed to resolve check suite to github actions:`)
+      // }
+    }
+
     const totalSeconds = (new Date(updated_at) - new Date(created_at)) / 1000;
     const timePassed = totalSeconds > 90
       ? `${Math.floor(totalSeconds / 60)} min ${Math.floor(totalSeconds % 60)} sec`
       : `${Math.floor(totalSeconds)} seconds`;
 
-    const webUrl = `${repository.html_url}/actions/runs/${id}`;
-
-    const jobS = latest_check_runs_count === 1 ? '' : 's';
-
     // some colors
     var stateFrag = conclusion;
     if (conclusion === 'failure') stateFrag = `\x0304${'failed'}\x0F`;
-    else if (conclusion === 'success') stateFrag = `\x0303${'succeeded'}\x0F`;
-    else if (conclusion === 'action_required') stateFrag = `\x0315${conclusion}\x0F`;
+    else if (conclusion === 'success') stateFrag = `\x0303${'passed'}\x0F`;
+    // else if (conclusion === 'action_required') stateFrag = `\x0315${conclusion}\x0F`;
     else stateFrag = `\`${conclusion}\``;
 
     await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0314"+head_sha.slice(0, 7)+"\x0F "+
-        `Actions workflow ${stateFrag} after ${latest_check_runs_count} job${jobS} took ${timePassed} `+
+        `${flowName} ${stateFrag} on \x0306${head_branch}\x0F after ${timePassed} `+
         `\x0302\x1F${await urlHandler(webUrl)}\x0F`);
     return;
   }
@@ -727,16 +747,21 @@ exports.processMessage = async function processMessage(data) {
   }
 
   case 'repository': {
-    const {action, repository, sender} = payload;
+    const {action, changes, repository, sender} = payload;
     if (!isActionRelevant(action)) {
       console.log('Ignoring irrelevant action', action);
       return;
     }
 
+    let changesTxt = '';
+    if (changes) {
+      changesTxt = Object.keys(changes).map(x => '`'+x+'`').join(', ');
+    }
+
     await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
-        action+" the repository");
+        action+" the repository "+changesTxt);
     return;
   }
 
