@@ -8,7 +8,6 @@ configMapGenerator:
   - cloudwatch.js=src/cloudwatch.js
   - github.js=src/github.js
   - grafana.js=src/grafana.js
-  - jenkins.js=src/jenkins.js
   - mailgun.js=src/mailgun.js
   - radarr.js=src/radarr.js
   - slackjack.js=src/slackjack.js
