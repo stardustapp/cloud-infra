@@ -838,7 +838,7 @@ exports.processMessage = async function processMessage(data) {
     await notify(channel, "[\x0313"+hookSource+"\x0F] "+
         "This GitHub hook is working! Received a `ping` event. "+
         payload.zen + ' '+
-        "\x0302\x1F"+urlHandler(pingUrl)+"\x0F");
+        "\x0302\x1F"+await urlHandler(pingUrl)+"\x0F");
     return;
   }
 
