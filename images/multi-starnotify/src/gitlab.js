@@ -1,4 +1,4 @@
-const { shortenUrl, trimText, notify, storeSpeciman } = require('./_lib');
+const { shortenUrl, trimText, notify, storeSpeciman, sleep } = require('./_lib');
 const moment = require('moment');
 const multimatch = require('multimatch');
 
@@ -20,7 +20,7 @@ const commitMsgLengthMap = {
 //   '#dagd': 200,
 };
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('gitlab webhook data:', JSON.stringify(data));
   const {payload} = data;
   const eventType = data.headers['X-Gitlab-Event'];
@@ -115,7 +115,7 @@ exports.processMessage = function processMessage(data) {
         // TODO: branch delete NOT related to a MR is probably still relevant
         if (true) return;
 
-        notify(channel,
+        await notify(channel,
             "[\x0313"+payload.repository.name+"\x0F] "+
             "\x0315"+payload.user_username+"\x0F "+
             '\x0305deleted\x0F '+
@@ -124,17 +124,17 @@ exports.processMessage = function processMessage(data) {
 
       // branch creation w/ no new commits
       } else if (info.created) {
-        notify(channel,
+        await notify(channel,
             "[\x0313"+payload.repository.name+"\x0F] "+
             "\x0315"+payload.user_username+"\x0F "+
             '\x02created\x02 '+
             "branch \x0306"+branch+"\x0F"+suffix+": "+
-            "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
+            "\x0302\x1F"+await urlHandler(info.pushLink)+"\x0F");
         return;
 
       // // force-push without adding anything new
       // } else if (payload.forced) {
-      //   notify(channel,
+      //   await notify(channel,
       //       "[\x0313"+payload.repository.name+"\x0F] "+
       //       "\x0315"+payload.user_username+"\x0F "+
       //       '\x0304force-reverted\x0F '+
@@ -154,26 +154,26 @@ exports.processMessage = function processMessage(data) {
     var mergeCommitMatch = lastCommit.title.match(/^Merge branch '([^']+)' into '([^']+)'$/);
     if (mergeCommitMatch && mergeCommitMatch[2] === branch) {
       var baseBranch = mergeCommitMatch[1];
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.user_username+"\x0F "+
           "merged "+(payload.commits.length-1)+" "+
           (payload.commits.length == 2 ? 'commit' : 'commits')+" "+
           "from \x0306"+baseBranch+"\x0F "+
           "into \x0306"+branch+"\x0F: "+
-          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
+          "\x0302\x1F"+await urlHandler(info.pushLink)+"\x0F");
       return;
     }
 
     // new branches get commented on with a special header, even w/ one commit
     if (info.created) {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.user_username+"\x0F "+
           "created \x0306"+branch+"\x0F "+
           "with \x02"+payload.commits.length+"\x02 "+
           "new "+noun+": "+
-          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
+          "\x0302\x1F"+await urlHandler(info.pushLink)+"\x0F");
 
     // shorthand for adding one commit to an existing branch
     } else if (payload.commits.length === 1) {
@@ -185,7 +185,7 @@ exports.processMessage = function processMessage(data) {
         committerName = " \x0315"+commit.author.name+"\x0F";
       }
 
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.user_username+"\x0F "+
           verb+" "+
@@ -193,43 +193,39 @@ exports.processMessage = function processMessage(data) {
           "\x0314"+commit.id.slice(0, 7)+"\x0F"+
           committerName+": "+
           trimText(commit.message, commitMsgLength)+"\x0F "+
-          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
+          "\x0302\x1F"+await urlHandler(info.pushLink)+"\x0F");
 
       // we already sent the commit. don't repeat ourselves.
       return;
 
     } else {
       // not a new branch, so let's send a normal push message
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.user_username+"\x0F "+
           verb+" "+
           "\x02"+payload.commits.length+"\x02 "+
           'new '+noun+" "+
           "to \x0306"+branch+"\x0F: "+
-          "\x0302\x1F"+urlHandler(info.pushLink)+"\x0F");
+          "\x0302\x1F"+await urlHandler(info.pushLink)+"\x0F");
     }
 
     // if we haven't bailed yet, we still want to read out the first few commits
-    payload.commits
-      .slice(0, maxCommits)
-      .forEach(commit => {
-        // only include committer name if different than pusher
-        var committerName = '';
-        if (commit.author.name != payload.user_name) {
-          committerName = " \x0315"+commit.author.name+"\x0F";
-        }
+    for (const commit of payload.commits.slice(0, maxCommits)) {
+      // only include committer name if different than pusher
+      var committerName = '';
+      if (commit.author.name != payload.user_name) {
+        committerName = " \x0315"+commit.author.name+"\x0F";
+      }
 
-        sleep = (ms, cb) => { setTimeout(cb, ms); };
-        sleep.sync(null, 900);
-
-        notify(channel,
-            " \x0313"+payload.repository.name+"\x0F/"+
-            "\x0306"+branch+"\x0F "+
-            "\x0314"+commit.id.slice(0, 7)+"\x0F"+
-            committerName+": "+
-            trimText(commit.message, commitMsgLength));
-      });
+      await sleep(900);
+      await notify(channel,
+          " \x0313"+payload.repository.name+"\x0F/"+
+          "\x0306"+branch+"\x0F "+
+          "\x0314"+commit.id.slice(0, 7)+"\x0F"+
+          committerName+": "+
+          trimText(commit.message, commitMsgLength));
+    }
     return;
 
 
@@ -338,13 +334,13 @@ exports.processMessage = function processMessage(data) {
     }
     if (!interjection) break;
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.user.username+"\x0F "+
         interjection+
         type+" \x02"+identifier+"\x02"+suffix+
         title+" "+
-        "\x0302\x1F"+urlHandler(object_attributes.url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(object_attributes.url)+"\x0F");
     return;
 
 
@@ -376,12 +372,12 @@ exports.processMessage = function processMessage(data) {
     }
 
     // user commented on issue #423: body... <url>
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+user.username+"\x0F "+
         "commented "+interjection+"on "+type+" "+styling+identifier+"\x0F: "+
         trimText(object_attributes.note, 140)+"\x0F "+
-        "\x0302\x1F"+urlHandler(object_attributes.url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(object_attributes.url)+"\x0F");
     return;
 
 
@@ -393,16 +389,16 @@ exports.processMessage = function processMessage(data) {
       return;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+project.name+"\x0F] "+
         "\x0315"+user.username+"\x0F changed the wiki: "+
         `${action} \x0306${title}\x0F`+
-        " \x0302\x1F"+urlHandler(url)+"\x0F");
+        " \x0302\x1F"+await urlHandler(url)+"\x0F");
     return;
 
   }
 
-  const speciman = storeSpeciman(`gitlab/${eventType}`, data);
-  // notify(channel, "[\x0313"+hookSource+"\x0F] Got Gitlab event of unhandled type: " + eventType);
-  notify('#stardust-noise', `Got Gitlab event for ${channel} of unhandled type "${eventType}": ${speciman}`);
+  const speciman = await storeSpeciman(`gitlab/${eventType}`, data);
+  // await notify(channel, "[\x0313"+hookSource+"\x0F] Got Gitlab event of unhandled type: " + eventType);
+  await notify('#stardust-noise', `Got Gitlab event for ${channel} of unhandled type "${eventType}": ${speciman}`);
 }

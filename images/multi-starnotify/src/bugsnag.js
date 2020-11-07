@@ -4,7 +4,7 @@ const accountChannelMap = {
   'Danopia': '##danopia',
 }
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('bugsnag webhook data:', JSON.stringify(data));
 
   const {payload} = data;
@@ -29,14 +29,14 @@ exports.processMessage = function processMessage(data) {
   const context = "[\x0313bugsnag\x0F/\x0306"+project.name+"\x0F] ";
   switch (trigger.type) {
     case 'firstException':
-      notify(channel, context+
+      await notify(channel, context+
           trigger.message+" \x0314in "+error.context+"\x0F: "+
           error.exceptionClass.split('.').slice(-1)[0]+" "+error.message+" "+
-          "\x0302\x1F"+urlHandler(error.url)+"\x0F");
+          "\x0302\x1F"+await urlHandler(error.url)+"\x0F");
       break;
 
     default:
-      notify(channel, context+
+      await notify(channel, context+
           "\x0314"+trigger.type+"\x0F: "+trigger.message);
   }
 }

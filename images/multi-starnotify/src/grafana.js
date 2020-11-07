@@ -1,10 +1,9 @@
-const { shortenUrl, notify } = require('./_lib');
+const { notify } = require('./_lib');
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('grafana webhook data:', JSON.stringify(data));
 
   const {payload} = data;
-  var urlHandler = (url) => url;
 
   var channel;
   var instance;
@@ -37,7 +36,7 @@ exports.processMessage = function processMessage(data) {
       console.log('unhandled grafana state: '+state);
   }
 
-  notify(
+  await notify(
     channel,
     "[\x0307"+'grafana'+"\x0F/\x0306"+instance+"\x0F] "+
     "\x0313"+name+"\x0F "+

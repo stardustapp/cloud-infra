@@ -1,4 +1,4 @@
-const { shortenUrl, trimText, notify, storeSpeciman } = require('./_lib');
+const { shortenUrl, trimText, notify, storeSpeciman, sleep } = require('./_lib');
 const moment = require('moment');
 const multimatch = require('multimatch');
 
@@ -20,7 +20,7 @@ const commitMsgLengthMap = {
   '#dagd': 200,
 };
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('github webhook data:', JSON.stringify(data));
   const {payload} = data;
   const eventType = data.headers['X-GitHub-Event'];
@@ -112,7 +112,7 @@ exports.processMessage = function processMessage(data) {
     if (payload.commits.length === 0) {
       // branch deletion
       if (payload.deleted) {
-        notify(channel,
+        await notify(channel,
             "[\x0313"+payload.repository.name+"\x0F] "+
             "\x0315"+payload.pusher.name+"\x0F "+
             '\x0305deleted\x0F '+
@@ -126,25 +126,25 @@ exports.processMessage = function processMessage(data) {
         if (payload.base_ref) {
           // whine a lil bit if github can do this
           if (payload.base_ref === payload.ref) {
-            notify('#stardust', 'halp, i just got an empty github branch creation based on itself');
+            await notify('#stardust', 'halp, i just got an empty github branch creation based on itself');
           }
 
           const baseBranch = payload.base_ref.split('/').slice(2).join('/');
           suffix = ` based on \x0306${baseBranch}\x0F`;
         }
 
-        notify(channel,
+        await notify(channel,
             "[\x0313"+payload.repository.name+"\x0F] "+
             "\x0315"+payload.pusher.name+"\x0F "+
             '\x02created\x02 '+
             "branch \x0306"+branch+"\x0F"+suffix+": "+
-            "\x0302\x1F"+urlHandler(payload.compare)+"\x0F");
+            "\x0302\x1F"+await urlHandler(payload.compare)+"\x0F");
         return;
 
       // force-push without adding anything new
       } else if (payload.forced) {
         const [prevHash, newHash] = payload.compare.split('/').slice(-1)[0].split('...');
-        notify(channel,
+        await notify(channel,
             "[\x0313"+payload.repository.name+"\x0F] "+
             "\x0315"+payload.pusher.name+"\x0F "+
             '\x0304force-reverted\x0F '+
@@ -159,14 +159,14 @@ exports.processMessage = function processMessage(data) {
     // (if we got this far, there are nonzero commits in the payload)
     if (payload.base_ref) {
       const baseBranch = payload.base_ref.split('/').slice(2).join('/');
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.pusher.name+"\x0F "+
           "merged "+(payload.commits.length-1)+" "+
           (payload.commits.length == 2 ? 'commit' : 'commits')+" "+
           "from \x0306"+baseBranch+"\x0F "+
           "into \x0306"+branch+"\x0F: "+
-          "\x0302\x1F"+urlHandler(payload.compare)+"\x0F");
+          "\x0302\x1F"+await urlHandler(payload.compare)+"\x0F");
       return;
     }
 
@@ -179,7 +179,7 @@ exports.processMessage = function processMessage(data) {
         const pullNum = +mergeMatch[1];
         const pullUrl = payload.repository.html_url+'/pull/'+pullNum;
 
-        notify(channel,
+        await notify(channel,
             "[\x0313"+payload.repository.name+"\x0F] "+
             "\x0315"+payload.pusher.name+"\x0F "+
             "merged "+(payload.commits.length-1)+" "+
@@ -187,20 +187,20 @@ exports.processMessage = function processMessage(data) {
             "into \x0306"+branch+"\x0F "+
             "from PR \x02#"+pullNum+"\x02: "+
             trimText(mergeMatch[2], 140)+' '+
-            "\x0302\x1F"+urlHandler(pullUrl)+"\x0F");
+            "\x0302\x1F"+await urlHandler(pullUrl)+"\x0F");
         return;
       }
     }
 
     // new branches get commented on with a special header, even w/ one commit
     if (payload.created) {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.pusher.name+"\x0F "+
           "created \x0306"+branch+"\x0F "+
           "with \x02"+payload.commits.length+"\x02 "+
           "new "+noun+": "+
-          "\x0302\x1F"+urlHandler(payload.compare)+"\x0F");
+          "\x0302\x1F"+await urlHandler(payload.compare)+"\x0F");
 
     // shorthand for adding one commit to an existing branch
     } else if (payload.commits.length === 1) {
@@ -212,7 +212,7 @@ exports.processMessage = function processMessage(data) {
         committerName = " \x0315"+commit.committer.name+"\x0F";
       }
 
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.pusher.name+"\x0F "+
           verb+" "+
@@ -220,43 +220,39 @@ exports.processMessage = function processMessage(data) {
           "\x0314"+commit.id.slice(0, 7)+"\x0F"+
           committerName+": "+
           trimText(commit.message, commitMsgLength)+"\x0F "+
-          "\x0302\x1F"+urlHandler(payload.compare)+"\x0F");
+          "\x0302\x1F"+await urlHandler(payload.compare)+"\x0F");
 
       // we already sent the commit. don't repeat ourselves.
       return;
 
     } else {
       // not a new branch, so let's send a normal push message
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.pusher.name+"\x0F "+
           verb+" "+
           "\x02"+payload.commits.length+"\x02 "+
           'new '+noun+" "+
           "to \x0306"+branch+"\x0F: "+
-          "\x0302\x1F"+urlHandler(payload.compare)+"\x0F");
+          "\x0302\x1F"+await urlHandler(payload.compare)+"\x0F");
     }
 
     // if we haven't bailed yet, we still want to read out the first few commits
-    payload.commits
-      .slice(0, maxCommits)
-      .forEach(commit => {
-        // only include committer name if different than pusher
-        var committerName = '';
-        if (commit.committer.username != payload.pusher.name) {
-          committerName = " \x0315"+commit.committer.name+"\x0F";
-        }
+    for (const commit of payload.commits.slice(0, maxCommits)) {
+      // only include committer name if different than pusher
+      var committerName = '';
+      if (commit.committer.username != payload.pusher.name) {
+        committerName = " \x0315"+commit.committer.name+"\x0F";
+      }
 
-        sleep = (ms, cb) => { setTimeout(cb, ms); };
-        sleep.sync(null, 900);
-
-        notify(channel,
-            " \x0313"+payload.repository.name+"\x0F/"+
-            "\x0306"+branch+"\x0F "+
-            "\x0314"+commit.id.slice(0, 7)+"\x0F"+
-            committerName+": "+
-            trimText(commit.message, commitMsgLength));
-      });
+      await sleep(900);
+      await notify(channel,
+          " \x0313"+payload.repository.name+"\x0F/"+
+          "\x0306"+branch+"\x0F "+
+          "\x0314"+commit.id.slice(0, 7)+"\x0F"+
+          committerName+": "+
+          trimText(commit.message, commitMsgLength));
+    }
     return;
   }
 
@@ -290,14 +286,14 @@ exports.processMessage = function processMessage(data) {
         break;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.sender.login+"\x0F "+
         payload.action+" "+
         interjection+
         "issue \x02#"+payload.issue.number+"\x02: "+
         trimText(payload.issue.title, 70)+"\x0F "+
-        "\x0302\x1F"+urlHandler(payload.issue.html_url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(payload.issue.html_url)+"\x0F");
     return;
   }
 
@@ -355,14 +351,14 @@ exports.processMessage = function processMessage(data) {
         break;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.sender.login+"\x0F "+
         action+" "+
         interjection+
         "PR \x02#"+pull_request.number+"\x02"+suffix+": "+
         trimText(pull_request.title, 70)+"\x0F "+
-        "\x0302\x1F"+urlHandler(pull_request.html_url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(pull_request.html_url)+"\x0F");
     return;
   }
 
@@ -373,14 +369,14 @@ exports.processMessage = function processMessage(data) {
       return;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
         action+" milestone "+
         "\x0306"+milestone.title +"\x0F, "+
         "due on \x02"+moment.utc(milestone.due_on).calendar()+"\x02: "+
         trimText(milestone.description, 140)+"\x0F "+
-        "\x0302\x1F"+urlHandler(milestone.html_url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(milestone.html_url)+"\x0F");
     return;
   }
 
@@ -394,7 +390,7 @@ exports.processMessage = function processMessage(data) {
     // name changes are special
     if (payload.changes && payload.changes.name) {
       // <user> renamed label needs:one to needs:two
-      notify(channel,
+      await notify(channel,
           "[\x0313"+repository.name+"\x0F] "+
           "\x0315"+sender.login+"\x0F "+
           "renamed label "+
@@ -404,7 +400,7 @@ exports.processMessage = function processMessage(data) {
     }
 
     // <user> created label needs:one
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
         action+" label "+
@@ -424,21 +420,21 @@ exports.processMessage = function processMessage(data) {
 
     // special syntax: user commented on issue #423: body... <url>
     if (action === 'created') {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+repository.name+"\x0F] "+
           "\x0315"+sender.login+"\x0F "+
           "commented on "+subject+": "+
           trimText(comment.body, 140)+"\x0F "+
-          "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+          "\x0302\x1F"+await urlHandler(comment.html_url)+"\x0F");
       return;
     }
 
     // basic syntax
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
         action+" a comment on "+subject+": "+
-        "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(comment.html_url)+"\x0F");
     return;
   }
 
@@ -456,21 +452,21 @@ exports.processMessage = function processMessage(data) {
 
     // special syntax: user commented on issue #423: body... <url>
     if (action === 'created') {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+repository.name+"\x0F] "+
           "\x0315"+sender.login+"\x0F "+
           "commented on "+type+" \x02#"+issue.number+"\x02: "+
           trimText(comment.body, 140)+"\x0F "+
-          "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+          "\x0302\x1F"+await urlHandler(comment.html_url)+"\x0F");
       return;
     }
 
     // basic syntax
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
         action+" a comment on "+type+" \x02#"+issue.number+"\x02: "+
-        "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(comment.html_url)+"\x0F");
     return;
   }
 
@@ -487,12 +483,12 @@ exports.processMessage = function processMessage(data) {
       if (review.body) {
         reviewBody = ": "+trimText(review.body, 140)+"\x0F";
       }
-      notify(channel,
+      await notify(channel,
           "[\x0313"+repository.name+"\x0F] "+
           "\x0315"+sender.login+"\x0F "+
           "reviewed PR \x02#"+pull_request.number+"\x02 "+
           "and \x0306"+review.state+"\x0F"+reviewBody+" "+
-          "\x0302\x1F"+urlHandler(review.html_url)+"\x0F");
+          "\x0302\x1F"+await urlHandler(review.html_url)+"\x0F");
       return;
     }
     break;
@@ -507,22 +503,22 @@ exports.processMessage = function processMessage(data) {
 
     // special syntax: user commented on issue #423: body... <url>
     if (action === 'created') {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+repository.name+"\x0F] "+
           "\x0315"+sender.login+"\x0F "+
           "commented in a review of PR \x02#"+pull_request.number+"\x02 "+
           "at "+comment.path+": "+
           trimText(comment.body, 140)+"\x0F "+
-          "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+          "\x0302\x1F"+await urlHandler(comment.html_url)+"\x0F");
       return;
     }
 
     // basic syntax
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
         action+" a comment on a review of PR \x02#"+pull_request.number+"\x02: "+
-        "\x0302\x1F"+urlHandler(comment.html_url)+"\x0F");
+        "\x0302\x1F"+await urlHandler(comment.html_url)+"\x0F");
     return;
   }
 
@@ -536,12 +532,12 @@ exports.processMessage = function processMessage(data) {
       console.log('Ignoring irrelevant action', payload.pages[0].action);
       return;
     } else if (pages.length === 1) {
-      pageText += " \x0302\x1F"+urlHandler(pages[0].html_url)+"\x0F";
+      pageText += " \x0302\x1F"+await urlHandler(pages[0].html_url)+"\x0F";
     } else {
-      pageText += "\x0302\x1F"+urlHandler(repository.url+'/wiki')+"\x0F";
+      pageText += "\x0302\x1F"+await urlHandler(repository.url+'/wiki')+"\x0F";
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F changed the wiki: "+pageText);
     return;
@@ -584,11 +580,11 @@ exports.processMessage = function processMessage(data) {
     else if (conclusion === 'action_required') stateFrag = `\x0315${conclusion}\x0F`;
     else stateFrag = `\`${conclusion}\``;
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0314"+head_sha.slice(0, 7)+"\x0F "+
         `Actions workflow ${stateFrag} after ${latest_check_runs_count} job${jobS} took ${timePassed} `+
-        `\x0302\x1F${urlHandler(webUrl)}\x0F`);
+        `\x0302\x1F${await urlHandler(webUrl)}\x0F`);
     return;
   }
 
@@ -634,7 +630,7 @@ exports.processMessage = function processMessage(data) {
     // bors doesn't specify a URL, among others
     var urlField = '';
     if (target_url) {
-      urlField = " \x0302\x1F"+urlHandler(target_url)+"\x0F";
+      urlField = " \x0302\x1F"+await urlHandler(target_url)+"\x0F";
     }
 
     // some colors
@@ -644,7 +640,7 @@ exports.processMessage = function processMessage(data) {
         state === 'built') stateFrag = `\x0303${state}\x0F`;
     if (state === 'pending') stateFrag = `\x0315${state}\x0F`;
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0314"+commit.sha.slice(0, 7)+"\x0F "+
         (context || 'build')+' '+
@@ -659,7 +655,7 @@ exports.processMessage = function processMessage(data) {
       console.log('Ignoring legacy star event due to "stars" param');
       return;
     }
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.sender.login+"\x0F "+
         "starred the repository! ⭐ (PS: This is from a legacy webhook event. Please check 'star' instead of 'watch' in the webhook settings, or add '&stars' to the webhook URL if you use the 'Send me everything' setting.)");
@@ -668,12 +664,12 @@ exports.processMessage = function processMessage(data) {
 
   case 'star': {
     if (payload.action === 'created') {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.sender.login+"\x0F "+
           "starred the repository! ⭐");
     } else {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.sender.login+"\x0F "+
           payload.action+" their star of the repository.");
@@ -689,12 +685,12 @@ exports.processMessage = function processMessage(data) {
     }
 
     if (action === 'added') {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.member.login+"\x0F "+
           "is now a repository collaborator 👍");
     } else {
-      notify(channel,
+      await notify(channel,
           "[\x0313"+payload.repository.name+"\x0F] "+
           "\x0315"+payload.member.login+"\x0F "+
           "was "+action+" as a collaborator");
@@ -703,7 +699,7 @@ exports.processMessage = function processMessage(data) {
   }
 
   case 'fork': {
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.forkee.owner.login+"\x0F "+
         "created a fork @ "+
@@ -722,7 +718,7 @@ exports.processMessage = function processMessage(data) {
     }
 
     // <user> <create/delete>d <tag> <v1>
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
         eventType+"d "+ref_type+" "+
@@ -737,7 +733,7 @@ exports.processMessage = function processMessage(data) {
       return;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         "\x0315"+sender.login+"\x0F "+
         action+" the repository");
@@ -751,7 +747,7 @@ exports.processMessage = function processMessage(data) {
       return;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+repository.name+"\x0F] "+
         `\x02\x1F\x034/!\\\x0F `+
         "\x034Inbound Vulnerability Alert\x0F - "+
@@ -759,7 +755,7 @@ exports.processMessage = function processMessage(data) {
         "\x0313"+alert.affected_range+"\x0F subject to "+
         "\x0307"+alert.external_identifier+"\x0F - "+
         "\x0310fixed in \x0306"+alert.fixed_in+"\x0F "+
-        "\x0302\x1F"+urlHandler(alert.external_reference)+"\x0F");
+        "\x0302\x1F"+await urlHandler(alert.external_reference)+"\x0F");
     return;
   }
 
@@ -770,7 +766,7 @@ exports.processMessage = function processMessage(data) {
       return;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.sender.login+"\x0F "+
         action+' '+
@@ -785,7 +781,7 @@ exports.processMessage = function processMessage(data) {
       return;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.sender.login+"\x0F "+
         action+' '+
@@ -801,7 +797,7 @@ exports.processMessage = function processMessage(data) {
       return;
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0313"+payload.repository.name+"\x0F] "+
         "\x0315"+payload.sender.login+"\x0F "+
         action+' '+
@@ -814,7 +810,7 @@ exports.processMessage = function processMessage(data) {
     const pingUrl = payload.hook.type === 'Organization'
       ? `https://github.com/${payload.organization.login}`
       : payload.repository.html_url;
-    notify(channel, "[\x0313"+hookSource+"\x0F] "+
+    await notify(channel, "[\x0313"+hookSource+"\x0F] "+
         "This GitHub hook is working! Received a `ping` event. "+
         payload.zen + ' '+
         "\x0302\x1F"+urlHandler(pingUrl)+"\x0F");
@@ -822,7 +818,7 @@ exports.processMessage = function processMessage(data) {
   }
 
   case 'meta': {
-    notify(channel, "[\x0313"+hookSource+"\x0F] "+
+    await notify(channel, "[\x0313"+hookSource+"\x0F] "+
         "Looks like this GitHub webhook was "+
         "\x0305"+payload.action+"\x0F");
     return;
@@ -830,10 +826,10 @@ exports.processMessage = function processMessage(data) {
 
   }
 
-  const speciman = storeSpeciman(`github/${eventType}`, data);
+  const speciman = await storeSpeciman(`github/${eventType}`, data);
 
   console.log('got weird message', JSON.stringify(data));
-  notify(channel, "[\x0313"+hookSource+"\x0F] "+
+  await notify(channel, "[\x0313"+hookSource+"\x0F] "+
          "Got Github event of unhandled type: " + eventType);
-  notify('#stardust-noise', `Got Github event for ${channel} of unhandled type "${eventType}": ${speciman}`);
+  await notify('#stardust-noise', `Got Github event for ${channel} of unhandled type "${eventType}": ${speciman}`);
 }

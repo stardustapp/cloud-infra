@@ -1,9 +1,9 @@
 const filesize = require('filesize');
 const moment = require('moment');
 require('moment-timezone');
-const { shortenUrl, notify } = require('./_lib');
+const { notify } = require('./_lib');
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('radarr webhook payload:', JSON.stringify(data.payload));
   const {eventType} = data.payload;
 
@@ -54,10 +54,10 @@ exports.processMessage = function processMessage(data) {
   }
 
   if (channel && output) {
-    notify(channel, `[\x0307radarr\x0F] `+output);
+    await notify(channel, `[\x0307radarr\x0F] `+output);
   }
   // if (channel === '##danopia' && eventType == 'Download' && output) {
-  //   notify('##purdue', output);
+  //   await notify('##purdue', output);
   // }
 
   //"\x0302\x1F"+shortenUrl(payload.build_url)+"\x0F");

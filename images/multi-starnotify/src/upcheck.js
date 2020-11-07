@@ -1,10 +1,10 @@
-const { shortenUrl, notify } = require('./_lib');
+const { notify, storeSpeciman } = require('./_lib');
 
 const orgChannelMap = {
   'danopia': '#stardust-noise',
 };
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('uptimerobot webhook data:', JSON.stringify(data));
 
   const {parameters, payload} = data;
@@ -57,7 +57,7 @@ exports.processMessage = function processMessage(data) {
           "Host";
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0307"+'nagios'+"\x0F/\x0306"+nagios_server+"\x0F] "+
         context+" is now "+statusText+
         `\x0314: ${output}\x0F`);
@@ -89,7 +89,7 @@ exports.processMessage = function processMessage(data) {
 
     // Status of <b>foo bar</b> (http://asdiofjasdiofjsdiofjsdio.com/) has changed to <red>Down</red> (Connection Timeout)
     // TODO: report old alerts - webhook_event_created_on as ISO
-    notify(channel,
+    await notify(channel,
         "[\x0307"+'freshping'+"\x0F/\x0306"+organization_name+"\x0F] "+
         "\x0313"+check_name+"\x0F "+
         "\x0302\x1F"+request_url+"\x0F "+
@@ -125,7 +125,7 @@ exports.processMessage = function processMessage(data) {
     function decode(x) {
       return x.replace(/&#(\d\d);/g, (_,x) => String.fromCharCode(x));
     }
-    notify(channel,
+    await notify(channel,
         "[\x0307"+'uptimerobot'+"\x0F] "+
         "\x0313"+decode(parameters.monitorFriendlyName)+"\x0F "+
         "\x0302\x1F"+parameters.monitorURL+"\x0F "+
@@ -157,7 +157,7 @@ exports.processMessage = function processMessage(data) {
         throw new Error(`Google-Alerts body had unknown state ${state}`);
     }
 
-    notify(channel,
+    await notify(channel,
         "[\x0307"+'gcloud'+"\x0F] "+
         "\x0313"+policy_name+"\x0F "+
         "incident "+statusText+timeText+": "+
@@ -166,6 +166,9 @@ exports.processMessage = function processMessage(data) {
     return;
   }
 
-  notify(channel, 'got unprogrammed /upcheck hook');
-  throw new Error(`TODO: got unprogrammed /upcheck hook`);
+  const speciman = await storeSpeciman(`upcheck/unknown`, data);
+
+  await notify(channel, "[\x0313upcheck\x0F] "+
+         "Got unhandled hook");
+  await notify('#stardust-noise', `got unprogrammed /upcheck hook for ${channel}: ${speciman}`);
 }

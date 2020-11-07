@@ -1,7 +1,6 @@
 const Sync = require('sync');
 const AWS = require('aws-sdk');
-const { runWorker, notify } = require('./_lib');
-const sleep = (ms, cb) => { setTimeout(cb, ms); };
+const { notify, sleep } = require('./_lib');
 
 const allProcessors = [
   { queue: 'hooks-from-bugsnag', ...require('./bugsnag.js'), passive: true },
@@ -18,7 +17,7 @@ const allProcessors = [
   { queue: 'hooks-from-upcheck', ...require('./upcheck.js'), passive: true },
 
   // Special queue that reroutes to the proper processor
-  { queue: 'skyhook-webhook-inbound.fifo', processMessage(data) {
+  { queue: 'skyhook-webhook-inbound.fifo', async processMessage(data) {
     const fakeQueueName = `hooks-from-${data.hookFlavor}`;
     const processor = allProcessors.find(x => x.queue === fakeQueueName);
     if (processor) {
@@ -26,7 +25,7 @@ const allProcessors = [
       return processor.processMessage(data);
     }
 
-    notify('#stardust-noise',
+    await notify('#stardust-noise',
       `Payload received for unregistered hook '${data.hookFlavor}'`);
     return false; // don't delete message
   }},
@@ -40,27 +39,27 @@ if (!module.parent) {
   const sqs = new AWS.SQS();
   const {SQS_QUEUE_URL_BASE} = process.env;
 
-  function doOneWork(processor) {
+  async function doOneWork(processor) {
     const queueUrl = SQS_QUEUE_URL_BASE + processor.queue;
 
-    const {Messages} = sqs.receiveMessage.sync(sqs, {
+    const {Messages} = await sqs.receiveMessage({
       QueueUrl: queueUrl,
       MaxNumberOfMessages: 1,
       WaitTimeSeconds: 20,
-    });
+    }).promise();
 
     if (Messages && Messages.length) {
       const msg = Messages[0];
       console.log("Processing message", msg.MessageId);
-      const result = processor.processMessage(JSON.parse(msg.Body));
+      const result = await processor.processMessage(JSON.parse(msg.Body));
 
       if (result !== false) {
-        sqs.deleteMessage.sync(sqs, {
+        await sqs.deleteMessage({
           QueueUrl: queueUrl,
           ReceiptHandle: msg.ReceiptHandle,
-        });
+        }).promise();
       }
-      sleep.sync(null, 1000);
+      await sleep(1000);
     }
   }
 
@@ -74,22 +73,26 @@ if (!module.parent) {
   for (const processor of allProcessors) {
     if (processor.passive) continue;
 
-    Sync(() => {
+    (async () => {
       console.log(`Starting main SQS loop for`, processor.queue);
       while (true) {
         try {
-          doOneWork(processor);
+          await doOneWork(processor);
         } catch (err) {
-          notify('#stardust-noise',
+          await notify('#stardust-noise',
             processor.queue+' CRASH: '+
             err.stack.slice(0, 400).replace(/\n/g, '␤')); // NL char
-          sleep.sync(null, 10*1000);
+          await sleep(10*1000);
         }
       }
-    }, (err, res) => {
+    })().then(res => {
       console.log(`SQS loop for ${processor.queue} ended somehow?`);
-      console.log(res || err);
-      process.exit(err ? 1 : 0);
+      console.log(res);
+      process.exit(0);
+    }, err => {
+      console.log(`SQS loop for ${processor.queue} crashed:`);
+      console.log(err);
+      process.exit(1);
     });
   }
 

@@ -7,7 +7,7 @@ const orgChannelMap = {
   'noexc': '#noexc',
 }
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('travisci webhook data:', JSON.stringify(data));
 
   const {payload} = data;
@@ -56,11 +56,11 @@ exports.processMessage = function processMessage(data) {
     timeText = " in "+(Math.round(payload.duration/60*10)/10)+" minutes";
   }
 
-  notify(channel,
+  await notify(channel,
       "[\x0313"+payload.repository.name+"\x0F] "+
       "\x0314"+payload.commit.slice(0, 7)+"\x0F "+
       "Build #"+payload.number+" "+
       text+" "+
       "on \x0306"+payload.branch+"\x0F"+timeText+": "+
-      "\x0302\x1F"+urlHandler(payload.build_url)+"\x0F");
+      "\x0302\x1F"+await urlHandler(payload.build_url)+"\x0F");
 }

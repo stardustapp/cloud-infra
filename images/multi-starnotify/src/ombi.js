@@ -1,6 +1,6 @@
-const { shortenUrl, notify, storeSpeciman } = require('./_lib');
+const { notify, storeSpeciman } = require('./_lib');
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('ombi webhook payload:', JSON.stringify(data.payload));
   const {notificationType} = data.payload;
 
@@ -22,7 +22,7 @@ exports.processMessage = function processMessage(data) {
           break;
 
         default:
-          const speciman = storeSpeciman(`ombi/${notificationType}`, data);
+          const speciman = await storeSpeciman(`ombi/${notificationType}`, data);
           output = `Received unknown media type ${notificationType} @ ${speciman}`;
       }
       break;
@@ -37,7 +37,7 @@ exports.processMessage = function processMessage(data) {
           break;
 
         default:
-          const speciman = storeSpeciman(`ombi/${notificationType}`, data);
+          const speciman = await storeSpeciman(`ombi/${notificationType}`, data);
           output = `Received unknown media type ${notificationType} @ ${speciman}`;
       }
       break;
@@ -52,7 +52,7 @@ exports.processMessage = function processMessage(data) {
           break;
 
         default:
-          const speciman = storeSpeciman(`ombi/${notificationType}`, data);
+          const speciman = await storeSpeciman(`ombi/${notificationType}`, data);
           output = `Received unknown media type ${notificationType} @ ${speciman}`;
       }
       break;
@@ -62,11 +62,11 @@ exports.processMessage = function processMessage(data) {
       break;
 
     default:
-      const speciman = storeSpeciman(`ombi/${notificationType}`, data);
+      const speciman = await storeSpeciman(`ombi/${notificationType}`, data);
       output = `Received unknown notificationType ${notificationType} @ ${speciman}`;
   }
 
   if (channel && output) {
-    notify(channel, `[\x0307ombi\x0F] `+output);
+    await notify(channel, `[\x0307ombi\x0F] `+output);
   }
 }

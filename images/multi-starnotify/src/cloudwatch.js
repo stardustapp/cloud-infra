@@ -1,6 +1,6 @@
 const { shortenUrl, notify } = require('./_lib');
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('cloudwatch SNS data:', JSON.stringify(data));
   const channel = process.env.NOTIFICATION_CHANNEL || '#stardust-noise';
 
@@ -8,11 +8,11 @@ exports.processMessage = function processMessage(data) {
   // also signature and unsub stuff
   switch (Type) {
     case 'SubscriptionConfirmation':
-      return notify(channel, `SNS Subscription, confirm here: ${data.payload.SubscribeURL}`);
+      return await notify(channel, `SNS Subscription, confirm here: ${data.payload.SubscribeURL}`);
     case 'Notification':
       break;
     default:
-      return notify(channel, `Received SNS '${Type}' from ${TopicArn}. "${Subject||''}"`);
+      return await notify(channel, `Received SNS '${Type}' from ${TopicArn}. "${Subject||''}"`);
   }
   console.log('cloudwatch SNS message body:', Message);
 
@@ -54,13 +54,13 @@ exports.processMessage = function processMessage(data) {
     longDesc += ` alarms when \`${comparisonSymbol} ${Trigger.Threshold}\``;
   }
 
-  notify(channel,
+  await notify(channel,
       "[\x0313aws\x0F/"+
       "\x0306"+regionId+"\x0F] "+
       stateColor+
         '\x02'+NewStateValue+'\x02: '+
         AlarmName+'\x0F '+
       '- '+longDesc+' '+
-      "\x0302\x1F"+shortenUrl(alarmUrl)+"\x0F"
+      "\x0302\x1F"+await shortenUrl(alarmUrl)+"\x0F"
       )
 }

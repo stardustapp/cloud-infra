@@ -1,6 +1,6 @@
 const { shortenUrl, notify } = require('./_lib');
 
-exports.processMessage = function processMessage(data) {
+exports.processMessage = async function processMessage(data) {
   console.log('slackjack webhook data:', JSON.stringify(data));
 
   const {channel, text, username, url} = data.payload;
@@ -12,10 +12,10 @@ exports.processMessage = function processMessage(data) {
     }
 
     const urlSuffix = url
-      ? `\x0F \x0302\x1F${shortenUrl(url)}\x0F`
+      ? `\x0F \x0302\x1F${await shortenUrl(url)}\x0F`
       : '';
 
-    notify(channel,
+    await notify(channel,
         `[\x0307${username}\x0F] `+
         text.replace(/\r/g, '')
           .split('\n').slice(linesToSkip)
