@@ -11,14 +11,10 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.108.0",
-    "fibers": "^5.0.0",
     "filesize": "^3.5.11",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "multimatch": "^2.1.0",
-    "node-fetch": "^2.6.1",
-    "restify-clients": "^2.6.7",
-    "sync": "^0.2.5",
-    "ws": "^3.3.3"
+    "node-fetch": "^2.6.1"
   }
 }

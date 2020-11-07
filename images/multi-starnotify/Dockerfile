@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:12
+FROM node:14-alpine
 
 # Add system deps
 RUN apk add --no-cache python build-base
