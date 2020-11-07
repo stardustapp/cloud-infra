@@ -1,7 +1,7 @@
 const filesize = require('filesize');
 const moment = require('moment');
 require('moment-timezone');
-const { runWorker, shortenUrl, notify } = require('./_lib');
+const { shortenUrl, notify } = require('./_lib');
 
 exports.processMessage = function processMessage(data) {
   console.log('radarr webhook payload:', JSON.stringify(data.payload));
@@ -86,9 +86,4 @@ function formatReleaseDate(timestamp) {
 
   // it's HOT!
   return `\x02this week!\x02 (${fullFmt})`;
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

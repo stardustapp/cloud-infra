@@ -1,7 +1,7 @@
 const filesize = require('filesize');
 const moment = require('moment');
 require('moment-timezone');
-const { runWorker, shortenUrl, notify } = require('./_lib');
+const { shortenUrl, notify } = require('./_lib');
 
 exports.processMessage = function processMessage(data) {
   console.log('sonarr webhook payload:', JSON.stringify(data.payload));
@@ -140,9 +140,4 @@ function formatAirDate(timestamp) {
   // it's HOT!
   const hoursAgo = moment().diff(m, 'minutes');
   return `\x02${hoursAgo} minutes ago!\x02 (${fullFmt})`;
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

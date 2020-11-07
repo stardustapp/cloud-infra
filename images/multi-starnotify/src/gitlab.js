@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, trimText, notify, storeSpeciman } = require('./_lib');
+const { shortenUrl, trimText, notify, storeSpeciman } = require('./_lib');
 const moment = require('moment');
 const multimatch = require('multimatch');
 
@@ -405,9 +405,4 @@ exports.processMessage = function processMessage(data) {
   const speciman = storeSpeciman(`gitlab/${eventType}`, data);
   // notify(channel, "[\x0313"+hookSource+"\x0F] Got Gitlab event of unhandled type: " + eventType);
   notify('#stardust-noise', `Got Gitlab event for ${channel} of unhandled type "${eventType}": ${speciman}`);
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

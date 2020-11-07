@@ -1,7 +1,6 @@
 const { spawn } = require('child_process');
 const querystring = require('querystring');
 
-const Sync = require('sync');
 const AWS = require('aws-sdk');
 const clients = require('restify-clients');
 
@@ -71,51 +70,6 @@ exports.storeSpeciman = function storeSpeciman(key, body) {
   });
   return url;
 }
-
-// execute a main loop to process SQS messages in a blocking fashion
-exports.runWorker = function runWorker(processMessage) {
-  const {SQS_QUEUE_URL} = process.env;
-
-  function doOneWork() {
-    const {Messages} = sqs.receiveMessage.sync(sqs, {
-      QueueUrl: SQS_QUEUE_URL,
-      MaxNumberOfMessages: 1,
-      WaitTimeSeconds: 20,
-    });
-
-    if (Messages && Messages.length) {
-      const msg = Messages[0];
-      console.log("Processing message", msg.MessageId);
-      processMessage(JSON.parse(msg.Body));
-      sqs.deleteMessage.sync(sqs, {
-        QueueUrl: SQS_QUEUE_URL,
-        ReceiptHandle: msg.ReceiptHandle,
-      });
-
-      sleep = (cb) => { setTimeout(cb, 1000); };
-      sleep.sync();
-    }
-  }
-
-  // make sure we have a queue
-  if (!SQS_QUEUE_URL) {
-    console.log("I don't have SQS info in my environment! Pls fix");
-    process.exit(2);
-  }
-
-  // the actual loop
-  Sync(() => {
-    console.log(`Starting main SQS loop`)
-    while (true) {
-      doOneWork();
-    }
-  }, (err, res) => {
-    console.log(`Main SQS loop ended`);
-    console.log(res || err);
-    process.exit(err ? 1 : 0);
-  });
-};
-
 
 // support URL shortening through da.gd
 // never fails, just returns the long URL instead

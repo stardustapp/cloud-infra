@@ -1,5 +1,5 @@
 const filesize = require('filesize');
-const { runWorker, trimText, notify } = require('./_lib');
+const { trimText, notify } = require('./_lib');
 
 exports.processMessage = function processMessage(data) {
   console.log('mailgun webhook data:', JSON.stringify(data));
@@ -69,9 +69,4 @@ exports.processMessage = function processMessage(data) {
   notify(channel,
     "[\x0313email\x0F/\x0306"+origSender+"\x0F] "+
     trimText(subject, 150)+" \x0315/ "+trimText(contents, 150)+trailer+"\x0F");
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

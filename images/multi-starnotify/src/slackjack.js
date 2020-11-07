@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, notify } = require('./_lib');
+const { shortenUrl, notify } = require('./_lib');
 
 exports.processMessage = function processMessage(data) {
   console.log('slackjack webhook data:', JSON.stringify(data));
@@ -22,9 +22,4 @@ exports.processMessage = function processMessage(data) {
           .join(' - ').slice(0, 140)+
         urlSuffix);
   }
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

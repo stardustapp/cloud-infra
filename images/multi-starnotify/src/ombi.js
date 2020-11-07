@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, notify, storeSpeciman } = require('./_lib');
+const { shortenUrl, notify, storeSpeciman } = require('./_lib');
 
 exports.processMessage = function processMessage(data) {
   console.log('ombi webhook payload:', JSON.stringify(data.payload));

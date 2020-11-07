@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, notify } = require('./_lib');
+const { shortenUrl, notify } = require('./_lib');
 
 const orgChannelMap = {
   'stardustapp': '#stardust',
@@ -63,9 +63,4 @@ exports.processMessage = function processMessage(data) {
       text+" "+
       "on \x0306"+payload.branch+"\x0F"+timeText+": "+
       "\x0302\x1F"+urlHandler(payload.build_url)+"\x0F");
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

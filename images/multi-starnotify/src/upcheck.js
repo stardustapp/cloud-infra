@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, notify } = require('./_lib');
+const { shortenUrl, notify } = require('./_lib');
 
 const orgChannelMap = {
   'danopia': '#stardust-noise',
@@ -47,7 +47,7 @@ exports.processMessage = function processMessage(data) {
       default:
         console.log('WARN: nagios job did weird thing');
     }
-    
+
     let context = "\x0313"+service_desc+"\x0F "+
         `${notification_type}: `+
         "\x0302\x1F"+hostname+"\x0F";
@@ -168,9 +168,4 @@ exports.processMessage = function processMessage(data) {
 
   notify(channel, 'got unprogrammed /upcheck hook');
   throw new Error(`TODO: got unprogrammed /upcheck hook`);
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

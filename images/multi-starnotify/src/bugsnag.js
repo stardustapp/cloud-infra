@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, notify } = require('./_lib');
+const { shortenUrl, notify } = require('./_lib');
 
 const accountChannelMap = {
   'Danopia': '##danopia',
@@ -39,9 +39,4 @@ exports.processMessage = function processMessage(data) {
       notify(channel, context+
           "\x0314"+trigger.type+"\x0F: "+trigger.message);
   }
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }

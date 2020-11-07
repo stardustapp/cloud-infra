@@ -1,4 +1,4 @@
-const { runWorker, shortenUrl, notify } = require('./_lib');
+const { shortenUrl, notify } = require('./_lib');
 
 exports.processMessage = function processMessage(data) {
   console.log('cloudwatch SNS data:', JSON.stringify(data));
@@ -63,9 +63,4 @@ exports.processMessage = function processMessage(data) {
       '- '+longDesc+' '+
       "\x0302\x1F"+shortenUrl(alarmUrl)+"\x0F"
       )
-}
-
-// start working
-if (!module.parent) {
-  runWorker(exports.processMessage);
 }
