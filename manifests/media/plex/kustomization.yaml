@@ -1,0 +1,10 @@
+namePrefix: plex-
+commonLabels:
+  app: plex
+
+bases:
+- ../../../apps/plex
+# resources:
+# - ingress.yaml
+patches:
+- spec-patch.yaml

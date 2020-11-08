@@ -1,6 +1,7 @@
 namespace: media
 
 bases:
+- plex
 - sabnzbd
 - tautulli
 - sonarr

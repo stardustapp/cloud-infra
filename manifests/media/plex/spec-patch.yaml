@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: srv
+spec:
+  template:
+    spec:
+      containers:
+      - name: srv
+
+        image: docker.io/plexinc/pms-docker:plexpass
+
+        resources:
+          requests:
+            memory: 250Mi
+            cpu: 50m
+          limits:
+            memory: 4000Mi
+            cpu: 4000m
+
+        volumeMounts:
+        - name: config
+          mountPath: /config/Library/Application Support/Plex Media Server
+        - name: generated
+          mountPath: /config/Library/Application Support/Plex Media Server/Media
+        - name: uploads
+          mountPath: /config/Library/Application Support/Plex Media Server/Media Upload
+        - name: library
+          mountPath: /data
+
+      volumes:
+      - name: config
+        hostPath:
+          path: /tank/data/plex
+          type: Directory
+      - name: generated
+        hostPath:
+          path: /tank/media/generated
+          type: Directory
+      - name: uploads
+        hostPath:
+          path: /tank/backups/media
+          type: Directory
+      - name: library
+        hostPath:
+          path: /tank/media
+          type: Directory

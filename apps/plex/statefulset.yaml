@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: srv
+spec:
+  serviceName: srv
+  volumeClaimTemplates: []
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+
+  template:
+    metadata:
+      annotations:
+        vk.podman.io/systemd.srv: 'false'
+        # vk.podman.io/volume-selinux.config: relabel-private
+    spec:
+
+      nodeSelector:
+        kubernetes.io/role: pet
+        kubernetes.io/hostname: ausbox
+
+      tolerations:
+      - key: kubernetes.io/pet-node
+        operator: Exists
+        effect: NoSchedule
+
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+
+      containers:
+      - name: srv
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 32400
+          name: http
+          protocol: TCP
+
+        env:
+        - name: PLEX_UID
+          value: "1002"
+        - name: PLEX_GID
+          value: "1002"
+        - name: VERSION
+          value: latest
+
+        resources:
+          requests:
+            memory: 1000Mi
+            cpu: 50m
+          limits:
+            memory: 4000Mi
+            cpu: 4000m
+
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: transcode
+          mountPath: /transcode
+
+      volumes:
+      - name: config
+        emptyDir:
+      - name: transcode
+        emptyDir:
