@@ -527,15 +527,15 @@ exports.processMessage = async function processMessage(data) {
 
   case 'gollum': {
     const {pages, repository, sender} = payload;
-    pages = pages.filter(p =>
+    relPages = pages.filter(p =>
         isActionRelevant(p.action));
 
-    var pageText = pages.map(page => `${page.action} \x0306${page.page_name}\x0F`).join(', ');
-    if (pages.length === 0) {
-      console.log('Ignoring irrelevant action', payload.pages[0].action);
+    var pageText = relPages.map(page => `${page.action} \x0306${page.page_name}\x0F`).join(', ');
+    if (relPages.length === 0) {
+      console.log('Ignoring irrelevant action', payload.relPages[0].action);
       return;
-    } else if (pages.length === 1) {
-      pageText += " \x0302\x1F"+await urlHandler(pages[0].html_url)+"\x0F";
+    } else if (relPages.length === 1) {
+      pageText += " \x0302\x1F"+await urlHandler(relPages[0].html_url)+"\x0F";
     } else {
       pageText += "\x0302\x1F"+await urlHandler(repository.url+'/wiki')+"\x0F";
     }
