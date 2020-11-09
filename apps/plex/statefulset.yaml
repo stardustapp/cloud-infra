@@ -31,7 +31,6 @@ spec:
 
       containers:
       - name: srv
-        imagePullPolicy: Always
 
         ports:
         - containerPort: 32400
@@ -43,8 +42,6 @@ spec:
           value: "1002"
         - name: PLEX_GID
           value: "1002"
-        - name: VERSION
-          value: latest
 
         volumeMounts:
         - name: config

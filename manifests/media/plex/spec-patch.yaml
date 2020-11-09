@@ -9,7 +9,7 @@ spec:
       containers:
       - name: srv
 
-        image: docker.io/plexinc/pms-docker:plexpass
+        image: docker.io/plexinc/pms-docker
 
         resources:
           requests:
