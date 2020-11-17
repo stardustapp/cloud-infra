@@ -34,7 +34,7 @@ spec:
       containers:
 
       - name: loop
-        image: danopia/kube-pet-loops:d8db07d
+        image: gcr.io/stardust-156404/kube-pet-loop-blockdevice:40f29f9
 
         securityContext:
           capabilities:
@@ -53,10 +53,14 @@ spec:
         - sh
         - -euxc
         - |
-          while true
-          do date
-          deno run --allow-run --no-remote \
-              /src/pet-loops/blockdevice/mod.ts \
+          while date
+          do deno run \
+              --allow-run \
+              --allow-read=/var/run/secrets/kubernetes.io/serviceaccount \
+              --allow-net=kubernetes.default.svc.cluster.local \
+              --cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+              --cached-only \
+              /src/loop/mod.ts \
               $NODE_NAME \
           || echo "Failed!"
           sleep 3600
