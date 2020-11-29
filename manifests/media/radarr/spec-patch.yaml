@@ -17,10 +17,10 @@ spec:
 
         resources:
           requests:
-            memory: 150Mi
+            memory: 450Mi
             cpu: 25m
           limits:
-            memory: 500Mi
+            memory: 750Mi
             cpu: 1000m
 
         volumeMounts:
