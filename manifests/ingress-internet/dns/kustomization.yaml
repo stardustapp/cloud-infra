@@ -1,0 +1,8 @@
+namespace: ingress-internet
+
+commonAnnotations:
+  kubernetes.io/ingress.class: internet
+
+resources:
+- devmode.cloud.yaml
+- skychat.app.yaml

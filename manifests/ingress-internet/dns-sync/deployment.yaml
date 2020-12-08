@@ -22,7 +22,7 @@ spec:
       volumes:
       - name: cfgmap
         configMap:
-          name: dns-sync-cnfig
+          name: dns-sync-config
           defaultMode: 420
 
       tolerations:

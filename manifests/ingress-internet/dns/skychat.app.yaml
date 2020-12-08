@@ -1,0 +1,59 @@
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: skychat.app-apex
+  annotations:
+    kubernetes.io/ingress.class: internet
+spec:
+  endpoints:
+  - dnsName: skychat.app
+    recordTTL: 7200
+    recordType: A
+    targets:
+    - 151.101.65.195
+    - 151.101.1.195
+    - 151.101.129.195
+    - 151.101.193.195
+
+  - dnsName: skychat.app
+    recordTTL: 7200
+    recordType: AAAA
+    targets:
+    - 2a04:4e42::451
+    - 2a04:4e42:200::451
+    - 2a04:4e42:400::451
+    - 2a04:4e42:600::451
+
+  - dnsName: www.skychat.app
+    recordTTL: 7200
+    recordType: CNAME
+    targets:
+    - skychat.app
+
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: skychat.app-email
+  namespace: dns
+spec:
+  endpoints:
+  - dnsName: notify.skychat.app
+    recordTTL: 3600
+    recordType: MX
+    targets:
+    - 10 mxa.mailgun.org
+    - 10 mxb.mailgun.org
+
+  - dnsName: notify.skychat.app
+    recordTTL: 3600
+    recordType: TXT
+    targets:
+    - "v=spf1 include:mailgun.org ~all"
+
+  - dnsName: smtp._domainkey.notify.skychat.app
+    recordTTL: 3600
+    recordType: CNAME
+    targets:
+    - "k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwUfR1KVl8v221Sm/EcMz5AUgScQPyFCWh5TAKL8FXr/bOcl6Cv5oKG8NevEBjiCtNsClhOvwjSCmsPLJY5PHeu72hiZqU9zGXb5qs9ObXqrKW6HEd7ZA9riN+rNSAGgCubdUvfDEqwLIRin+uqHzmZ/rkLROi/E/S3l2zuMcdRtQtjCaQTosTzE8Vr+jPyDGqISZWmYcG2d/r2ABHMIZ425OhCBIk6/v2XlaYHDjd2KrA7KS79ezZV5zLkRcqOChTIUHDYDmkkcE4n0NrAiUg9Vcw5pXQ3hhW6Hv1ITCLsxWEiI81YoG/ahh10WxTNhcocKbmj7e0IS+bo18DZyZcwIDAQAB"
