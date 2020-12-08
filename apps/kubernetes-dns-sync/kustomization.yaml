@@ -1,0 +1,7 @@
+commonLabels:
+  app: kubernetes-dns-sync
+
+resources:
+- serviceaccount.yaml
+- deployment.yaml
+- rbac.yaml

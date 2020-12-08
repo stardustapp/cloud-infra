@@ -1,0 +1,21 @@
+namespace: ingress-internet
+
+bases:
+- ../../../apps/kubernetes-dns-sync
+
+patchesStrategicMerge:
+- deployment.yaml
+
+secretGenerator:
+- name: dns-sync-credentials
+  env: credentials.env
+
+configMapGenerator:
+- name: dns-sync-config
+  files:
+  - config.toml
+
+images:
+- name: kubernetes-dns-sync
+  newName: gcr.io/stardust-156404/kubernetes-dns-sync
+  newTag: f40bea7

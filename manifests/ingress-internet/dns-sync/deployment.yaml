@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-dns-sync
+spec:
+  template:
+    spec:
+
+      containers:
+      - name: kubernetes-dns-sync
+
+        envFrom:
+        - secretRef:
+            name: dns-sync-credentials
+
+        volumeMounts:
+        - name: cfgmap
+          mountPath: /src/kubernetes-dns-sync/config.toml
+          subPath: config.toml
+
+      volumes:
+      - name: cfgmap
+        configMap:
+          name: dns-sync-cnfig
+          defaultMode: 420
+
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule

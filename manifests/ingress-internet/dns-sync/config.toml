@@ -1,0 +1,24 @@
+interval_seconds = 300
+
+[[source]]
+type = "crd"
+annotation_filter = { "\"kubernetes.io/ingress.class\"": "internet" }
+
+[[source]]
+type = "ingress"
+annotation_filter = { "\"kubernetes.io/ingress.class\"": "internet" }
+
+[[source]]
+type = "node"
+address_type = "ExternalIP"
+fqdn_template = "{{index .Labels \"kubernetes.io/hostname\"}}.pet.devmode.cloud"
+annotation_filter = { "\"kubernetes.io/node.class\"": "kube-pet" }
+
+[[provider]]
+type = "vultr"
+domain_filter = [ "devmode.cloud" ]
+
+[registry]
+type = "txt"
+txt_prefix = "_registry."
+txt_owner_id = "dust-usc1f"
