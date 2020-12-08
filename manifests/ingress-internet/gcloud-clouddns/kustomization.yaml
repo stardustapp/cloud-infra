@@ -1,8 +1,11 @@
 namespace: ingress-internet
-nameSuffix: -www
+nameSuffix: -gcloud
+commonLabels:
+  provider: gcloud
+  source: ingress
 
 bases:
-- ../../apps/external-dns
+- ../../../apps/external-dns
 
 patchesStrategicMerge:
 - deployment.yaml
