@@ -10,6 +10,9 @@ spec:
       containers:
       - name: kubernetes-dns-sync
 
+        args:
+        - --yes # no questions asked
+
         envFrom:
         - secretRef:
             name: dns-sync-credentials

@@ -13,6 +13,16 @@ spec:
       - name: kubernetes-dns-sync
         image: kubernetes-dns-sync
 
+        command:
+        - "deno"
+        - "run"
+        - "--allow-net"
+        - "--allow-read"
+        - "--allow-env"
+        - "--cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        - "--cached-only"
+        - "controller/mod.ts"
+
         securityContext:
           runAsNonRoot: true
           runAsUser: 65534
