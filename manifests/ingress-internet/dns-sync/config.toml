@@ -1,4 +1,4 @@
-interval_seconds = 300
+interval_seconds = 900
 
 [[source]]
 type = "crd"
@@ -16,7 +16,7 @@ annotation_filter = { "\"kubernetes.io/node.class\"": "kube-pet" }
 
 [[provider]]
 type = "vultr"
-domain_filter = [ "devmode.cloud" ]
+domain_filter = [ "devmode.cloud", "skychat.app" ]
 
 [registry]
 type = "txt"
