@@ -1,0 +1,12 @@
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: wg69.net-routers
+spec:
+  endpoints:
+  - dnsName: atlbox.wg69.net
+    recordTTL: 3600
+    recordType: A
+    targets:
+    - '144.202.24.201'

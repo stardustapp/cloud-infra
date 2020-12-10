@@ -6,3 +6,4 @@ commonAnnotations:
 resources:
 - devmode.cloud.yaml
 - skychat.app.yaml
+- wg69.net.yaml
