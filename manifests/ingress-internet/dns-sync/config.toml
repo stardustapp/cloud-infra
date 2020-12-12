@@ -16,7 +16,7 @@ annotation_filter = { "\"kubernetes.io/node.class\"": "kube-pet" }
 
 [[provider]]
 type = "vultr"
-domain_filter = [ "devmode.cloud", "skychat.app", "wg69.net" ]
+domain_filter = [ "devmode.cloud", "skychat.app", "wg69.net", "muffler.io" ]
 
 [registry]
 type = "txt"

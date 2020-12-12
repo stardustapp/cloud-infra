@@ -1,0 +1,36 @@
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: muffler.io-apex
+spec:
+  endpoints:
+  - dnsName: muffler.io
+    recordTTL: 7200
+    recordType: A
+    targets:
+    - 151.101.65.195
+    - 151.101.1.195
+    - 151.101.129.195
+    - 151.101.193.195
+
+  - dnsName: muffler.io
+    recordTTL: 7200
+    recordType: AAAA
+    targets:
+    - 2a04:4e42::451
+    - 2a04:4e42:200::451
+    - 2a04:4e42:400::451
+    - 2a04:4e42:600::451
+
+  - dnsName: www.muffler.io
+    recordTTL: 7200
+    recordType: CNAME
+    targets:
+    - muffler.io
+
+  - dnsName: muffler.io
+    recordTTL: 7200
+    recordType: TXT
+    targets:
+    - google-site-verification=ZeiM58ZejiWXCC9YEmN9NbY8mUlZC24_8CYKRdq5YAI
