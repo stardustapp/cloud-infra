@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: srv
+spec:
+  template:
+
+    metadata:
+      annotations:
+        #vk.podman.io/volume-selinux.code: relabel-shared
+        #vk.podman.io/volume-selinux.linuxbrew: relabel-shared
+
+    spec:
+
+      serviceAccountName: srv
+
+      containers:
+      - name: srv
+        image: linuxserver/code-server
+
+        ports:
+        - containerPort: 8443
+          name: http
+          protocol: TCP
+
+        env:
+        - name: PATH
+          # linuxbrew goes after built-ins;
+          #   code-server needs to get its own node,
+          #   while go / deno just needs to be somewhere
+          value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/config/.deno/bin:/config/bin
+        - name: PUID
+          value: "1003" # 'code'
+        - name: PGID
+          value: "1003" # 'code'
+        - name: TZ
+          value: "Europe/Berlin"
+        envFrom:
+        - secretRef:
+            name: password
+
+        resources:
+          requests:
+            memory: 2000Mi
+            cpu: 50m
+          limits:
+            memory: 4000Mi
+            cpu: 2000m
+
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: code
+          mountPath: /code
+        - name: linuxbrew
+          mountPath: /home/linuxbrew/.linuxbrew
+
+      volumes:
+      - name: config
+        hostPath:
+          path: /home/code/srv/config
+          type: Directory
+      - name: code
+        hostPath:
+          path: /home/code/srv/code
+          type: Directory
+      - name: linuxbrew
+        hostPath:
+          path: /home/code/srv/linuxbrew
+          type: Directory

@@ -1,0 +1,17 @@
+namespace: code
+namePrefix: code-server-
+commonLabels:
+  app: code-server
+
+bases:
+- ../../../apps/linuxserver-base
+resources:
+- ingress.yaml
+- auth-sa.yaml
+- auth-cluster.yaml
+patches:
+- spec-patch.yaml
+
+secretGenerator:
+- name: password
+  env: password.env
