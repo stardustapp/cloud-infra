@@ -1,5 +1,3 @@
-interval_seconds = 900
-
 [[source]]
 type = "crd"
 annotation_filter = { "\"kubernetes.io/ingress.class\"": "internet" }
@@ -16,7 +14,7 @@ annotation_filter = { "\"kubernetes.io/node.class\"": "kube-pet" }
 
 [[provider]]
 type = "vultr"
-domain_filter = [ "devmode.cloud", "skychat.app", "wg69.net", "muffler.io" ]
+# domain_filter = [ ]
 
 [registry]
 type = "txt"
