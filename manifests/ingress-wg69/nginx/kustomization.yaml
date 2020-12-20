@@ -1,7 +1,7 @@
 namespace: ingress-wg69
 
 bases:
-- ../../apps/ingress-nginx
+- ../../../apps/ingress-nginx
 resources:
 - namespace.yaml
 - endpoint.yaml

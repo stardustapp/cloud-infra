@@ -11,8 +11,8 @@ kubectl apply -k manifests/dust-poc
 kustomize build manifests/ingress-internet/nginx | kubectl apply -f -
 kubectl apply -k manifests/ingress-internet/dns
 kubectl apply -k manifests/ingress-internet/dns-sync
-kustomize build manifests/ingress-wg69 | kubectl apply -f -
-kubectl apply -k manifests/ingress-wg69-clouddns
+kustomize build manifests/ingress-wg69/nginx | kubectl apply -f -
+kubectl apply -k manifests/ingress-wg69/gcloud-clouddns
 kubectl apply -k manifests/kube-pets/blockdevices
 kubectl apply -k manifests/lambdabot
 kubectl apply -k manifests/media
