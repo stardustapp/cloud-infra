@@ -1,3 +1,5 @@
+enable_watching = true
+
 [[source]]
 type = "crd"
 annotation_filter = { "\"kubernetes.io/ingress.class\"": "internet" }
