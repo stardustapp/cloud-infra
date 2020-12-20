@@ -1,0 +1,16 @@
+enable_watching = true
+
+[[source]]
+type = "crd"
+
+[[source]]
+type = "ingress"
+
+[[provider]]
+type = "google"
+zone_filter = [ "wg69net-int" ]
+
+[registry]
+type = "txt"
+txt_prefix = "_registry."
+txt_owner_id = "dust-usc1f-int"

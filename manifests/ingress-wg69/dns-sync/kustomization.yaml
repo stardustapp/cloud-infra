@@ -1,0 +1,22 @@
+namespace: ingress-wg69
+
+bases:
+- ../../../apps/kubernetes-dns-sync
+
+patchesStrategicMerge:
+- deployment.yaml
+
+secretGenerator:
+- name: dns-sync-gcloud-key
+  files:
+  - key.json=gcloud-key.json
+
+configMapGenerator:
+- name: dns-sync-config
+  files:
+  - config.toml
+
+images:
+- name: kubernetes-dns-sync
+  newName: gcr.io/stardust-156404/kubernetes-dns-sync
+  newTag: 34b4ffc

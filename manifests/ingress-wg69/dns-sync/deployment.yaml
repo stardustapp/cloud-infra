@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-dns-sync
+spec:
+  template:
+    spec:
+
+      containers:
+      - name: kubernetes-dns-sync
+
+        args:
+        - --yes # no questions asked
+
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
+
+        volumeMounts:
+        - name: cfgmap
+          mountPath: /src/kubernetes-dns-sync/config.toml
+          subPath: config.toml
+
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+
+      volumes:
+      - name: cfgmap
+        configMap:
+          name: dns-sync-config
+          defaultMode: 420
+
+      - name: google-cloud-key
+        secret:
+          secretName: dns-sync-gcloud-key
+
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
