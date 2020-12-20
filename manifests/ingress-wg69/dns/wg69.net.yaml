@@ -1,0 +1,12 @@
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: wg69.net-int
+spec:
+  endpoints:
+  - dnsName: olddust.int.wg69.net
+    recordTTL: 3600
+    recordType: A
+    targets:
+    - 10.69.1.12

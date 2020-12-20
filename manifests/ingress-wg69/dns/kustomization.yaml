@@ -1,0 +1,7 @@
+namespace: ingress-wg69
+
+commonAnnotations:
+  kubernetes.io/ingress.class: wg69
+
+resources:
+- wg69.net.yaml
