@@ -2,15 +2,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kubernetes-dns-sync
+  name: dns-sync
 spec:
   strategy:
     type: Recreate
   template:
     spec:
-      serviceAccountName: kubernetes-dns-sync
+      serviceAccountName: dns-sync
       containers:
-      - name: kubernetes-dns-sync
+      - name: app
         image: kubernetes-dns-sync
 
         command:

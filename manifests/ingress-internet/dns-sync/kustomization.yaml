@@ -1,4 +1,7 @@
 namespace: ingress-internet
+nameSuffix: -internet
+commonLabels:
+  app.kubernetes.io/instance: internet
 
 bases:
 - ../../../apps/kubernetes-dns-sync

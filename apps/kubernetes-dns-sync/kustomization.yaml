@@ -1,5 +1,5 @@
 commonLabels:
-  app: kubernetes-dns-sync
+  app.kubernetes.io/name: kubernetes-dns-sync
 
 resources:
 - serviceaccount.yaml

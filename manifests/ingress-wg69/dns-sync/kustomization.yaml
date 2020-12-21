@@ -1,4 +1,7 @@
 namespace: ingress-wg69
+nameSuffix: -wg69
+commonLabels:
+  app.kubernetes.io/instance: wg69
 
 bases:
 - ../../../apps/kubernetes-dns-sync
