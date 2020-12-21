@@ -1,7 +1,0 @@
-commonLabels:
-  app: conduit
-  component: api-server
-
-resources:
-- deployment.yaml
-- service.yaml

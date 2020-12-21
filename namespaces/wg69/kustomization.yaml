@@ -1,7 +1,6 @@
 namespace: wg69
 
 bases:
-- conduit
 - wg-proxy
 
 resources:
