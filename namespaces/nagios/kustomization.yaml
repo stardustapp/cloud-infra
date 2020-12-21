@@ -1,45 +1,18 @@
 namespace: nagios
 
 bases:
-- ../../apps/nagios
+- nagios
+- auth-proxy
 - ../../apps/nagios-api-checks
 
 resources:
-- auth-proxy.yaml
-- serviceaccount.yaml
-- rbac.yaml
+- namespace.yaml
 
 images:
-- name: nagios
-  newName: gcr.io/stardust-156404/nagios
-  newTag: h6
 - name: nagios-api-checks
   newName: gcr.io/stardust-156404/nagios-api-checks
   newTag: h6
 
-patches:
-- node-assignment.yaml
-- wireguard-sidecar.yaml
-- serviceaccount-assignment.yaml
-
 secretGenerator:
-
-- name: nagios-oauth
-  env: auth-proxy.env
-
 - name: nagios-api-checks
   env: api-checks.env
-
-- name: wireguard-key
-  env: wireguard.env
-
-configMapGenerator:
-
-- name: nagios-auth-config
-  files:
-  - email_list.txt
-  - oauth2_proxy.cfg
-
-- name: wireguard-conf
-  files:
-  - wg0.conf=wireguard.conf

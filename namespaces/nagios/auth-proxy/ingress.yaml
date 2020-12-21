@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: fe
+  annotations:
+    external-dns.alpha.kubernetes.io/ttl: "120"
+    kubernetes.io/ingress.class: internet
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+spec:
+  tls:
+  - hosts:
+    - nagios.devmode.cloud
+    secretName: tls-nagios.devmode.cloud
+  rules:
+  - host: nagios.devmode.cloud
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: proxy
+          servicePort: 80

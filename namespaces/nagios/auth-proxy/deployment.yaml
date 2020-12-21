@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proxy
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+
+      - name: auth
+        image: quay.io/oauth2-proxy/oauth2-proxy:v5.1.0
+
+        args:
+        - -upstream
+        - http://nagios-http
+        - -config
+        - /conf/oauth2_proxy.cfg
+        - -skip-provider-button
+        envFrom:
+        - secretRef:
+            name: oauth
+        volumeMounts:
+        - name: auth-config
+          mountPath: /conf
+
+        ports:
+        - containerPort: 4180
+          name: http
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 4180
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 4180
+          initialDelaySeconds: 5
+          periodSeconds: 60
+
+      volumes:
+      - name: auth-config
+        configMap:
+          name: auth-config
+
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule

@@ -1,0 +1,19 @@
+namespace: nagios
+namePrefix: nagios-
+commonLabels:
+  app: nagios-proxy
+
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+
+secretGenerator:
+- name: oauth
+  env: oauth-secrets.env
+
+configMapGenerator:
+- name: auth-config
+  files:
+  - email_list.txt
+  - oauth2_proxy.cfg

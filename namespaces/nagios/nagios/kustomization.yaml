@@ -1,0 +1,27 @@
+namespace: nagios
+
+bases:
+- ../../../apps/nagios
+
+resources:
+- serviceaccount.yaml
+- rbac.yaml
+
+images:
+- name: nagios
+  newName: gcr.io/stardust-156404/nagios
+  newTag: h6
+
+patches:
+- node-assignment.yaml
+- wg-sidecar.yaml
+- serviceaccount-assignment.yaml
+
+secretGenerator:
+- name: wireguard-key
+  env: wg-keypair.env
+
+configMapGenerator:
+- name: wireguard-conf
+  files:
+  - wg0.conf
