@@ -1,0 +1,7 @@
+namespace: kube-pets
+
+bases:
+- loop-blockdevices
+
+resources:
+- namespace.yaml

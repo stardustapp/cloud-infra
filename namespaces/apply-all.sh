@@ -15,7 +15,7 @@ kubectl $mode -k namespaces/ingress-internet/dns-sync
 kustomize build namespaces/ingress-wg69/nginx | kubectl $mode -f -
 kubectl $mode -k namespaces/ingress-wg69/dns
 kubectl $mode -k namespaces/ingress-wg69/dns-sync
-kubectl $mode -k namespaces/kube-pets/blockdevices
+kubectl $mode -k namespaces/kube-pets
 kubectl $mode -k namespaces/kube-system/amazon-pod-identity
 kubectl $mode -k namespaces/media
 kustomize build namespaces/nagios | kubectl $mode -f -

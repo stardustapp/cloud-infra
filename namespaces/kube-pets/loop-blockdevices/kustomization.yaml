@@ -1,0 +1,13 @@
+namespace: kube-pets
+nameSuffix: -blockdevices
+commonLabels:
+  app.kubernetes.io/name: pet-loops
+  app.kubernetes.io/component: blockdevice
+  app.kubernetes.io/part-of: kube-node-crds
+
+resources:
+- auth-sa.yaml
+- auth-cluster.yaml
+- daemonset.yaml
+patches:
+- patch-scheduling.yaml
