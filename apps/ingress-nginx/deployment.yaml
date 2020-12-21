@@ -18,7 +18,7 @@ spec:
         kubernetes.io/os: linux
       dnsPolicy: ClusterFirst
       containers:
-        - name: nginx-ingress-controller
+        - name: controller
           image: nginx-ingress-controller
           imagePullPolicy: IfNotPresent
           args:
@@ -29,15 +29,18 @@ spec:
             - --publish-service=$(POD_NAMESPACE)/ingress-nginx
             - --annotations-prefix=nginx.ingress.kubernetes.io
             - --election-id=ingress-controller-leader
+            - --update-status-on-shutdown=false
+            # - --validating-webhook=:8443
+            # - --validating-webhook-certificate=/usr/local/certificates/cert
+            # - --validating-webhook-key=/usr/local/certificates/key
           securityContext:
-            allowPrivilegeEscalation: true
             capabilities:
               drop:
                 - ALL
               add:
                 - NET_BIND_SERVICE
-            # www-data -> 101
-            runAsUser: 101
+            runAsUser: 101 # www-data
+            allowPrivilegeEscalation: true
           env:
             - name: POD_NAME
               valueFrom:
@@ -47,11 +50,18 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: LD_PRELOAD
+              value: /usr/local/lib/libmimalloc.so
           ports:
             - name: http
               containerPort: 80
+              protocol: TCP
             - name: https
               containerPort: 443
+              protocol: TCP
+            - name: webhook
+              containerPort: 8443
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /healthz
@@ -72,8 +82,21 @@ spec:
             timeoutSeconds: 1
             successThreshold: 1
             failureThreshold: 3
+          # volumeMounts:
+          #   - name: webhook-cert
+          #     mountPath: /usr/local/certificates/
+          #     readOnly: true
+          resources:
+            requests:
+              cpu: 5m
+              memory: 90Mi
           lifecycle:
             preStop:
               exec:
                 command:
                   - /wait-shutdown
+
+      # volumes:
+      #   - name: webhook-cert
+      #     secret:
+      #       secretName: ingress-nginx-admission

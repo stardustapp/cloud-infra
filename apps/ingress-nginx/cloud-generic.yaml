@@ -14,5 +14,3 @@ spec:
       port: 443
       protocol: TCP
       targetPort: https
-
----
