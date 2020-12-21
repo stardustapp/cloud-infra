@@ -19,6 +19,12 @@ spec:
       - name: srv
         image: linuxserver/code-server
 
+        # fixes sudo/su. https://github.com/cri-o/cri-o/issues/3803
+        securityContext:
+          capabilities:
+            add:
+              - AUDIT_WRITE
+
         ports:
         - containerPort: 8443
           name: http
