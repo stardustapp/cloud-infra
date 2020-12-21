@@ -1,0 +1,14 @@
+namespace: wg69
+
+resources:
+- statefulset.yaml
+- services.yaml
+
+secretGenerator:
+- name: wg-proxy-key
+  env: wg-keypair.env
+
+configMapGenerator:
+- name: wg-proxy-conf
+  files:
+  - wg0.conf
