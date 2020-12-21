@@ -6,10 +6,10 @@ metadata:
 spec:
   template:
 
-    metadata:
-      annotations:
-        #vk.podman.io/volume-selinux.code: relabel-shared
-        #vk.podman.io/volume-selinux.linuxbrew: relabel-shared
+    # metadata:
+    #   annotations:
+    #     vk.podman.io/volume-selinux.code: relabel-shared
+    #     vk.podman.io/volume-selinux.linuxbrew: relabel-shared
 
     spec:
 
@@ -30,6 +30,8 @@ spec:
           #   code-server needs to get its own node,
           #   while go / deno just needs to be somewhere
           value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/config/.deno/bin:/config/bin
+        - name: RUST_BACKTRACE
+          value: '1' # help debug `deno lsp`
         - name: PUID
           value: "1003" # 'code'
         - name: PGID
@@ -42,7 +44,7 @@ spec:
 
         resources:
           requests:
-            memory: 2000Mi
+            memory: 1000Mi
             cpu: 50m
           limits:
             memory: 4000Mi
