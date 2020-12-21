@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: default
 
 bases:
-- ../../apps/reggie
+- ../../../apps/reggie
 patches:
 - node-assignment.yaml
 

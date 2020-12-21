@@ -1,5 +1,6 @@
+namespace: kube-system
 bases:
-- ../../apps/amazon-pod-identity
+- ../../../apps/amazon-pod-identity
 
 patches:
 - webhook-ca-patch.yaml
