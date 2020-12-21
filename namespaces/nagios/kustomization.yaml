@@ -18,30 +18,20 @@ images:
   newTag: h6
 
 patches:
-
-- path: node-assignment.yaml
-  target:
-    kind: StatefulSet
-- path: wireguard-sidecar.yaml
-  target:
-    kind: StatefulSet
-- path: serviceaccount-assignment.yaml
-  target:
-    kind: StatefulSet
+- node-assignment.yaml
+- wireguard-sidecar.yaml
+- serviceaccount-assignment.yaml
 
 secretGenerator:
 
 - name: nagios-oauth
-  envs:
-  - auth-proxy.env
+  env: auth-proxy.env
 
 - name: nagios-api-checks
-  envs:
-  - api-checks.env
+  env: api-checks.env
 
 - name: wireguard-key
-  envs:
-  - wireguard.env
+  env: wireguard.env
 
 configMapGenerator:
 

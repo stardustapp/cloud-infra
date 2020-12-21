@@ -1,7 +1,8 @@
+---
 apiVersion: apps/v1
-kind: not-important
+kind: StatefulSet
 metadata:
-  name: not-important
+  name: irc-client
 spec:
   template:
     spec:

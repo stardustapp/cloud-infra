@@ -1,7 +1,25 @@
 apiVersion: apps/v1
-kind: not-important
+kind: Deployment
 metadata:
-  name: not-important
+  name: multi-sqs
+spec:
+  template:
+    spec:
+
+      nodeSelector:
+        lifetime: preemptible
+
+      tolerations:
+      - key: cloud.google.com/gke-preemptible
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: irc-outbound
 spec:
   template:
     spec:

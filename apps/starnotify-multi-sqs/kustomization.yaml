@@ -5,9 +5,7 @@ commonLabels:
 bases:
 - ../../images/multi-starnotify
 resources:
-- deployments.yaml
+- deployment.yaml
 
 patches:
-- path: deployments-patch.yaml
-  target:
-    kind: Deployment
+- patch-resources.yaml

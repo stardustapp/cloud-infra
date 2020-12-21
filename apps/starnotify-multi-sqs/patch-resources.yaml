@@ -1,8 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: not-important
-
+  name: multi-sqs
 spec:
   template:
     spec:

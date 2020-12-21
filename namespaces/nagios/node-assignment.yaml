@@ -1,7 +1,7 @@
-apiVersion: apps/v1beta2
-kind: not-important
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: not-important
+  name: nagios
 spec:
   template:
     spec:

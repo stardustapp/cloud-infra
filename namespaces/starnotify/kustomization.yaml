@@ -3,32 +3,25 @@ kind: Kustomization
 
 namespace: starnotify
 
-resources:
-- ../../apps/starnotify
+bases:
+- ../../apps/starnotify-multi-sqs
 - ../../apps/stardriver-irc-client
 - ../../apps/skyhook-irc-outbound
+resources:
 - serviceaccount-iam.yaml
 
 patches:
-- path: deployment-env.yaml
-  target:
-    kind: Deployment
+- deployment-env.yaml
 # deployments get deleted whenever
-- path: preemptible-pods.yaml
-  target:
-    kind: Deployment
+- preemptible-pods.yaml
 # statefulsets stay running
-- path: persistent-pods.yaml
-  target:
-    kind: StatefulSet
+- persistent-pods.yaml
 
 secretGenerator:
-- envs:
-  - credentials.env
+- env: credentials.env
   name: credentials
 
-- envs:
-  - irc-outbound.env
+- env: irc-outbound.env
   name: irc-outbound-env
 
 images:
