@@ -1,0 +1,10 @@
+namespace: monitoring
+
+bases:
+- ../../../apps/kubernetes-ship-to-dd
+patches:
+- patch-env.yaml
+
+secretGenerator:
+- env: credentials.env
+  name: ship-to-dd-credentials

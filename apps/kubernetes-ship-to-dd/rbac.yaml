@@ -1,0 +1,23 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: ship-to-dd-reader
+rules:
+
+- apiGroups: [""]
+  resources: ["services","pods","nodes"]
+  verbs: ["get","watch","list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: ship-to-dd-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ship-to-dd-reader
+subjects:
+- kind: ServiceAccount
+  name: ship-to-dd-sa

@@ -1,0 +1,10 @@
+# namePrefix: ship-to-dd-
+commonLabels:
+  app.kubernetes.io/name: kubernetes-ship-to-dd
+
+bases:
+- ../../images/kubernetes-ship-to-dd
+resources:
+- deployment.yaml
+- serviceaccount.yaml
+- rbac.yaml

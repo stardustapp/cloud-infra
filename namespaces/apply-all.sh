@@ -18,6 +18,7 @@ kubectl $mode -k namespaces/ingress-wg69/dns-sync
 kubectl $mode -k namespaces/kube-pets
 kubectl $mode -k namespaces/kube-system/amazon-pod-identity
 kubectl $mode -k namespaces/media
+kubectl $mode -k namespaces/monitoring
 kubectl $mode -k namespaces/nagios
 kubectl $mode -k namespaces/skychat
 kubectl $mode -k namespaces/starnotify

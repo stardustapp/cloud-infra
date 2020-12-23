@@ -1,0 +1,14 @@
+commonLabels:
+  app.kubernetes.io/name: kube-state-metrics
+
+resources:
+- cluster-role-binding.yaml
+- cluster-role.yaml
+- deployment.yaml
+- service-account.yaml
+- service.yaml
+
+images:
+- name: kube-state-metrics
+  newName: k8s.gcr.io/kube-state-metrics/kube-state-metrics
+  newTag: v2.0.0-beta

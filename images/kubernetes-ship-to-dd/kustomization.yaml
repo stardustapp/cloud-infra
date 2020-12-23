@@ -1,0 +1,6 @@
+configMapGenerator:
+- name: ship-to-dd-src
+  files:
+  - mod.ts
+  - kubelet-stats.ts
+  - kubelet-api.ts
