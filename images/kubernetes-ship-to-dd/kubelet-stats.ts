@@ -51,6 +51,7 @@ export async function* buildSystemMetrics(baseTags: string[]): AsyncGenerator<Me
       .filter(x => x.type === 'InternalIP')
       .map(x => x.address)[0];
     if (!internalAddr) continue;
+    if (internalAddr.includes('<')) continue; // <nil> from kube-pet-node
 
     const summary = await fetch(`http://${internalAddr}:10255/stats/summary`)
       .then(x => x.json() as Promise<types.StatsSummary>);
