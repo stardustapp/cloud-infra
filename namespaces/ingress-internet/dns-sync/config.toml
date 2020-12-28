@@ -14,6 +14,11 @@ address_type = "ExternalIP"
 fqdn_template = "{{index .Labels \"kubernetes.io/hostname\"}}.pet.devmode.cloud"
 annotation_filter = { "\"kubernetes.io/node.class\"": "kube-pet" }
 
+[[source]]
+type = "acme-crd"
+challenge_ttl = 120
+allow_wildcards = true
+
 [[provider]]
 type = "vultr"
 # domain_filter = [ ]
