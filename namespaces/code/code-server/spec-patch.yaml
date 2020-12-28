@@ -37,7 +37,7 @@ spec:
           #   while go / deno just needs to be somewhere
           value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/config/.deno/bin:/config/bin
         - name: RUST_BACKTRACE
-          value: '1' # help debug `deno lsp`
+          value: 'full' # help debug `deno lsp`
         - name: PUID
           value: "1003" # 'code'
         - name: PGID
