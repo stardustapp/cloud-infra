@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: dns-sync-issuer
+  namespace: cert-manager
+spec:
+  acme:
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: dan@danopia.net
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - dns01:
+        webhook:
+          groupName: kubernetes-dns-sync
+          solverName: kubernetes-dns-sync
