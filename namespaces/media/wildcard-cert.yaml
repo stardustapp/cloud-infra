@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard
+spec:
+  dnsNames:
+  - 'ombi.devmode.cloud'
+  - '*.media.int.wg69.net'
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: dns-sync-issuer
+  secretName: tls-wildcard

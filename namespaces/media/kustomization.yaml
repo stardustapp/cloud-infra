@@ -11,3 +11,4 @@ bases:
 
 resources:
 - namespace.yaml
+- wildcard-cert.yaml

@@ -6,12 +6,11 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: internet
     external-dns.alpha.kubernetes.io/ttl: "120"
-    cert-manager.io/cluster-issuer: letsencrypt-issuer
 spec:
   tls:
   - hosts:
     - ombi.devmode.cloud
-    secretName: tls-ombi.devmode.cloud
+    secretName: tls-wildcard
   rules:
   - host: ombi.devmode.cloud
     http:

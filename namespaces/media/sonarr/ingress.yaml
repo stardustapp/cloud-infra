@@ -7,21 +7,13 @@ metadata:
     kubernetes.io/ingress.class: wg69
     external-dns.alpha.kubernetes.io/ttl: "600"
     nginx.ingress.kubernetes.io/whitelist-source-range: 10.69.1.1/24,10.69.4.67/32
-    cert-manager.io/cluster-issuer: wg69-issuer
 spec:
   tls:
   - hosts:
-    - sonarr.int.wg69.net
-    secretName: tls-sonarr.int.wg69.net
+    - tv.media.int.wg69.net
+    secretName: tls-wildcard
   rules:
-  - host: sonarr.int.wg69.net
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: srv
-          servicePort: http
-  - host: sonarr.wg69.elrod.me
+  - host: tv.media.int.wg69.net
     http:
       paths:
       - path: /
