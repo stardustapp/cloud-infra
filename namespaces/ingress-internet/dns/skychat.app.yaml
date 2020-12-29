@@ -29,6 +29,13 @@ spec:
     targets:
     - skychat.app
 
+  # Firebase Hosting domain verification
+  - dnsName: skychat.app
+    recordTTL: 7200
+    recordType: TXT
+    targets:
+    - google-site-verification=PHrDGPWAaPRkws7u4GODCIeF3zI4Z_h6ate1EhLycJQ
+
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
