@@ -171,45 +171,60 @@ async function* buildBasicMetrics(prefix: string, now: BasicSummary, before: Bas
 }
 
 async function* buildNetworkMetrics(prefix: string, now: NodeSummary | PodSummary, before: NodeSummary | PodSummary | undefined, tags: string[]): AsyncGenerator<MetricSubmission,any,undefined> {
+  if (!now.network) return;
+  const timestamp = new Date(now.network.time);
 
-  if (before?.network && now.network) {
-    const timestamp = new Date(now.network.time);
+  const defaultIface = now.network.name;
+  if (defaultIface) {
+    yield* buildNetworkIfaceMetrics(prefix, timestamp, now.network, before?.network, [...tags, 'primary_iface']);
+  }
+
+  for (const iface of now.network.interfaces ?? []) {
+    if (iface.name == defaultIface) continue;
+    const ifaceBefore = before?.network?.interfaces?.find(x => x.name === iface.name);
+    yield* buildNetworkIfaceMetrics(prefix, timestamp, iface, ifaceBefore, [...tags]);
+  }
+}
+
+async function* buildNetworkIfaceMetrics(prefix: string, timestamp: Date, now: types.Interface, before: types.Interface | undefined, tags: string[]): AsyncGenerator<MetricSubmission,any,undefined> {
+
+  if (before && now) {
 
     yield {
       metric_name: prefix+`net.rx_bytes`,
-      points: [{value: now.network.rxBytes - before.network.rxBytes, timestamp}],
+      points: [{value: now.rxBytes - before.rxBytes, timestamp}],
       interval: 30,
       metric_type: 'count',
       tags: [...tags,
-        `interface:${now.network.name}`,
+        `interface:${now.name}`,
       ],
     };
-    if (typeof now.network.rxErrors === 'number') yield {
+    if (typeof now.rxErrors === 'number') yield {
       metric_name: prefix+`net.rx_errors`,
-      points: [{value: now.network.rxErrors - (before.network.rxErrors ?? 0), timestamp}],
+      points: [{value: now.rxErrors - (before.rxErrors ?? 0), timestamp}],
       interval: 30,
       metric_type: 'count',
       tags: [...tags,
-        `interface:${now.network.name}`,
+        `interface:${now.name}`,
       ],
     };
 
     yield {
       metric_name: prefix+`net.tx_bytes`,
-      points: [{value: now.network.txBytes - before.network.txBytes, timestamp}],
+      points: [{value: now.txBytes - before.txBytes, timestamp}],
       interval: 30,
       metric_type: 'count',
       tags: [...tags,
-        `interface:${now.network.name}`,
+        `interface:${now.name}`,
       ],
     };
-    if (typeof now.network.txErrors === 'number') yield {
+    if (typeof now.txErrors === 'number') yield {
       metric_name: prefix+`net.tx_errors`,
-      points: [{value: now.network.txErrors - (before.network.txErrors ?? 0), timestamp}],
+      points: [{value: now.txErrors - (before.txErrors ?? 0), timestamp}],
       interval: 30,
       metric_type: 'count',
       tags: [...tags,
-        `interface:${now.network.name}`,
+        `interface:${now.name}`,
       ],
     };
 
