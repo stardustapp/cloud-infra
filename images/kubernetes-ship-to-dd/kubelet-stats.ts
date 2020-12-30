@@ -6,7 +6,6 @@ import { CoreV1Api } from "https://deno.land/x/kubernetes_apis@v0.1.0/builtin/co
 import * as types from "./kubelet-api.ts";
 
 const coreApi = new CoreV1Api(await autoDetectClient());
-const {items: nodes} = await coreApi.getNodeList();
 
 interface StatsSummary {
   node: NodeSummary;
@@ -41,11 +40,10 @@ interface ContainerSummary {
 const memories = new Map<string, StatsSummary>();
 
 export async function* buildSystemMetrics(baseTags: string[]): AsyncGenerator<MetricSubmission,any,undefined> {
+  const {items: nodes} = await coreApi.getNodeList();
 
   for (const node of nodes) {
     if (!node.metadata?.name || !node.status?.addresses) continue;
-    // if (node.metadata.name !== 'pet-ausbox') continue;
-    // if (node.metadata.name !== 'gke-dust-volatile1-b331c9e9-wh9p') continue;
 
     const internalAddr = node.status.addresses
       .filter(x => x.type === 'InternalIP')
