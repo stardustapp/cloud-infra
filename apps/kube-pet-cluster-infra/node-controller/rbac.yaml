@@ -1,0 +1,47 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: kube-pet-node-controller
+rules:
+
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["watch","list","patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kube-pet-node-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kube-pet-node-controller
+subjects:
+- kind: ServiceAccount
+  name: pet-node-controller
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: pet-node-ctlr-configmaps
+rules:
+
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["watch","list","create","replace","patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: pet-node-ctlr-configmaps
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pet-node-ctlr-configmaps
+subjects:
+- kind: ServiceAccount
+  name: pet-node-controller

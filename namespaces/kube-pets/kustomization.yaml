@@ -2,6 +2,7 @@ namespace: kube-pets
 
 bases:
 - loop-blockdevices
+- ../../apps/kube-pet-cluster-infra
 
 resources:
 - namespace.yaml

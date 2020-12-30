@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pet-node-controller
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  template:
+    spec:
+      serviceAccountName: pet-node-controller
+      containers:
+      - name: loop
+        image: kube-pet-cluster-infra
+        args:
+        - node-controller/mod.ts
+
+        resources:
+          requests:
+            cpu: 5m
+            memory: 30Mi
+          limits:
+            cpu: 500m
+            memory: 200Mi

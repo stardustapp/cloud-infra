@@ -1,0 +1,8 @@
+# namePrefix: ship-to-dd-
+commonLabels:
+  app.kubernetes.io/component: node-controller
+
+resources:
+- deployment.yaml
+- serviceaccount.yaml
+- rbac.yaml

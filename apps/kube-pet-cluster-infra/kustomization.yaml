@@ -1,0 +1,11 @@
+commonLabels:
+  app.kubernetes.io/name: kube-pet-cluster-infra
+  app.kubernetes.io/part-of: kube-pet-node
+
+bases:
+- node-controller
+
+images:
+- name: kube-pet-cluster-infra
+  newName: gcr.io/stardust-156404/kube-pet-cluster-infra
+  newTag: '853f897'
