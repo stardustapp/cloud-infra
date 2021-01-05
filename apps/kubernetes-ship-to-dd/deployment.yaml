@@ -11,15 +11,7 @@ spec:
       serviceAccountName: ship-to-dd-sa
       containers:
       - name: loop
-        image: hayd/alpine-deno
-        args:
-        - deno
-        - run
-        - "--allow-net"
-        - "--allow-read"
-        - "--allow-env"
-        - "--cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-        - /src/mod.ts
+        image: kubernetes-ship-to-datadog
 
         resources:
           requests:
@@ -28,12 +20,3 @@ spec:
           limits:
             cpu: 500m
             memory: 200Mi
-
-        volumeMounts:
-        - name: source
-          mountPath: /src
-
-      volumes:
-      - name: source
-        configMap:
-          name: ship-to-dd-src
