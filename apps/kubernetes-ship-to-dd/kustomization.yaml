@@ -10,4 +10,4 @@ resources:
 images:
 - name: kubernetes-ship-to-datadog
   newName: ghcr.io/cloudydeno/kubernetes-ship-to-datadog
-  digest: sha256:5a5f4dede3d9afb4bbe02ec847cff961f8af4ede7c7847a4a2e6baab92165a1d
+  digest: sha256:3f265c00fc672e1aa7c2a35f80303e83c766c165c9ab9f5bd981a700a9f1bb96
