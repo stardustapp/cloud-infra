@@ -1,0 +1,10 @@
+namespace: default
+
+bases:
+- lambdabot
+- reggie
+
+resources:
+- readonly-sa.yaml
+- readonly-rbac.yaml
+- readonly-rbac-blk.yaml
