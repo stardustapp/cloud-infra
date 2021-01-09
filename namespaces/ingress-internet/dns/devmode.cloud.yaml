@@ -8,36 +8,35 @@ spec:
 
   - dnsName: devmode.cloud
     recordType: A
+    recordTTL: 7200
     targets:
     - '151.101.65.195'
     - '151.101.193.195'
     - '151.101.129.195'
     - '151.101.1.195'
-  # - dnsName: devmode.cloud
-  #   recordType: AAAA
-  #   targets:
-  #   - '2a04:4e42::451'
-  #   - '2a04:4e42:600::451'
-  #   - '2a04:4e42:200::451'
-  #   - '2a04:4e42:400::451'
-  # - dnsName: devmode.cloud
-  #   recordType: NS
-  #   targets:
-  #   - 'ns1.vultr.com'
-  #   - 'ns2.vultr.com'
-  # - dnsName: devmode.cloud
-  #   recordType: MX
-  #   targets:
-  #   - '10 mxa.mailgun.org'
-  #   - '10 mxb.mailgun.org'
+  - dnsName: devmode.cloud
+    recordType: AAAA
+    recordTTL: 7200
+    targets:
+    - '2a04:4e42::451'
+    - '2a04:4e42:600::451'
+    - '2a04:4e42:200::451'
+    - '2a04:4e42:400::451'
+  - dnsName: devmode.cloud
+    recordType: MX
+    recordTTL: 7200
+    targets:
+    - '10 inbound-smtp.us-east-1.amazonaws.com'
   - dnsName: devmode.cloud
     recordType: TXT
+    recordTTL: 7200
     targets:
     - "google-site-verification=nSd5rICjNGnYoSxPrQfBGc_K1TIHXbNzlOyxfAHW3ds"
     - "v=spf1 include:mailgun.org ~all"
 
   - dnsName: www.devmode.cloud
     recordType: CNAME
+    recordTTL: 7200
     targets:
     - 'devmode.cloud'
 
@@ -89,10 +88,12 @@ spec:
 
   - dnsName: modem2.devmode.cloud
     recordType: A
+    recordTTL: 7200
     targets:
     - '52.36.135.46'
   - dnsName: modem2.devmode.cloud
     recordType: AAAA
+    recordTTL: 7200
     targets:
     - '2600:1f14:87f:f810:1d4a:46e9:bb1a:5593'
 
@@ -111,5 +112,32 @@ spec:
 
   - dnsName: _3a3456f1b7bd9c5c6c48e941c1c98302.ingest.devmode.cloud
     recordType: CNAME
+    recordTTL: 7200
     targets:
     - '_bf0583decf4f5de5d30aa916097ae867.acm-validations.aws'
+
+  # - dnsName: mail.ingest.devmode.cloud
+  #   recordType: MX
+  #   targets:
+  #   - '10 mxa.mailgun.org'
+  #   - '10 mxb.mailgun.org'
+
+  - dnsName: ingest-ng.devmode.cloud
+    recordType: CNAME
+    recordTTL: 7200
+    targets:
+    - 'ghs.googlehosted.com'
+
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: devmode.cloud-aws-validations
+spec:
+  endpoints:
+
+  - dnsName: _amazonses.devmode.cloud
+    recordType: TXT
+    recordTTL: 7200
+    targets:
+    - 'd9WmbEnekprq2stlSS+1wUFbdEv7cZlfwhzlH+Flmfs='
