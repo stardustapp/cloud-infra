@@ -12,6 +12,7 @@ spec:
 
         args:
         - --yes # no questions asked
+        - --serve-metrics # openmetrics on 9090
 
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS

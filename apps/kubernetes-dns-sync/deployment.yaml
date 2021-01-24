@@ -7,6 +7,11 @@ spec:
   strategy:
     type: Recreate
   template:
+    metadata:
+      labels:
+        cloudydeno.github.io/metrics: 'true'
+      annotations:
+        cloudydeno.github.io/metric-port: '9090'
     spec:
       serviceAccountName: dns-sync
       containers:
@@ -18,6 +23,7 @@ spec:
         - "run"
         - "--allow-net"
         - "--allow-read"
+        - "--allow-hrtime" # for metrics
         - "--allow-env"
         - "--cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
         - "--cached-only"

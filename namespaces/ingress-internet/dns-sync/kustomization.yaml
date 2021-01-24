@@ -21,4 +21,4 @@ configMapGenerator:
 images:
 - name: kubernetes-dns-sync
   newName: gcr.io/stardust-156404/kubernetes-dns-sync
-  newTag: '90e1492'
+  newTag: '6a6bb3b'
