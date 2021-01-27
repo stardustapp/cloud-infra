@@ -7,11 +7,27 @@ spec:
   replicas: 1
   revisionHistoryLimit: 1
   template:
+    metadata:
+      labels:
+        cloudydeno.github.io/metrics: 'true'
+      annotations:
+        cloudydeno.github.io/metric-port: '9090'
     spec:
       serviceAccountName: ship-to-dd-sa
       containers:
       - name: loop
         image: kubernetes-ship-to-datadog
+
+        args:
+        - "deno"
+        - "run"
+        - "--allow-net"
+        - "--allow-read=/var/run/secrets/kubernetes.io"
+        - "--allow-env"
+        - "--cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        - "--cached-only"
+        - "mod.ts"
+        - "--serve-metrics"
 
         resources:
           requests:
