@@ -1,7 +1,6 @@
 namespace: monitoring
 
 bases:
-- ../../apps/kube-state-metrics
 - ship-to-dd
 
 resources:
