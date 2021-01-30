@@ -18,20 +18,10 @@ spec:
       - name: app
         image: kubernetes-dns-sync
 
-        command:
-        - "deno"
-        - "run"
-        - "--allow-net"
-        - "--allow-read"
-        - "--allow-hrtime" # for metrics
-        - "--allow-env"
-        - "--cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-        - "--cached-only"
-        - "controller/mod.ts"
-
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 65534
-          readOnlyRootFilesystem: true
+          # TODO: re-enable once the startup rechecking is fixed
+          # runAsNonRoot: true
+          # runAsUser: 65534
+          # readOnlyRootFilesystem: true
           capabilities:
             drop: ["ALL"]

@@ -19,14 +19,6 @@ spec:
         image: kubernetes-ship-to-datadog
 
         args:
-        - "deno"
-        - "run"
-        - "--allow-net"
-        - "--allow-read=/var/run/secrets/kubernetes.io"
-        - "--allow-env"
-        - "--cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-        - "--cached-only"
-        - "mod.ts"
         - "--serve-metrics"
 
         resources:

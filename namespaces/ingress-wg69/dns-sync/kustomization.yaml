@@ -18,8 +18,3 @@ configMapGenerator:
 - name: dns-sync-config
   files:
   - config.toml
-
-images:
-- name: kubernetes-dns-sync
-  newName: gcr.io/stardust-156404/kubernetes-dns-sync
-  newTag: '6a6bb3b'
