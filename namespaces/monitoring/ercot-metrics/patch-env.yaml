@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ercot-metrics
+spec:
+  template:
+    spec:
+
+      containers:
+      - name: loop
+
+        envFrom:
+        - secretRef:
+            name: ercot-metrics-credentials

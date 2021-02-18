@@ -1,0 +1,10 @@
+namespace: monitoring
+
+bases:
+- ../../../apps/ercot-metrics
+patches:
+- patch-env.yaml
+
+secretGenerator:
+- env: credentials.env
+  name: ercot-metrics-credentials

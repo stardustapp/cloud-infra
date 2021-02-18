@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ercot-metrics
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        cloudydeno.github.io/metrics: 'true'
+      annotations:
+        cloudydeno.github.io/metric-port: '9090'
+    spec:
+      containers:
+
+      - name: loop
+        image: ercot-metrics
+
+        args:
+        - "--serve-metrics"
+
+        resources:
+          requests:
+            cpu: 5m
+            memory: 30Mi
+          limits:
+            cpu: 1000m
+            memory: 100Mi
+
+      - name: proxy
+        image: ercot-proxy
+
+        resources:
+          requests:
+            cpu: 5m
+            memory: 30Mi
+          limits:
+            cpu: 1000m
+            memory: 50Mi

@@ -2,6 +2,7 @@ namespace: monitoring
 
 bases:
 - ship-to-dd
+- ercot-metrics
 
 resources:
 - namespace.yaml

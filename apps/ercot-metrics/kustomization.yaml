@@ -1,0 +1,13 @@
+commonLabels:
+  app.kubernetes.io/name: ercot-metrics
+
+resources:
+- deployment.yaml
+
+images:
+- name: ercot-metrics
+  newName: gcr.io/stardust-156404/ercot-metrics
+  newTag: h2
+- name: ercot-proxy
+  newName: gcr.io/stardust-156404/ercot-proxy
+  newTag: h1
