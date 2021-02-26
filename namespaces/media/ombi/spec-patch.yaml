@@ -9,7 +9,8 @@ spec:
       containers:
       - name: srv
 
-        image: linuxserver/ombi
+        image: linuxserver/ombi:development
+        imagePullPolicy: Always
         ports:
         - containerPort: 3579
           name: http
