@@ -7,6 +7,11 @@ spec:
   replicas: 1
   revisionHistoryLimit: 1
   template:
+    metadata:
+      labels:
+        cloudydeno.github.io/metrics: 'true'
+      annotations:
+        cloudydeno.github.io/metric-port: '9090'
     spec:
       serviceAccountName: pet-node-controller
       containers:
@@ -14,6 +19,7 @@ spec:
         image: kube-pet-cluster-infra
         args:
         - node-controller/mod.ts
+        - --serve-metrics
 
         resources:
           requests:
