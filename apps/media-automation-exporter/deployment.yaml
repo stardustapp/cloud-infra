@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media-automation-exporter
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        cloudydeno.github.io/metrics: 'true'
+      annotations:
+        cloudydeno.github.io/metric-port: '9090'
+    spec:
+      containers:
+      - name: loop
+        image: media-automation-exporter
+
+        securityContext:
+          # TODO: re-enable once the startup rechecking is fixed
+          # runAsNonRoot: true
+          # runAsUser: 65534
+          # readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]

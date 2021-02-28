@@ -1,0 +1,10 @@
+namespace: monitoring
+
+bases:
+- ../../../apps/media-automation-exporter
+patches:
+- patch-env.yaml
+
+secretGenerator:
+- env: credentials.env
+  name: media-automation-credentials

@@ -1,0 +1,10 @@
+commonLabels:
+  app.kubernetes.io/name: media-automation-exporter
+
+resources:
+- deployment.yaml
+
+images:
+- name: media-automation-exporter
+  newName: gcr.io/stardust-156404/media-automation-exporter
+  newTag: v1beta3

@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media-automation-exporter
+spec:
+  template:
+    spec:
+
+      containers:
+      - name: loop
+
+        envFrom:
+        - secretRef:
+            name: media-automation-credentials
