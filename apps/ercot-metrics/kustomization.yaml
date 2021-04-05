@@ -7,7 +7,7 @@ resources:
 images:
 - name: ercot-metrics
   newName: gcr.io/stardust-156404/ercot-metrics
-  newTag: h2
+  newTag: h4
 - name: ercot-proxy
   newName: gcr.io/stardust-156404/ercot-proxy
   newTag: h1

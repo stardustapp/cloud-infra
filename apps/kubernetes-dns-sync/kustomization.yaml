@@ -9,4 +9,4 @@ resources:
 images:
 - name: kubernetes-dns-sync
   newName: gcr.io/stardust-156404/kubernetes-dns-sync
-  newTag: 'b0f0314'
+  newTag: '685bc2d'
