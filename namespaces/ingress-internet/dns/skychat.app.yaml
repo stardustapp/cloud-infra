@@ -48,12 +48,12 @@ spec:
     recordType: A
     recordTTL: 7200
     targets:
-    - '45.77.96.50'
+    - '71.19.144.213'
   - dnsName: modem1.skychat.app
     recordType: AAAA
     recordTTL: 7200
     targets:
-    - '2001:19f0:5:2314:5400:03ff:fe38:080b'
+    - '2605:2700:0:2:a800:ff:fe69:8ea3'
 
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
