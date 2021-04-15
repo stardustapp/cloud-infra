@@ -6,8 +6,8 @@ kubectl $mode -k namespaces/code/code-server
 #kustomize build namespaces/datadog-agent | kubectl $mode -f -
 kubectl $mode -k namespaces/default/lambdabot
 kubectl $mode -k namespaces/default/reggie
-kubectl $mode -k namespaces/drone-builds
-kubectl $mode -k namespaces/drone-gitea
+#kubectl $mode -k namespaces/drone-builds
+#kubectl $mode -k namespaces/drone-gitea
 kubectl $mode -k namespaces/dust-poc
 kustomize build namespaces/ingress-internet/nginx | kubectl $mode -f -
 kubectl $mode -k namespaces/ingress-internet/dns
