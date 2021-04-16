@@ -9,14 +9,14 @@ spec:
       containers:
 
       - name: auth
-        image: quay.io/oauth2-proxy/oauth2-proxy:v5.1.0
+        image: oauth2-proxy
 
         args:
-        - -upstream
+        - --upstream
         - http://nagios-http
-        - -config
+        - --config
         - /conf/oauth2_proxy.cfg
-        - -skip-provider-button
+        - --skip-provider-button
         envFrom:
         - secretRef:
             name: oauth

@@ -1,18 +1,18 @@
-#!/bin/sh -eux
+#!/bin/sh -ux
 
 mode=$1
 
 kubectl $mode -k namespaces/code/code-server
-#kustomize build namespaces/datadog-agent | kubectl $mode -f -
+# kubectl $mode -k namespaces/datadog-agent
 kubectl $mode -k namespaces/default/lambdabot
 kubectl $mode -k namespaces/default/reggie
-#kubectl $mode -k namespaces/drone-builds
-#kubectl $mode -k namespaces/drone-gitea
+# kubectl $mode -k namespaces/drone-builds
+# kubectl $mode -k namespaces/drone-gitea
 kubectl $mode -k namespaces/dust-poc
-kustomize build namespaces/ingress-internet/nginx | kubectl $mode -f -
+kubectl $mode -k namespaces/ingress-internet/nginx
 kubectl $mode -k namespaces/ingress-internet/dns
 kubectl $mode -k namespaces/ingress-internet/dns-sync
-kustomize build namespaces/ingress-wg69/nginx | kubectl $mode -f -
+kubectl $mode -k namespaces/ingress-wg69/nginx
 kubectl $mode -k namespaces/ingress-wg69/dns
 kubectl $mode -k namespaces/ingress-wg69/dns-sync
 kubectl $mode -k namespaces/kube-pets
