@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: irc-modem
+spec:
+  template:
+    spec:
+
+      # We want a pet
+      nodeSelector:
+        lifetime: persistent
+        purpose: pet
+
+      # Passlist of pets we'll be ok with
+      tolerations:
+      - key: kubernetes.io/pet-node
+        operator: Equal
+        value: pet-modem1
+        effect: NoSchedule

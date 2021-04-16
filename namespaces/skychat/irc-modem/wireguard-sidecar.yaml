@@ -22,9 +22,9 @@ spec:
             cpu: 100m
             memory: 64Mi
         securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
+          # capabilities:
+          #   add:
+          #   - NET_ADMIN
           privileged: true
         volumeMounts:
         - name: cfgmap

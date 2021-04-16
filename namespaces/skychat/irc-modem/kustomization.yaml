@@ -3,7 +3,8 @@ bases:
 
 patchesStrategicMerge:
 - wireguard-sidecar.yaml
-- persistent-modem.yaml
+# - persistent-modem.yaml
+- run-on-kube-pet.yaml
 
 secretGenerator:
 - name: wireguard-key

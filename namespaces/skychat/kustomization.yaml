@@ -7,8 +7,8 @@ images:
   newTag: '64c9168'
 
 - name: stardriver-irc-modem
-  newName: gcr.io/stardust-156404/irc-modem
-  newTag: h20
+  newName: gcr.io/stardust-156404/stardriver-irc-dialer
+  newTag: h13
 
 - name: stardriver-coinbase-api-client
   newName: gcr.io/stardust-156404/coinbase-api-client
