@@ -5,10 +5,14 @@ images:
 - name: dustjs-automaton-lua
   newName: gcr.io/stardust-156404/dustjs-automaton-lua
   newTag: '64c9168'
+  # TODO:
+  # newTag: '3cf0695'
+  # TypeError: apiSession.wsDevice.invoke is not a function
+  #   at /app/src/app.js:102:31
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/stardriver-irc-dialer
-  newTag: h13
+  newTag: h16
 
 - name: stardriver-coinbase-api-client
   newName: gcr.io/stardust-156404/coinbase-api-client

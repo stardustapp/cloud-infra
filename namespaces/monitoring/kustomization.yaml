@@ -3,6 +3,7 @@ namespace: monitoring
 bases:
 - ship-to-dd
 - ercot-metrics
+- media-automation
 
 resources:
 - namespace.yaml

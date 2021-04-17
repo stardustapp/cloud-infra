@@ -16,7 +16,7 @@ spec:
       containers:
 
       - name: driver
-        image: danopia/stardriver:irc-client
+        image: stardriver-irc-client
 
         ports:
         - containerPort: 9234

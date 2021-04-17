@@ -15,7 +15,7 @@ spec:
       tolerations:
       - key: kubernetes.io/pet-node
         operator: Equal
-        value: pet-laxbox
+        value: pet-ausbox
         effect: NoSchedule
       - key: kubernetes.io/pet-node
         operator: Equal

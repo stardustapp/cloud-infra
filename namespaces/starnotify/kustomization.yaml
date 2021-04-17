@@ -26,9 +26,14 @@ secretGenerator:
 
 images:
 
-- name: gcr.io/stardust-156404/multi-starnotify-deps
-  newTag: h25
+- name: multi-starnotify-deps
+  newName: gcr.io/stardust-156404/multi-starnotify-deps
+  newTag: h27
+
+- name: stardriver-irc-client
+  newName: gcr.io/stardust-156404/stardriver-irc-client
+  newTag: h1
 
 - name: skyhook-irc-outbound
   newName: gcr.io/stardust-156404/skyhook-irc-outbound
-  newTag: h7
+  newTag: h9

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: starnotify
-        image: gcr.io/stardust-156404/multi-starnotify-deps
+        image: multi-starnotify-deps
         args:
         - 'node'
         - 'src/_host'
