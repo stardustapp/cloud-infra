@@ -48,6 +48,13 @@ spec:
         - TCP-LISTEN:8082,fork,su=nobody
         - TCP:10.69.1.11:32257
 
+      - name: wg69irc-proxy
+        image: alpine/socat
+        args:
+        - -s
+        - TCP-LISTEN:6667,fork,su=nobody
+        - TCP:10.69.1.1:6667
+
       - name: wireguard
         command:
         - /entrypoint.sh
