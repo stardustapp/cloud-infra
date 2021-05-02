@@ -8,4 +8,4 @@ bases:
 images:
 - name: kube-pet-cluster-infra
   newName: gcr.io/stardust-156404/kube-pet-cluster-infra
-  newTag: '638b569'
+  newTag: 'dcd9991'

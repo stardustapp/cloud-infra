@@ -16,7 +16,7 @@ spec:
       containers:
 
       - name: loop
-        image: gcr.io/stardust-156404/kube-pet-loop-blockdevice:40f29f9
+        image: kube-pet-loop-blockdevice
 
         securityContext:
           capabilities:

@@ -6,3 +6,8 @@ bases:
 
 resources:
 - namespace.yaml
+
+images:
+- name: kube-pet-loop-blockdevice
+  newName: gcr.io/stardust-156404/kube-pet-loop-blockdevice
+  newTag: 6bc41dc
