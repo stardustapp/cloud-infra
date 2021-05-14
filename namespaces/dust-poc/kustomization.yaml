@@ -7,7 +7,7 @@ resources:
 - ingress.yaml
 
 patchesStrategicMerge:
-- serviceaccount-iam.yaml
+- deployment-iam.yaml
 
 images:
 - name: gcr.io/stardust-156404/dust-poc

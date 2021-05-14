@@ -1,0 +1,11 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dust-poc
+
+spec:
+  template:
+    metadata:
+      annotations:
+        sts.amazonaws.com/role-arn: arn:aws:iam::414064234042:role/gke-dust-poc
