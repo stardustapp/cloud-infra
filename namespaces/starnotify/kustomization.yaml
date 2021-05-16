@@ -7,10 +7,9 @@ bases:
 - ../../apps/starnotify-multi-sqs
 - ../../apps/stardriver-irc-client
 - ../../apps/skyhook-irc-outbound
-resources:
-- serviceaccount-iam.yaml
 
 patches:
+- workload-iam.yaml
 - deployment-env.yaml
 # deployments get deleted whenever
 - preemptible-pods.yaml

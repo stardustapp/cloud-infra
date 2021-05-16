@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-sqs
+
+spec:
+  template:
+    metadata:
+      annotations:
+        sts.amazonaws.com/role-arn: arn:aws:iam::414064234042:role/gke-skyhook
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: irc-outbound
+
+spec:
+  template:
+    metadata:
+      annotations:
+        sts.amazonaws.com/role-arn: arn:aws:iam::414064234042:role/gke-skyhook
