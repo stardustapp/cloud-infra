@@ -22,6 +22,10 @@ images:
   newName: gcr.io/stardust-156404/nagios-api-checks
   newTag: h7
 
+- name: tailscale
+  newName: jauderho/tailscale
+  newTag: v1.8.1
+
 secretGenerator:
 - name: nagios-api-checks
   env: api-checks.env

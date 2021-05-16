@@ -35,12 +35,18 @@ patches:
   target:
     kind: Deployment
     name: nginx-ingress-controller
+
+# Add some VPN
 - path: wireguard-sidecar.yaml
+- path: tailscale-sidecar.yaml
 
 secretGenerator:
 - name: wireguard-key
   envs:
   - wireguard.env
+- name: tailscale-state
+  files:
+  - tailscale-key.json
 
 configMapGenerator:
 - name: wireguard-conf

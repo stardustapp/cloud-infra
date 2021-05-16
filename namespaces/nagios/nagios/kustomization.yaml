@@ -10,11 +10,16 @@ resources:
 patches:
 - node-assignment.yaml
 - wg-sidecar.yaml
+- tailscale-sidecar.yaml
 - serviceaccount-assignment.yaml
 
 secretGenerator:
 - name: wireguard-key
   env: wg-keypair.env
+
+- name: tailscale-state
+  files:
+  - tailscale-key.json
 
 configMapGenerator:
 - name: wireguard-conf

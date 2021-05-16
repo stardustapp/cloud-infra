@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-ingress-controller
+spec:
+  template:
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: tailscale
+        image: jauderho/tailscale:v1.8.1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
+          requests:
+            cpu: 25m
+            memory: 32Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+        volumeMounts:
+        - name: node-state
+          mountPath: /tailscale/tailscaled.state
+          subPath: tailscale-key.json
+
+      volumes:
+      - name: node-state
+        secret:
+          secretName: tailscale-state
+          defaultMode: 420

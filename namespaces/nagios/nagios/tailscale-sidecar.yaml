@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nagios
+spec:
+  template:
+    spec:
+      containers:
+
+      - name: tailscale
+        image: tailscale
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
+          requests:
+            cpu: 25m
+            memory: 32Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+        volumeMounts:
+        - name: node-state
+          mountPath: /tailscale/tailscaled.state
+          subPath: tailscale-key.json
+
+      volumes:
+      - name: node-state
+        secret:
+          secretName: tailscale-state
+          defaultMode: 420
