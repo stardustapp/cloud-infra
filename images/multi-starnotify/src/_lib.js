@@ -21,9 +21,17 @@ exports.notify = async function notify(channel, message) {
   console.log('Sending to', channel, '-', message);
 
   // Certain channels should use the new bot
-  if (['##danopia', '#robigalia', '#stardust-test'].includes(channel)) {
+  if ([
+    '##danopia',
+    '#dagd', '#dagd-ops',
+    '#relrodtest',
+    '#robigalia',
+    '#stardust-test', '#stardust-noise',
+  ].includes(channel)) {
+    let network = 'libera';
+    if (channel == '#robigalia') network = 'freenode';
     const payload = JSON.stringify({ "ver": 1,
-      "protocol": "irc", "network": "freenode",
+      "protocol": "irc", "network": network,
       "target": channel, "message": message,
     });
 
