@@ -1,4 +1,4 @@
-irc-connect freenode chat.freenode.net 6667 haskell lambda:bot
+irc-connect freenode irc.libera.chat 6667 haskell lambda:bot
 admin + freenode:danopia
 admin + freenode:relrod
 join freenode:#dagd
