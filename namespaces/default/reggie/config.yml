@@ -1,5 +1,5 @@
 nick: regexbot
-server: chat.freenode.net
+server: irc.libera.chat
 channels:
   - '#dagd'
   - '##danopia'
