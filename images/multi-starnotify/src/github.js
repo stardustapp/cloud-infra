@@ -612,7 +612,7 @@ exports.processMessage = async function processMessage(data) {
   case 'deployment':
   case 'deployment_status':
   case 'page_build': {
-    const {repository, commit, state, description, target_url, context} = payload;
+    let {repository, commit, state, description, target_url, context} = payload;
 
     // adapt deployments to look like normal statuses
     if (eventType === 'deployment') {
