@@ -1,16 +1,13 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   name: irc-modem
 spec:
-  serviceName: stardriver-irc-modem
 
-  replicas: 1
   updateStrategy:
     type: OnDelete
 
-  volumeClaimTemplates: []
   template:
     spec:
       containers:

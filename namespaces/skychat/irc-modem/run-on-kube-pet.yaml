@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   name: irc-modem
 spec:
@@ -17,3 +17,9 @@ spec:
         operator: Equal
         value: pet-modem1
         effect: NoSchedule
+
+      # This toleration would allow GKE nodes too
+      # - key: cloud.google.com/gke-preemptible
+      #   operator: Equal
+      #   value: "false"
+      #   effect: NoSchedule
