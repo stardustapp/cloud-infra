@@ -2,15 +2,4 @@ bases:
 - ../../../apps/stardriver-irc-modem
 
 patchesStrategicMerge:
-- wireguard-sidecar.yaml
-# - persistent-modem.yaml
 - run-on-kube-pet.yaml
-
-secretGenerator:
-- name: wireguard-key
-  env: wireguard.env
-
-configMapGenerator:
-- name: wireguard-conf
-  files:
-  - wg0.conf=wireguard.conf
