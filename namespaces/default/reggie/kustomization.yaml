@@ -15,4 +15,4 @@ configMapGenerator:
 
 images:
 - name: gcr.io/stardust-156404/reggie
-  newTag: h3
+  newTag: h12

@@ -1,7 +1,11 @@
-nick: regexbot
+nick: reggie
 server: irc.libera.chat
+port: 6697
 channels:
   - '#dagd'
   - '##danopia'
   - '#stardust'
-max-bangs: 6
+max_bangs: 6
+
+use_ssl: yes
+ca_certs: /etc/ssl/certs
