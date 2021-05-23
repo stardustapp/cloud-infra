@@ -26,6 +26,7 @@ exports.notify = async function notify(channel, message) {
     '#dagd', '#dagd-ops',
     '#relrodtest',
     '#robigalia',
+    '#hledger', '#hledger-bots',
     '#stardust-test', '#stardust-noise',
   ].includes(channel)) {
     let network = 'libera';
