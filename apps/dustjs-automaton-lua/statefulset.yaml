@@ -16,10 +16,16 @@ spec:
       containers:
 
       - name: app
-        image: dustjs-automaton-lua
-        ports:
-        - name: http
-          containerPort: 9232
+        image: dust-typescript
+
+        command:
+        - deno
+        - run
+        - --allow-net
+        - --allow-env
+        - --allow-read
+        - --cached-only
+        - automaton-lua/app.ts
 
         envFrom:
         - secretRef:

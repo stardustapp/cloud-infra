@@ -2,13 +2,9 @@ namespace: skychat
 
 images:
 
-- name: dustjs-automaton-lua
-  newName: gcr.io/stardust-156404/dustjs-automaton-lua
-  newTag: '64c9168'
-  # TODO:
-  # newTag: '3cf0695'
-  # TypeError: apiSession.wsDevice.invoke is not a function
-  #   at /app/src/app.js:102:31
+- name: dust-typescript
+  newName: gcr.io/stardust-156404/dust-typescript
+  newTag: 'b58bc92'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/stardriver-irc-dialer
@@ -25,12 +21,12 @@ bases:
 
 # human users
 - automatons/dan-irc
-- automatons/nat-irc
-- automatons/mkb-irc
-- automatons/nb-irc
+# - automatons/nat-irc
+# - automatons/mkb-irc
+# - automatons/nb-irc
 - automatons/fox-irc
-- automatons/relrod-irc
-- automatons/mykey-irc
+# - automatons/relrod-irc
+# - automatons/mykey-irc
 # chatbots
 - automatons/skyhook-irc
 

@@ -10,13 +10,12 @@ spec:
       - name: app
 
         args:
-        - node
-        - --unhandled-rejections=strict
-        - /app
         - --app
         - irc
         - --service
         - irc-automaton
+        - --routines-dir
+        - /app/routines
         - --default-mounts
         - --/irc-modem
         - skylink+http://irc-modem
