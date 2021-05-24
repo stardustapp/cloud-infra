@@ -28,4 +28,4 @@ spec:
       volumes:
       - name: routines
         configMap:
-          name: routines-irc-452b5cfb7d
+          name: routines-irc-7fm4m8g69k
