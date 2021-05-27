@@ -30,7 +30,7 @@ exports.notify = async function notify(channel, message) {
     '#stardust-test', '#stardust-noise',
   ].includes(channel)) {
     let network = 'libera';
-    if (channel == '#robigalia') network = 'freenode';
+    if (channel == '#robigalia') network = 'oftc';
     const payload = JSON.stringify({ "ver": 1,
       "protocol": "irc", "network": network,
       "target": channel, "message": message,
