@@ -4,7 +4,7 @@ images:
 
 - name: dust-typescript
   newName: gcr.io/stardust-156404/dust-typescript
-  newTag: 'efbce09'
+  newTag: 'fbd377d'
 
 - name: stardriver-irc-modem
   newName: gcr.io/stardust-156404/stardriver-irc-dialer
