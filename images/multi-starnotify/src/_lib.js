@@ -26,6 +26,7 @@ exports.notify = async function notify(channel, message) {
     '#dagd', '#dagd-ops',
     '#relrodtest',
     '#robigalia',
+    '#fedora-aaa-activity',
     '#hledger', '#hledger-bots',
     '#stardust-test', '#stardust-noise',
   ].includes(channel)) {
