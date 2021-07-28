@@ -547,6 +547,12 @@ exports.processMessage = async function processMessage(data) {
   }
 
   // TODO: what's appropriate here?
+  case 'workflow_job': {
+    const {action, workflow_job, repository} = payload;
+    const {id, run_id, run_url, status, conclusion, name, steps} = workflow_job;
+    console.log('TODO: workflow_job', {action, workflow_job});
+    return;
+  }
   case 'check_run': {
     const {action, check_run, repository} = payload;
     const {id, node_id, external_id, head_sha, html_url, status, conclusion, started_at, completed_at, output, name, check_suite} = check_run;
