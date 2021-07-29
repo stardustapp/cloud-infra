@@ -493,6 +493,9 @@ exports.processMessage = async function processMessage(data) {
           "and \x0306"+review.state+"\x0F"+reviewBody+" "+
           "\x0302\x1F"+await urlHandler(review.html_url)+"\x0F");
       return;
+    } else if (action === 'editted') {
+      console.log('Ignoring noisey pull_request_review action', action);
+      return;
     }
     break;
   }
@@ -522,6 +525,20 @@ exports.processMessage = async function processMessage(data) {
         "\x0315"+sender.login+"\x0F "+
         action+" a comment on a review of PR \x02#"+pull_request.number+"\x02: "+
         "\x0302\x1F"+await urlHandler(comment.html_url)+"\x0F");
+    return;
+  }
+
+  case 'pull_request_review_thread': {
+    const {action, repository, sender, pull_request, thread} = payload;
+    if (!isActionRelevant(action)) {
+      console.log('Ignoring irrelevant action', action);
+      return;
+    }
+
+    await notify(channel,
+        "[\x0313"+repository.name+"\x0F] "+
+        "\x0315"+sender.login+"\x0F "+
+        action+" a thread on PR \x02#"+pull_request.number+"\x02");
     return;
   }
 
