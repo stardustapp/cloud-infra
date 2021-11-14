@@ -14,5 +14,6 @@ configMapGenerator:
   - config.yml
 
 images:
-- name: gcr.io/stardust-156404/reggie
+- name: reggie
+  newName: rg.fr-par.scw.cloud/danopia-public/reggie
   newTag: h12

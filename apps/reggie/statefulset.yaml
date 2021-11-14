@@ -16,7 +16,7 @@ spec:
       containers:
 
       - name: bot
-        image: gcr.io/stardust-156404/reggie
+        image: reggie
 
         resources:
           requests:
