@@ -19,11 +19,15 @@ spec:
         image: kube-pet-loop-blockdevice
 
         securityContext:
-          capabilities:
-            add:
-            - CAP_SYS_RAWIO
+          # capabilities:
+          #   add:
+          #   - CAP_SYS_RAWIO
+          #   - CAP_SYS_ADMIN
+          #   - CAP_SYS_RESOURCE
           seLinuxOptions:
             type: unconfined_t
+          # TODO: is this hard required?
+          privileged: true
 
         env:
         - name: NODE_NAME

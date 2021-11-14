@@ -10,18 +10,18 @@ spec:
 
       # We only want pets
       nodeSelector:
-        kubernetes.io/role: pet
+        node-role.kubernetes.io/residental: ''
       # List the pets we want, for now
       tolerations:
       # - key: kubernetes.io/pet-node
       #   operator: Equal
       #   value: pet-penguin
       #   effect: NoSchedule
-      - key: kubernetes.io/pet-node
-        operator: Equal
-        value: pet-ausbox
-        effect: NoSchedule
-      - key: kubernetes.io/pet-node
-        operator: Equal
-        value: pet-berbox
-        effect: NoSchedule
+      # - key: kubernetes.io/pet-node
+      #   operator: Equal
+      #   value: pet-ausbox
+      #   effect: NoSchedule
+      # - key: kubernetes.io/pet-node
+      #   operator: Equal
+      #   value: pet-berbox
+      #   effect: NoSchedule

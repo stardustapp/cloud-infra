@@ -5,8 +5,8 @@ namespace: default
 
 bases:
 - ../../../apps/reggie
-patches:
-- node-assignment.yaml
+# patches:
+# - node-assignment.yaml
 
 configMapGenerator:
 - name: reggie-config

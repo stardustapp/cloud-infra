@@ -12,3 +12,6 @@ spec:
         envFrom:
         - secretRef:
             name: ship-to-dd-credentials
+        env:
+        - name: DATADOG_CLUSTER_TAG
+          value: dankube
