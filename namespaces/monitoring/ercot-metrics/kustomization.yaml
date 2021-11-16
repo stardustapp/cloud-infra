@@ -4,6 +4,7 @@ bases:
 - ../../../apps/ercot-metrics
 patches:
 - patch-env.yaml
+- patch-scheduling.yaml
 
 secretGenerator:
 - env: credentials.env

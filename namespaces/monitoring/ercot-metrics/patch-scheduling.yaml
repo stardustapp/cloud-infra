@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ercot-metrics
+spec:
+
+  template:
+    spec:
+
+      # ERCOT blocks non-US endpoints from accessing its servers
+      nodeSelector:
+        node-role.kubernetes.io/region-us: ''

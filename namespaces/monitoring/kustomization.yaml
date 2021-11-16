@@ -2,7 +2,7 @@ namespace: monitoring
 
 bases:
 - ship-to-dd
-# - ercot-metrics
+- ercot-metrics
 # - media-automation
 
 resources:
