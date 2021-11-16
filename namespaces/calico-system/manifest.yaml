@@ -4258,6 +4258,12 @@ spec:
               value: interface=tailscale.*
             - name: CALICO_IPV6POOL_NAT_OUTGOING
               value: "true"
+            - name: FELIX_HEALTHHOST
+              value: "0.0.0.0"
+            - name: FELIX_HEALTHPORT
+              value: "9099"
+            - name: FELIX_IPTABLESMARKMASK
+              value: "0xff00ff00"
           securityContext:
             privileged: true
           resources:
@@ -4270,22 +4276,30 @@ spec:
                 - /bin/calico-node
                 - -shutdown
           livenessProbe:
-            exec:
-              command:
-              - /bin/calico-node
-              - -felix-live
-              # - -bird-live
-            periodSeconds: 60
+            httpGet:
+              path: /liveness
+              port: 9099
+              host: localhost
+            # exec:
+            #   command:
+            #   - /bin/calico-node
+            #   - -felix-live
+            #   # - -bird-live
+            periodSeconds: 30
             initialDelaySeconds: 10
             failureThreshold: 6
             timeoutSeconds: 10
           readinessProbe:
-            exec:
-              command:
-              - /bin/calico-node
-              - -felix-ready
-              # - -bird-ready
-            periodSeconds: 60
+            httpGet:
+              path: /readiness
+              port: 9099
+              host: localhost
+            # exec:
+            #   command:
+            #   - /bin/calico-node
+            #   - -felix-ready
+            #   # - -bird-ready
+            periodSeconds: 30
             timeoutSeconds: 10
           volumeMounts:
             # For maintaining CNI plugin API credentials.
