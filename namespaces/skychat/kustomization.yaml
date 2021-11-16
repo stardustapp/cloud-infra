@@ -19,16 +19,10 @@ bases:
 - irc-modem
 # - ../../apps/bitlbee
 
-# human users
-- automatons/dan-irc
-# - automatons/nat-irc
-# - automatons/mkb-irc
-# - automatons/nb-irc
-- automatons/fox-irc
-# - automatons/relrod-irc
-# - automatons/mykey-irc
-# chatbots
-- automatons/skyhook-irc
+# # human users
+# - automatons/dan-irc
+# # chatbots
+# - automatons/skyhook-irc
 
 resources:
 - namespace.yaml

@@ -17,7 +17,7 @@ kubectl $mode -k namespaces/kube-pets
 # kubectl $mode -k namespaces/media
 kubectl $mode -k namespaces/monitoring
 # kubectl $mode -k namespaces/nagios
-# kubectl $mode -k namespaces/skychat
+kubectl $mode -k namespaces/skychat
 # kubectl $mode -k namespaces/starnotify
 # kubectl $mode -k namespaces/wg69
 

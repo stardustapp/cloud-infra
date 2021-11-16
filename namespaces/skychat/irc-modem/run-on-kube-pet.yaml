@@ -6,17 +6,16 @@ spec:
   template:
     spec:
 
-      # We want a pet
       nodeSelector:
-        lifetime: persistent
-        purpose: pet
+        # node-role.kubernetes.io/data-center: vultr
+        kubernetes.io/hostname: worker-vultr-ordbox
 
       # Passlist of pets we'll be ok with
-      tolerations:
-      - key: kubernetes.io/pet-node
-        operator: Equal
-        value: pet-modem1
-        effect: NoSchedule
+      # tolerations:
+      # - key: kubernetes.io/pet-node
+      #   operator: Equal
+      #   value: pet-modem1
+      #   effect: NoSchedule
 
       # This toleration would allow GKE nodes too
       # - key: cloud.google.com/gke-preemptible
