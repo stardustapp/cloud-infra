@@ -5,16 +5,18 @@ namespace: starnotify
 
 bases:
 - ../../apps/starnotify-multi-sqs
-- ../../apps/stardriver-irc-client
+# - ../../apps/stardriver-irc-client
 - ../../apps/skyhook-irc-outbound
+resources:
+- namespace.yaml
 
 patches:
 - workload-iam.yaml
 - deployment-env.yaml
 # deployments get deleted whenever
 - preemptible-pods.yaml
-# statefulsets stay running
-- persistent-pods.yaml
+# # statefulsets stay running
+# - persistent-pods.yaml
 
 secretGenerator:
 - env: credentials.env

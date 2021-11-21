@@ -6,6 +6,13 @@
   path: '/spec/template/spec/containers/0/args/4'
   value: --publish-status-address=100.67.41.80
 
+# - op: test
+#   path: '/spec/template/spec/containers/0/args/5'
+#   value: --election-id=ingress-controller-leader
+# - op: replace
+#   path: '/spec/template/spec/containers/0/args/5'
+#   value: --election-id=ingress-controller-leader-internet
+
 # class as internal ingresses
 - op: add
   path: '/spec/template/spec/containers/0/args/6'

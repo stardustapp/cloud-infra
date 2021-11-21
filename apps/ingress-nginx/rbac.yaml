@@ -4,7 +4,7 @@ metadata:
   name: nginx-ingress-serviceaccount
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: nginx-ingress-clusterrole
@@ -17,6 +17,7 @@ rules:
       - nodes
       - pods
       - secrets
+      - namespaces
     verbs:
       - list
       - watch
@@ -33,11 +34,9 @@ rules:
     verbs:
       - get
       - list
-      - update
       - watch
   - apiGroups:
-      - extensions
-      - networking.k8s.io   # k8s 1.14+
+      - networking.k8s.io
     resources:
       - ingresses
     verbs:
@@ -52,14 +51,13 @@ rules:
       - create
       - patch
   - apiGroups:
-      - extensions
-      - networking.k8s.io   # k8s 1.14+
+      - networking.k8s.io
     resources:
       - ingresses/status
     verbs:
       - update
   - apiGroups:
-      - networking.k8s.io   # k8s 1.14+
+      - networking.k8s.io
     resources:
       - ingressclasses
     verbs:
@@ -68,7 +66,7 @@ rules:
       - watch
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: nginx-ingress-role
@@ -97,11 +95,9 @@ rules:
     verbs:
       - get
       - list
-      - update
       - watch
   - apiGroups:
-      - extensions
-      - networking.k8s.io   # k8s 1.14+
+      - networking.k8s.io
     resources:
       - ingresses
     verbs:
@@ -109,14 +105,13 @@ rules:
       - list
       - watch
   - apiGroups:
-      - extensions
-      - networking.k8s.io   # k8s 1.14+
+      - networking.k8s.io
     resources:
       - ingresses/status
     verbs:
       - update
   - apiGroups:
-      - networking.k8s.io   # k8s 1.14+
+      - networking.k8s.io
     resources:
       - ingressclasses
     verbs:
@@ -128,7 +123,7 @@ rules:
     resources:
       - configmaps
     resourceNames:
-      - ingress-controller-leader-nginx
+      - ingress-controller-leader
     verbs:
       - get
       - update
@@ -141,21 +136,13 @@ rules:
   - apiGroups:
       - ''
     resources:
-      - endpoints
-    verbs:
-      - create
-      - get
-      - update
-  - apiGroups:
-      - ''
-    resources:
       - events
     verbs:
       - create
       - patch
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: nginx-ingress-role-nisa-binding
@@ -168,7 +155,7 @@ subjects:
     name: nginx-ingress-serviceaccount
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: nginx-ingress-clusterrole-nisa-binding

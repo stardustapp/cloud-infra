@@ -4,6 +4,6 @@ metadata:
   name: ingress-nginx
 subsets:
 - addresses:
-  - ip: 10.69.4.66
+  - ip: 100.67.41.80
   ports:
   - port: 80

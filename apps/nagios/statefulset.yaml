@@ -22,7 +22,7 @@ spec:
         - sh
         - -euxc
         - |
-          ping -w10 -c2 10.69.1.1 # fails if no packets are received
+          # ping -w10 -c2 10.69.1.1 # fails if no packets are received
           chown nagios:nagios /var/spool/nagios
           chown nagios:nagios /var/log/nagios
           exec /usr/sbin/nagios /etc/nagios/nagios.cfg

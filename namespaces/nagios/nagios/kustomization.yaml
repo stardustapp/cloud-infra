@@ -6,22 +6,26 @@ bases:
 resources:
 - serviceaccount.yaml
 - rbac.yaml
+- storageclass.yaml
+- persistent-volume.yaml
 
 patches:
-- node-assignment.yaml
-- wg-sidecar.yaml
-- tailscale-sidecar.yaml
+# - node-assignment.yaml
+# - wg-sidecar.yaml
+# - tailscale-sidecar.yaml
 - serviceaccount-assignment.yaml
 
-secretGenerator:
-- name: wireguard-key
-  env: wg-keypair.env
+- persistent-volume-assignment.yaml
 
-- name: tailscale-state
-  files:
-  - tailscale-key.json
+# secretGenerator:
+# - name: wireguard-key
+#   env: wg-keypair.env
 
-configMapGenerator:
-- name: wireguard-conf
-  files:
-  - wg0.conf
+# - name: tailscale-state
+#   files:
+#   - tailscale-key.json
+
+# configMapGenerator:
+# - name: wireguard-conf
+#   files:
+#   - wg0.conf

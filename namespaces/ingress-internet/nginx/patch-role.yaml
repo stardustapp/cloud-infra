@@ -1,7 +1,7 @@
-- op: test
-  path: '/rules/6/resourceNames/0'
-  value: ingress-controller-leader-nginx
+# - op: test
+#   path: '/rules/6/resourceNames/0'
+#   value: ingress-controller-leader
 
-- op: replace
-  path: '/rules/6/resourceNames/0'
-  value: ingress-controller-leader-internet
+# - op: replace
+#   path: '/rules/6/resourceNames/0'
+#   value: ingress-controller-leader-internet

@@ -6,8 +6,8 @@ spec:
   template:
     spec:
 
-      nodeSelector:
-        lifetime: preemptible
+      # nodeSelector:
+      #   lifetime: preemptible
 
       tolerations:
       - key: cloud.google.com/gke-preemptible
@@ -24,8 +24,8 @@ spec:
   template:
     spec:
 
-      nodeSelector:
-        lifetime: preemptible
+      # nodeSelector:
+      #   lifetime: preemptible
 
       tolerations:
       - key: cloud.google.com/gke-preemptible

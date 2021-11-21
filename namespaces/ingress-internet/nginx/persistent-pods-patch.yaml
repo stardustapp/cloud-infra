@@ -7,10 +7,11 @@ spec:
     spec:
 
       nodeSelector:
-        lifetime: persistent
+        # lifetime: persistent
+        kubernetes.io/hostname: worker-vultr-frabox
 
-      tolerations:
-      - key: cloud.google.com/gke-preemptible
-        operator: Equal
-        value: "false"
-        effect: NoSchedule
+      # tolerations:
+      # - key: cloud.google.com/gke-preemptible
+      #   operator: Equal
+      #   value: "false"
+      #   effect: NoSchedule

@@ -8,5 +8,5 @@ resources:
 
 images:
 - name: kubernetes-dns-sync
-  newName: gcr.io/stardust-156404/kubernetes-dns-sync
-  newTag: 'c9a6380'
+  newName: ghcr.io/cloudydeno/kubernetes-dns-sync
+  digest: sha256:3236757973f2eb3d0adbb52f2f8fdb56c8445f514d2973510a192f3887bdf89f

@@ -2,17 +2,17 @@ enable_watching = true
 
 [[source]]
 type = "crd"
-annotation_filter = { "\"kubernetes.io/ingress.class\"": "internet" }
+annotation_filter = { "kubernetes.io/ingress.class" = "internet" }
 
 [[source]]
 type = "ingress"
-annotation_filter = { "\"kubernetes.io/ingress.class\"": "internet" }
+annotation_filter = { "kubernetes.io/ingress.class" = "internet" }
 
-[[source]]
-type = "node"
-address_type = "ExternalIP"
-fqdn_template = "{{index .Labels \"kubernetes.io/hostname\"}}.pet.devmode.cloud"
-annotation_filter = { "\"kubernetes.io/node.class\"": "kube-pet" }
+# [[source]]
+# type = "node"
+# address_type = "ExternalIP"
+# fqdn_template = "{{index .Labels \"kubernetes.io/hostname\"}}.pet.devmode.cloud"
+# annotation_filter = { "kubernetes.io/node.class" = "kube-pet" }
 
 [[source]]
 type = "acme-crd"
@@ -26,4 +26,4 @@ type = "vultr"
 [registry]
 type = "txt"
 txt_prefix = "_registry."
-txt_owner_id = "dust-usc1f"
+txt_owner_id = "dan1"

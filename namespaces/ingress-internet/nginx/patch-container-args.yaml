@@ -1,10 +1,16 @@
 - op: test
   path: '/spec/template/spec/containers/0/args/4'
   value: --publish-service=$(POD_NAMESPACE)/ingress-nginx
+# - op: replace
+#   path: '/spec/template/spec/containers/0/args/4'
+#   value: --report-node-internal-ip-address=false
 - op: replace
   path: '/spec/template/spec/containers/0/args/4'
-  value: --report-node-internal-ip-address=false
+  value: --publish-status-address=192.248.184.195
 
+# - op: add
+#   path: '/spec/template/spec/containers/0/args/6'
+#   value: --ingress-class=internet
 - op: add
   path: '/spec/template/spec/containers/0/args/6'
-  value: --ingress-class=internet
+  value: --controller-class=k8s.io/ingress-nginx/internet
