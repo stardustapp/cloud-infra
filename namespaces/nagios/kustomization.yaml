@@ -16,15 +16,11 @@ images:
 
 - name: oauth2-proxy
   newName: quay.io/oauth2-proxy/oauth2-proxy
-  newTag: v7.1.2 # was v5.1.0
+  newTag: v7.2.0
 
 - name: nagios-api-checks
   newName: gcr.io/stardust-156404/nagios-api-checks
-  newTag: h7
-
-- name: tailscale
-  newName: jauderho/tailscale
-  newTag: v1.8.1
+  newTag: h10
 
 secretGenerator:
 - name: nagios-api-checks
